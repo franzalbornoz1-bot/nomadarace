@@ -1,0 +1,187 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f7f8fa;
+  --foreground: #252a2e;
+}
+
+html.dark {
+  --background: #0d1013;
+  --foreground: #f4f7f8;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--background); }
+body { margin: 0; min-width: 320px; background: radial-gradient(65rem 38rem at 6% -8%, rgba(254,92,19,.11), transparent 52%), radial-gradient(52rem 32rem at 96% 8%, rgba(86,25,152,.07), transparent 50%), var(--background); color: var(--foreground); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+button, input, textarea { font: inherit; }
+button { cursor: pointer; }
+h1, h2, h3, .font-display { font-family: Archivo, "Helvetica Neue", Arial, sans-serif; }
+h1 { letter-spacing: -.065em !important; }
+h2, h3 { letter-spacing: -.035em !important; }
+h1, h2 { text-wrap: balance; }
+input, textarea { transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease; }
+input:focus-visible, textarea:focus-visible { box-shadow: 0 0 0 4px rgba(254,92,19,.13); }
+::selection { background: #fe5c13; color: #ffffff; }
+
+@keyframes nomada-reveal {
+  from { opacity: 0; transform: translate3d(0, 14px, 0) scale(.988); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes nomada-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0.001deg); }
+  50% { transform: translate3d(0, -9px, 0) rotate(0.001deg); }
+}
+
+.glass-panel {
+  border: 1px solid rgba(255, 255, 255, .82);
+  background: linear-gradient(135deg, rgba(255, 255, 255, .82), rgba(255, 255, 255, .54));
+  box-shadow: 0 18px 52px rgba(27, 34, 39, .09), inset 0 1px 0 rgba(255, 255, 255, .88);
+  -webkit-backdrop-filter: blur(26px) saturate(155%);
+  backdrop-filter: blur(26px) saturate(155%);
+}
+
+.glass-panel-dark {
+  border: 1px solid rgba(255, 255, 255, .14);
+  background: rgba(44, 49, 53, .72);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .22), inset 0 1px 0 rgba(255, 255, 255, .08);
+  -webkit-backdrop-filter: blur(22px) saturate(130%);
+  backdrop-filter: blur(22px) saturate(130%);
+}
+
+.interactive-card {
+  will-change: transform, box-shadow;
+  transition: transform 420ms cubic-bezier(.2, .8, .2, 1), box-shadow 420ms cubic-bezier(.2, .8, .2, 1), border-color 260ms ease;
+}
+
+.interactive-card:hover {
+  transform: translate3d(0, -5px, 0);
+  box-shadow: 0 28px 68px rgba(53, 58, 62, .15);
+}
+
+.animate-reveal { animation: nomada-reveal 620ms cubic-bezier(.2, .8, .2, 1) both; }
+.animate-float { animation: nomada-float 7s cubic-bezier(.45, .05, .55, .95) infinite; will-change: transform; }
+
+.premium-nav {
+  border-color: rgba(255, 255, 255, .72);
+  background: rgba(255, 255, 255, .72);
+  box-shadow: 0 8px 28px rgba(37, 42, 46, .055);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  backdrop-filter: blur(22px) saturate(140%);
+}
+
+.premium-dark {
+  background: radial-gradient(42rem 25rem at 15% 0%, rgba(254,92,19,.17), transparent 60%), linear-gradient(135deg, #262c31, #161a1d 70%);
+}
+
+.bg-zinc-950.text-white {
+  background: radial-gradient(42rem 25rem at 15% 0%, rgba(254,92,19,.16), transparent 60%), linear-gradient(135deg, #262c31, #161a1d 70%);
+}
+
+section[class*="bg-[#FFF0E8]"] {
+  background: radial-gradient(38rem 25rem at 85% 20%, rgba(254,92,19,.14), transparent 62%), linear-gradient(135deg, #fff8f3, #fff0e8);
+}
+
+.soft-section {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(255,255,255,.8), rgba(255,247,242,.74));
+}
+
+/* Day/night theme. The app uses a compact semantic palette, so these mappings
+   keep the contrast of existing views while leaving event imagery and orange CTAs intact. */
+html, body, .premium-nav, .glass-panel, .theme-toggle, input, textarea {
+  transition: background-color 360ms cubic-bezier(.2, .8, .2, 1), color 260ms ease, border-color 360ms ease, box-shadow 360ms ease;
+}
+
+.dark body {
+  background: radial-gradient(58rem 34rem at 6% -10%, rgba(254,92,19,.17), transparent 56%), radial-gradient(52rem 32rem at 96% 8%, rgba(86,25,152,.18), transparent 54%), var(--background);
+}
+
+.dark .nomada-logo--adaptive { filter: brightness(0) invert(1); }
+
+.dark .premium-nav {
+  border-color: rgba(255,255,255,.09);
+  background: rgba(18, 22, 26, .76);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .2);
+}
+
+.dark .glass-panel {
+  border-color: rgba(255,255,255,.1) !important;
+  background: linear-gradient(135deg, rgba(31, 37, 42, .86), rgba(20, 24, 28, .66)) !important;
+  box-shadow: 0 18px 52px rgba(0, 0, 0, .18), inset 0 1px 0 rgba(255, 255, 255, .08);
+}
+
+.dark .home-hero {
+  background: radial-gradient(45rem 26rem at 50% 40%, rgba(254,92,19,.13), transparent 65%), #111519 !important;
+}
+
+.dark .home-hero-wash {
+  background: radial-gradient(circle at center, rgba(21,26,30,.96) 0%, rgba(18,22,26,.85) 40%, rgba(13,16,19,.3) 72%) !important;
+}
+
+.dark [class~="bg-brand-pure"],
+.dark [class~="bg-white"],
+.dark [class~="bg-white/70"],
+.dark [class~="bg-white/84"],
+.dark [class~="bg-white/88"],
+.dark [class~="bg-zinc-50"],
+.dark [class~="bg-zinc-100"],
+.dark [class~="bg-[#F7F8FC]"],
+.dark [class~="bg-[#FFF0E8]"],
+.dark [class~="bg-[#f2f6e7]"],
+.dark [class~="bg-[#f7f7f5]"],
+.dark [class~="bg-[#f7f7f5]/90"],
+.dark [class~="bg-[#fbfbf9]"] { background-color: #151a1e !important; }
+
+.dark [class~="bg-zinc-200"] { background-color: #283038 !important; }
+.dark [class~="bg-zinc-800"] { background-color: #22282e !important; }
+.dark [class~="bg-zinc-900"] { background-color: #171c21 !important; }
+.dark [class~="bg-zinc-950"] { background-color: #0d1013 !important; }
+.dark [class~="bg-lime-50"] { background-color: #251b16 !important; }
+.dark [class~="bg-lime-100"], .dark [class~="bg-lime-200"] { background-color: #3a2118 !important; }
+.dark [class~="bg-zinc-950"][class~="text-white"] { background: radial-gradient(42rem 25rem at 15% 0%, rgba(254,92,19,.18), transparent 60%), linear-gradient(135deg, #171c20, #090b0d 70%) !important; }
+
+.dark [class~="border-zinc-100"],
+.dark [class~="border-zinc-200"],
+.dark [class~="border-zinc-200/80"],
+.dark [class~="border-zinc-300"],
+.dark [class~="border-zinc-400"] { border-color: rgba(236,242,245,.15) !important; }
+.dark [class~="border-white/70"], .dark [class~="border-white/80"] { border-color: rgba(255,255,255,.14) !important; }
+
+.dark [class~="text-brand-carbon"],
+.dark [class~="text-zinc-950"] { color: #f4f7f8 !important; }
+.dark [class~="text-zinc-900"] { color: #e7edf0 !important; }
+.dark [class~="text-zinc-700"] { color: #d6dfe3 !important; }
+.dark [class~="text-zinc-600"] { color: #bac6cc !important; }
+.dark [class~="text-zinc-500"] { color: #9caab2 !important; }
+.dark [class~="text-zinc-400"] { color: #849199 !important; }
+.dark [class~="text-zinc-300"] { color: #d2dbe0 !important; }
+.dark [class~="text-zinc-200"] { color: #e6edf0 !important; }
+
+/* Orange remains the primary action color; it needs its original ink for contrast. */
+.dark [class~="bg-brand-neon"][class~="text-brand-carbon"],
+.dark [class~="bg-lime-300"][class~="text-zinc-950"],
+.dark [class~="bg-orange-400"][class~="text-zinc-950"] { color: #353a3e !important; }
+
+.dark .theme-toggle { background-color: rgba(255,255,255,.08) !important; border-color: rgba(255,255,255,.14) !important; }
+.dark .theme-toggle > span:first-child { background-color: #fff !important; color: #161a1d !important; }
+.dark input, .dark textarea { color: #f4f7f8; }
+.dark input::placeholder, .dark textarea::placeholder { color: #849199; }
+.dark section[class*="bg-[#FFF0E8]"] { background: radial-gradient(38rem 25rem at 85% 20%, rgba(254,92,19,.13), transparent 62%), #171412 !important; }
+
+/* The compact all-caps labels made sections feel templated. Headings now carry the hierarchy. */
+p[class*="uppercase"][class*="tracking-[.2em]"][class*="text-orange-600"] { display: none; }
+p[class*="uppercase"][class*="tracking-[.2em]"][class*="text-lime-300"] { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+}
