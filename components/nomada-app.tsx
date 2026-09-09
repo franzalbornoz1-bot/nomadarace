@@ -24,7 +24,7 @@ const PUBLIC_LINKS = [
 
 function Logo({ inverse = false, small = false }: { inverse?: boolean; small?: boolean }) {
   if (inverse) return <Link href="/" className="inline-flex items-center" aria-label="Nómada Race, inicio">
-    <img src="/nomada-race-wordmark-dark.jpeg" alt="Nómada Race" className={cn("h-auto mix-blend-screen transition-opacity duration-300 hover:opacity-80", small ? "w-28" : "w-40 sm:w-48")} />
+    <img src="/nomada-race-mark-light.png" alt="Nómada Race" className={cn("h-auto transition-opacity duration-300 hover:opacity-80", small ? "w-11" : "w-14 sm:w-16")} />
   </Link>;
 
   return <Link href="/" className="inline-flex items-center" aria-label="Nómada Race, inicio">
