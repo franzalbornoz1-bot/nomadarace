@@ -116,7 +116,11 @@ function SectionHeading({ title, copy, action }: { eyebrow?: string; title: stri
 function PublicShell({ children }: { children: React.ReactNode }) { return <div className="min-h-screen bg-brand-pure"><PublicHeader />{children}<Footer /></div>; }
 
 function HomePage() {
-  const live = events.filter(event => event.status === "Fotos listas");
+  const featuredRaces = calendarRaces.filter(race => race.month === "Septiembre").slice(0, 3);
+  const pastRaces = calendarRaces.filter(race => {
+    const monthIndex = ["Septiembre", "Octubre", "Noviembre", "Diciembre"].indexOf(race.month) + 8;
+    return new Date(2026, monthIndex, race.day, 23, 59, 59) < new Date();
+  }).slice(-3).reverse();
   return <PublicShell>
     <main>
       <section className="home-hero relative isolate min-h-[640px] overflow-hidden bg-[#F7F8FC]">
@@ -132,17 +136,17 @@ function HomePage() {
         <div className="relative mx-auto grid min-h-[640px] max-w-4xl place-items-center px-5 py-20 text-center">
           <div className="animate-reveal w-full">
             <h1 className="text-5xl font-black leading-[.9] tracking-[-.08em] text-brand-carbon sm:text-7xl lg:text-8xl">TU FOTO YA<br />ESTÁ LISTA.<br /><span className="text-brand-neon">BÚSCALA AQUÍ.</span></h1>
-            <p className="mx-auto mt-7 max-w-xl text-base leading-7 text-zinc-600 sm:text-lg">Busca tu foto por dorsal o elige las que te gusten y llévalas en alta resolución.</p>
-            <HomePurchaseFinder />
+            <p className="mx-auto mt-7 max-w-xl text-base leading-7 text-zinc-600 sm:text-lg">Elige tus momentos favoritos y llévalos en alta resolución.</p>
+            <Link href={PHOTO_STORE_URL} className="mt-8 inline-flex"><Button className="h-12 px-6 text-sm">Buscar y comprar <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><SectionHeading eyebrow="COMPRA TUS RECUERDOS" title="Eventos con fotos para ti" copy="Elige tu carrera, encuentra tus momentos y arma el pack perfecto para volver a vivirla." action={<Link href="/eventos" className="hidden items-center gap-2 text-sm font-black sm:flex">Ver eventos <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{events.slice(0, 3).map(event => <EventCard key={event.id} event={event} />)}</div></section>
+      <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><SectionHeading eyebrow="CALENDARIO 2026" title="Próximas carreras" copy="Consulta las fechas, ubicaciones y distancias de cada evento en nuestro calendario." action={<Link href="/eventos" className="hidden items-center gap-2 text-sm font-black sm:flex">Ver calendario <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{featuredRaces.map(race => <HomeRaceCard key={race.name} race={race} />)}</div></section>
 
       <section className="bg-[#FFF0E8]"><div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 lg:grid-cols-[.85fr_1.15fr] lg:px-8"><div className="self-center"><h2 className="text-4xl font-black leading-none tracking-[-.06em] text-zinc-950 sm:text-5xl">Tu foto puede<br />estar esperándote.</h2><p className="mt-5 max-w-md leading-7 text-zinc-600">Busca por dorsal o usa una selfie. En segundos encontrarás las fotos que cuentan cómo viviste la carrera.</p><Link href={PHOTO_STORE_URL}><Button className="mt-7">Buscar mis fotos <ScanFace className="ml-2 h-4 w-4" /></Button></Link></div><div className="grid grid-cols-2 gap-3 sm:grid-cols-3"><PhotoMosaic src={photoCards[4].src} className="mt-8" /><PhotoMosaic src={photoCards[6].src} /><PhotoMosaic src={photoCards[2].src} className="mt-12" /><PhotoMosaic src={photoCards[0].src} className="hidden sm:block" /><PhotoMosaic src={photoCards[5].src} className="hidden sm:mt-8 sm:block" /><PhotoMosaic src={photoCards[3].src} className="hidden sm:block" /></div></div></section>
 
-      <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><SectionHeading eyebrow="FOTOS LISTAS" title="Revive la carrera" action={<Link href="/eventos" className="items-center gap-2 text-sm font-black sm:flex">Ver todas <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid gap-5 md:grid-cols-3">{live.map(event => <EventCard key={event.id} event={event} />)}</div></section>
+      {pastRaces.length > 0 && <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><SectionHeading eyebrow="EVENTOS ANTERIORES" title="Revive la carrera" copy="Vuelve a revisar las carreras que ya pasaron y encuentra sus recuerdos." action={<Link href="/eventos" className="items-center gap-2 text-sm font-black sm:flex">Ver calendario <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid gap-5 md:grid-cols-3">{pastRaces.map(race => <HomeRaceCard key={`${race.month}-${race.day}-${race.name}`} race={race} past />)}</div></section>}
 
       <section className="bg-zinc-950 text-white"><div className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="text-xs font-black uppercase tracking-[.2em] text-lime-300">TUS FOTOS EN 3 PASOS</p><h2 className="mt-3 text-4xl font-black tracking-[-.06em] sm:text-5xl">De la meta a<br />tus recuerdos.</h2></div><Link href={PHOTO_STORE_URL}><Button>Buscar mis fotos <Search className="ml-2 h-4 w-4" /></Button></Link></div><div className="mt-10 grid gap-4 md:grid-cols-3"><PurchaseStep icon={Search} number="01" title="Busca tu dorsal" copy="Elige tu evento e ingresa el número con el que corriste." /><PurchaseStep icon={Heart} number="02" title="Elige tus momentos" copy="Marca las fotos que mejor cuentan tu esfuerzo y tu llegada." /><PurchaseStep icon={Download} number="03" title="Compra y disfruta" copy="Escoge tu pack y recibe tus recuerdos en alta resolución." /></div></div></section>
 
@@ -153,16 +157,7 @@ function HomePage() {
   </PublicShell>;
 }
 
-function HomePurchaseFinder() {
-  const [dorsal, setDorsal] = useState("");
-  return <div className="glass-panel mx-auto mt-8 max-w-2xl rounded-3xl p-2.5 text-brand-carbon sm:flex sm:items-center sm:gap-3">
-    <div className="flex min-w-0 flex-1 items-center gap-3 px-3 py-2.5 sm:border-r sm:border-zinc-200/80">
-      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-2xl bg-brand-neon/10"><Search className="h-4 w-4 text-orange-500" /></span>
-      <div className="min-w-0 flex-1"><input id="hero-dorsal" value={dorsal} onChange={event => setDorsal(event.target.value)} placeholder="Ingresa tu dorsal" className="w-full bg-transparent text-sm font-semibold outline-none placeholder:font-medium placeholder:text-zinc-400" /></div>
-    </div>
-    <Link href={PHOTO_STORE_URL} className="mt-2 block sm:mt-0"><Button className="h-11 w-full whitespace-nowrap px-5">Buscar y comprar <ArrowRight className="ml-1.5 h-4 w-4" /></Button></Link>
-  </div>;
-}
+function HomeRaceCard({ race, past = false }: { race: (typeof calendarRaces)[number]; past?: boolean }) { return <Link href="/eventos" className="group rounded-[1.75rem] border border-zinc-200 bg-white p-6 shadow-[0_12px_36px_rgba(24,28,31,.06)] transition duration-300 hover:-translate-y-1 hover:border-orange-200 hover:shadow-[0_20px_48px_rgba(254,92,19,.12)]"><div className="flex items-start gap-4"><span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-zinc-950 text-center text-white"><b className="text-xl leading-none">{String(race.day).padStart(2, "0")}</b><small className="mt-0.5 text-[9px] font-bold uppercase text-zinc-400">{race.weekday.slice(0, 3)}</small></span><div><p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-600">{past ? "Carrera realizada" : `${race.month} 2026`}</p><h3 className="mt-1 text-xl font-black leading-tight tracking-[-.035em] text-zinc-950">{race.name}</h3></div></div><div className="mt-5 border-t border-zinc-100 pt-4 text-sm text-zinc-600"><p className="flex items-center gap-2"><MapPin className="h-4 w-4 text-orange-500" />{race.city}</p><p className="mt-2 flex items-center gap-2 font-semibold"><span className="grid h-4 w-4 place-items-center rounded-full bg-orange-100 text-[8px] font-black text-orange-700">KM</span>{race.distances}</p></div><span className="mt-5 flex items-center gap-2 text-sm font-black text-zinc-950 group-hover:text-orange-600">Ver en calendario <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></Link>; }
 function HeroBackdropPhoto({ src, className }: { src: string; className: string }) { return <div className={cn("animate-float pointer-events-none absolute overflow-hidden rounded-3xl border border-white/70 bg-brand-pure/50 opacity-40 shadow-[0_22px_52px_rgba(53,58,62,.14)] saturate-[.72]", className)}><img src={src} alt="" className="h-full w-full scale-105 object-cover blur-[.45px]" /></div>; }
 function HeroMetric({ value, label }: { value: string; label: string }) { return <div className="px-3 py-6 text-center sm:px-7"><p className="text-2xl font-black tracking-[-.06em] text-lime-300 sm:text-3xl">{value}</p><p className="mt-1 text-[10px] font-bold uppercase tracking-wide text-zinc-400 sm:text-xs">{label}</p></div>; }
 function PhotoMosaic({ src, className }: { src: string; className?: string }) { return <div className={cn("interactive-card aspect-[4/5] overflow-hidden rounded-2xl bg-zinc-200 shadow-lg", className)}><img className="h-full w-full object-cover transition duration-500 hover:scale-105" src={src} alt="Corredor en competencia" /></div>; }
