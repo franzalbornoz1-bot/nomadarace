@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { clients, events, orders, photoCards, photographers, type EventStatus, type RaceEvent } from "@/lib/demo-data";
+import { calendarRaces } from "@/lib/calendar-2026";
 
 const PHOTO_STORE_URL = "https://fotos.nomadarace.cl";
 
@@ -169,21 +170,18 @@ function PurchaseStep({ icon: Icon, number, title, copy }: { icon: LucideIcon; n
 function FeatureBlock({ icon: Icon, number, title, copy, link, href }: { icon: LucideIcon; number: string; title: string; copy: string; link: string; href: string }) { return <div className="group rounded-3xl border border-zinc-800 bg-zinc-900 p-7 transition hover:border-lime-300 sm:p-9"><div className="flex items-start justify-between"><span className="grid h-12 w-12 place-items-center rounded-2xl bg-lime-300 text-zinc-950"><Icon className="h-6 w-6" /></span><span className="text-sm font-black text-zinc-600">{number}</span></div><h3 className="mt-10 text-3xl font-black tracking-[-.06em]">{title}</h3><p className="mt-4 max-w-md leading-7 text-zinc-400">{copy}</p><Link href={href} className="mt-8 flex items-center gap-2 text-sm font-black text-lime-300">{link}<ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></Link></div>; }
 
 function CalendarPage() {
-  const [calendarText, setCalendarText] = useState("");
   const months = ["Septiembre", "Octubre", "Noviembre", "Diciembre"] as const;
   const [activeMonth, setActiveMonth] = useState<(typeof months)[number]>("Septiembre");
+  const monthRaces = calendarRaces.filter(race => race.month === activeMonth);
+  const plural = monthRaces.length === 1 ? "carrera" : "carreras";
 
-  useEffect(() => {
-    fetch("/calendario-carreras-2026.txt").then(response => response.text()).then(text => setCalendarText(`Septiembre\n${text}`));
-  }, []);
-
-  const content = useMemo(() => {
-    const start = calendarText.indexOf(activeMonth);
-    const next = months.slice(months.indexOf(activeMonth) + 1).map(month => calendarText.indexOf(month, start + activeMonth.length)).find(index => index >= 0) ?? calendarText.length;
-    return start >= 0 ? calendarText.slice(start + activeMonth.length, next).replace(/(\d{2}\/\d{2}\s{2,}(?:Viernes|Sábado|Domingo|Lunes|Martes|Jueves))/g, "\n\n$1").trim() : "";
-  }, [activeMonth, calendarText]);
-
-  return <PublicShell><main className="mx-auto max-w-7xl px-5 py-14 lg:px-8"><div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-600">CALENDARIO 2026</p><h1 className="mt-3 text-5xl font-black tracking-[-.07em] text-zinc-950 sm:text-6xl">Carreras para<br />seguir corriendo.</h1><p className="mt-5 text-base leading-7 text-zinc-500">Agenda de carreras desde septiembre en adelante. Revisa la fecha, ciudad y distancias antes de inscribirte.</p></div><div className="mt-10 flex gap-2 overflow-x-auto border-y border-zinc-200 py-4">{months.map(month => <button key={month} onClick={() => setActiveMonth(month)} className={cn("whitespace-nowrap rounded-full px-4 py-2 text-sm font-bold transition", activeMonth === month ? "bg-zinc-950 text-white" : "bg-white text-zinc-600 hover:bg-zinc-100")}>{month}</button>)}</div><section className="mt-8 rounded-[2rem] border border-zinc-200 bg-white p-6 shadow-sm sm:p-8"><div className="flex items-center justify-between"><h2 className="text-2xl font-black tracking-tight text-zinc-950">{activeMonth} 2026</h2><span className="rounded-full bg-orange-50 px-3 py-1 text-xs font-bold text-orange-700">Calendario de carreras</span></div>{content ? <div className="mt-7 whitespace-pre-wrap text-sm leading-7 text-zinc-600">{content}</div> : <div className="mt-8 h-32 animate-pulse rounded-2xl bg-zinc-100" />}</section></main></PublicShell>;
+  return <PublicShell><main className="mx-auto max-w-7xl px-5 py-14 lg:px-8">
+    <div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-600">CALENDARIO 2026</p><h1 className="mt-3 text-5xl font-black tracking-[-.07em] text-zinc-950 sm:text-6xl">Calendario de carreras<br />para seguir corriendo.</h1><p className="mt-5 text-base leading-7 text-zinc-500">Encuentra cada carrera con su fecha, ciudad y distancias. Confirma siempre los detalles con la organización antes de inscribirte.</p></div>
+    <div className="mt-10 flex gap-2 overflow-x-auto border-y border-zinc-200 py-4">{months.map(month => <button key={month} onClick={() => setActiveMonth(month)} className={cn("whitespace-nowrap rounded-full px-4 py-2 text-sm font-bold transition", activeMonth === month ? "bg-zinc-950 text-white shadow-sm" : "bg-white text-zinc-600 hover:bg-zinc-100")}>{month}</button>)}</div>
+    <section className="mt-8"><div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end"><div><h2 className="text-3xl font-black tracking-[-.055em] text-zinc-950">{activeMonth} 2026</h2><p className="mt-2 text-sm font-medium text-zinc-500">{monthRaces.length} {plural} en el calendario.</p></div><span className="w-fit rounded-full bg-orange-50 px-3 py-1.5 text-xs font-bold text-orange-700">Agenda referencial</span></div>
+      <div className="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">{monthRaces.map((race, index) => <article key={`${race.month}-${race.day}-${race.name}`} className="group relative overflow-hidden rounded-[1.75rem] border border-zinc-200 bg-white p-5 shadow-[0_12px_36px_rgba(24,28,31,.06)] transition duration-300 hover:-translate-y-1 hover:border-orange-200 hover:shadow-[0_20px_48px_rgba(254,92,19,.12)] sm:p-6"><div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange-500 via-orange-400 to-amber-300 opacity-0 transition-opacity duration-300 group-hover:opacity-100" /><div className="flex items-start gap-4"><div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-zinc-950 text-center text-white"><span className="text-xl font-black leading-none">{String(race.day).padStart(2, "0")}</span><span className="mt-0.5 text-[9px] font-bold uppercase tracking-wide text-zinc-400">{race.weekday.slice(0, 3)}</span></div><div className="min-w-0 flex-1">{race.note && <span className="inline-flex rounded-full bg-orange-50 px-2 py-1 text-[10px] font-black uppercase tracking-wide text-orange-700">{race.note}</span>}<h3 className="mt-1.5 text-xl font-black leading-tight tracking-[-.035em] text-zinc-950">{race.name}</h3></div></div><p className="mt-5 border-t border-zinc-100 pt-4 text-sm leading-6 text-zinc-500">Una fecha para sumar kilómetros, comunidad y una nueva historia en la ruta.</p><dl className="mt-5 grid gap-3 text-sm"><div className="flex items-center gap-2 text-zinc-600"><MapPin className="h-4 w-4 shrink-0 text-orange-500" /><dd className="font-semibold">{race.city}</dd></div><div className="flex items-center gap-2 text-zinc-600"><CalendarDays className="h-4 w-4 shrink-0 text-orange-500" /><dd>{race.weekday}, {race.day} de {activeMonth.toLowerCase()}</dd></div><div className="flex items-start gap-2 text-zinc-600"><span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-orange-100 text-[9px] font-black text-orange-700">KM</span><dd className="font-semibold">{race.distances}</dd></div></dl></article>)}</div>
+    </section>
+  </main></PublicShell>;
 }
 
 function EventsPage() {
