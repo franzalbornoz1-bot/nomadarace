@@ -1,5 +1,5 @@
 export type CalendarRace = {
-  month: "Septiembre" | "Octubre" | "Noviembre" | "Diciembre";
+  month: "Agosto" | "Septiembre" | "Octubre" | "Noviembre" | "Diciembre";
   day: number;
   weekday: string;
   name: string;
@@ -12,6 +12,7 @@ const race = (month: CalendarRace["month"], day: number, weekday: string, name: 
 
 // Datos proporcionados por Nómada Race a partir del calendario 2026 de Corre.cl.
 export const calendarRaces: CalendarRace[] = [
+  race("Agosto", 30, "Domingo", "Media Maratón de Mujeres de Santiago", "Estadio Nacional Julio Martínez Prádanos, Ñuñoa, Chile", "Distancias por confirmar"),
   race("Septiembre", 11, "Viernes", "Pachamanka Ultra Trail", "Doñihue", "10, 25, 50 y 80 km"),
   race("Septiembre", 12, "Sábado", "Media Maratón Pucón–Caburgua", "Pucón", "5, 10 y 21 km"),
   race("Septiembre", 12, "Sábado", "Corrida Nocturna", "Tocopilla", "1.5 y 5 km"),

@@ -118,7 +118,7 @@ function PublicShell({ children }: { children: React.ReactNode }) { return <div 
 function HomePage() {
   const featuredRaces = calendarRaces.filter(race => race.month === "Septiembre").slice(0, 3);
   const pastRaces = calendarRaces.filter(race => {
-    const monthIndex = ["Septiembre", "Octubre", "Noviembre", "Diciembre"].indexOf(race.month) + 8;
+    const monthIndex = ["Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"].indexOf(race.month) + 7;
     return new Date(2026, monthIndex, race.day, 23, 59, 59) < new Date();
   }).slice(-3).reverse();
   return <PublicShell>
@@ -165,7 +165,7 @@ function PurchaseStep({ icon: Icon, number, title, copy }: { icon: LucideIcon; n
 function FeatureBlock({ icon: Icon, number, title, copy, link, href }: { icon: LucideIcon; number: string; title: string; copy: string; link: string; href: string }) { return <div className="group rounded-3xl border border-zinc-800 bg-zinc-900 p-7 transition hover:border-lime-300 sm:p-9"><div className="flex items-start justify-between"><span className="grid h-12 w-12 place-items-center rounded-2xl bg-lime-300 text-zinc-950"><Icon className="h-6 w-6" /></span><span className="text-sm font-black text-zinc-600">{number}</span></div><h3 className="mt-10 text-3xl font-black tracking-[-.06em]">{title}</h3><p className="mt-4 max-w-md leading-7 text-zinc-400">{copy}</p><Link href={href} className="mt-8 flex items-center gap-2 text-sm font-black text-lime-300">{link}<ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></Link></div>; }
 
 function CalendarPage() {
-  const months = ["Septiembre", "Octubre", "Noviembre", "Diciembre"] as const;
+  const months = ["Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"] as const;
   const [activeMonth, setActiveMonth] = useState<(typeof months)[number]>("Septiembre");
   const monthRaces = calendarRaces.filter(race => race.month === activeMonth);
   const plural = monthRaces.length === 1 ? "carrera" : "carreras";
