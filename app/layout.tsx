@@ -29,7 +29,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           root.style.colorScheme = theme;
         } catch (error) {}
       })();`}</Script>
-      <Script id="nomada-structured-data" type="application/ld+json" strategy="beforeInteractive">{JSON.stringify({ "@context": "https://schema.org", "@graph": [{ "@type": "Organization", name: "Nómada Race", url: "https://nomadarace.cl", logo: "https://nomadarace.cl/icon.png", email: "hola@nomadarace.cl", description: "Plataforma chilena para encontrar y comprar fotografías oficiales de carreras." }, { "@type": "WebSite", name: "Nómada Race", url: "https://nomadarace.cl", inLanguage: "es-CL" }] })}</Script>
+      <Script id="nomada-structured-data" type="application/ld+json" strategy="beforeInteractive">{JSON.stringify({ "@context": "https://schema.org", "@graph": [{ "@type": "Organization", name: "Nómada Race", url: "https://nomadarace.cl", logo: "https://nomadarace.cl/icon.png", email: "contacto@nomadafilms.cl", description: "Plataforma chilena para encontrar y comprar fotografías oficiales de carreras." }, { "@type": "WebSite", name: "Nómada Race", url: "https://nomadarace.cl", inLanguage: "es-CL" }] })}</Script>
     </head>
     <body>{children}</body>
   </html>;
