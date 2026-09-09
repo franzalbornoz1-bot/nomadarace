@@ -23,14 +23,15 @@ const PUBLIC_LINKS = [
 ] as const;
 
 function Logo({ inverse = false, small = false }: { inverse?: boolean; small?: boolean }) {
-  const size = small ? "w-36" : "w-36 sm:w-44";
+  const size = small ? "w-36" : "w-40 sm:w-44";
+  const imageClass = cn("h-10 object-cover object-center transition-opacity duration-300", size);
   if (inverse) return <Link href="/" className="inline-flex items-center" aria-label="Nómada Race, inicio">
-    <img src="/nomada-race-wordmark-night.png" alt="Nómada Race" className={cn("h-10 w-auto transition-opacity duration-300 hover:opacity-80", size)} />
+    <img src="/nomada-race-wordmark-night.png" alt="Nómada Race" className={cn(imageClass, "hover:opacity-80")} />
   </Link>;
 
   return <Link href="/" className="inline-flex items-center" aria-label="Nómada Race, inicio">
-    <img src="/nomada-race-wordmark-day.png" alt="Nómada Race" className={cn("h-10 w-auto dark:hidden transition-opacity duration-300 hover:opacity-75", size)} />
-    <img src="/nomada-race-wordmark-night.png" alt="Nómada Race" className={cn("hidden h-10 w-auto dark:block transition-opacity duration-300 hover:opacity-75", size)} />
+    <img src="/nomada-race-wordmark-day.png" alt="Nómada Race" className={cn(imageClass, "dark:hidden hover:opacity-75")} />
+    <img src="/nomada-race-wordmark-night.png" alt="Nómada Race" className={cn(imageClass, "hidden dark:block hover:opacity-75")} />
   </Link>;
 }
 
