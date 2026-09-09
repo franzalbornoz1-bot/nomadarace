@@ -23,8 +23,13 @@ const PUBLIC_LINKS = [
 ] as const;
 
 function Logo({ inverse = false, small = false }: { inverse?: boolean; small?: boolean }) {
+  if (inverse) return <Link href="/" className="inline-flex items-center" aria-label="Nómada Race, inicio">
+    <img src="/nomada-race-wordmark-dark.jpeg" alt="Nómada Race" className={cn("h-auto mix-blend-screen transition-opacity duration-300 hover:opacity-80", small ? "w-28" : "w-40 sm:w-48")} />
+  </Link>;
+
   return <Link href="/" className="inline-flex items-center" aria-label="Nómada Race, inicio">
-    <img src="/nomada-race-logo.svg" alt="Nómada Race" className={cn("h-auto transition-opacity duration-300 hover:opacity-75", small ? "w-24" : "w-28 sm:w-32", !inverse && "nomada-logo--adaptive brightness-0")} />
+    <img src="/nomada-race-mark-dark.png" alt="Nómada Race" className={cn("h-auto dark:hidden transition-opacity duration-300 hover:opacity-75", small ? "w-10" : "w-11 sm:w-12")} />
+    <img src="/nomada-race-mark-light.png" alt="Nómada Race" className={cn("hidden h-auto dark:block transition-opacity duration-300 hover:opacity-75", small ? "w-10" : "w-11 sm:w-12")} />
   </Link>;
 }
 

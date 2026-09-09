@@ -5,6 +5,10 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "NÓMADA RACE — Encuentra tu momento",
   description: "Encuentra y guarda los mejores momentos de tu carrera con Nómada Race.",
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
