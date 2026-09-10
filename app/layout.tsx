@@ -18,6 +18,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return <html lang="es" suppressHydrationWarning>
     <head>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link rel="preconnect" href="https://images.unsplash.com" />
       <Script id="nomada-theme" strategy="beforeInteractive">{`(function () {
         try {
           var match = document.cookie.match(/(?:^|; )nomada-theme=([^;]+)/);
