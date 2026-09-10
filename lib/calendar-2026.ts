@@ -8,6 +8,55 @@ export type CalendarRace = {
   note?: string;
 };
 
+const chooseDescription = (options: string[], seed: string) => {
+  const hash = [...seed].reduce((total, character) => total + character.charCodeAt(0), 0);
+  return options[hash % options.length];
+};
+
+/** Texto editorial contextual para que cada tarjeta explique el carácter de la carrera. */
+export function calendarRaceDescription(race: CalendarRace) {
+  const name = race.name.toLocaleLowerCase("es-CL");
+  const city = race.city;
+  const seed = `${race.name}-${city}`;
+
+  if (/familiar|family|kids|niños|inclusión|solidaria|cáncer|vida|mujer|nosotras|juntas/.test(name)) return chooseDescription([
+    `Una jornada para compartir el running, apoyar una causa y sumar recuerdos en ${city}.`,
+    `Ritmo, encuentro y comunidad: una invitación abierta a vivir la ruta junto a quienes más quieres en ${city}.`,
+    `Una carrera pensada para moverse en comunidad y convertir cada kilómetro en un momento compartido en ${city}.`,
+  ], seed);
+
+  if (/dog|can\b|mascota/.test(name)) return `Una salida para correr acompañado: comparte la energía de la ruta con tu mascota en ${city}.`;
+
+  if (/color|carnaval/.test(name)) return `Una experiencia para correr sin solemnidad: color, movimiento y energía colectiva en ${city}.`;
+
+  if (/obstáculo|ocr|titan|columpio/.test(name)) return `Más que kilómetros: una prueba de agilidad, fuerza y determinación para enfrentar en ${city}.`;
+
+  if (/trail|ultra|sky race|sky\b|vertical|montañas|cumbres|volcan|volcán|cordillera|travesía|andes|canteras|lagunas|parque met/.test(name)) return chooseDescription([
+    `Senderos y desnivel para conectar con el entorno y medir tu ritmo en los cerros de ${city}.`,
+    `Una aventura de trail para leer el terreno, cuidar la energía y disfrutar cada subida en ${city}.`,
+    `Roca, sendero y paisaje: una ruta para quienes buscan salir del asfalto alrededor de ${city}.`,
+  ], seed);
+
+  if (/cross country|cross del/.test(name)) return chooseDescription([
+    `Terreno variable y ritmo sostenido: una fecha para poner a prueba tu técnica de cross country en ${city}.`,
+    `Una jornada de campo traviesa para correr con control, adaptarte al suelo y competir en ${city}.`,
+  ], seed);
+
+  if (/maratón|marathon|21k|half/.test(name)) return chooseDescription([
+    `Una distancia para dosificar el esfuerzo, encontrar tu ritmo y disfrutar el desafío que propone ${city}.`,
+    `Preparación, constancia y estrategia se encuentran en una ruta pensada para celebrar cada kilómetro en ${city}.`,
+    `Un desafío de fondo para correr con paciencia, confianza y una meta clara en ${city}.`,
+  ], seed);
+
+  if (/nocturna|night/.test(name)) return `Cuando baja la luz, cambia la energía: una ruta urbana para vivir ${city} a otro ritmo.`;
+
+  return chooseDescription([
+    `Una ruta para conocer ${city} desde las zapatillas, compartir la energía del running y sumar kilómetros.`,
+    `Ritmo, comunidad y una nueva meta: una fecha para disfrutar la ciudad de ${city} corriendo.`,
+    `Una invitación a moverte, sentir el pulso de ${city} y celebrar cada tramo de la carrera.`,
+  ], seed);
+}
+
 const race = (month: CalendarRace["month"], day: number, weekday: string, name: string, city: string, distances: string, note?: string): CalendarRace => ({ month, day, weekday, name, city, distances, note });
 
 // Datos proporcionados por Nómada Race a partir del calendario 2026 de Corre.cl.
