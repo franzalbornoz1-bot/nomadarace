@@ -296,6 +296,73 @@ function AdminClients() { return <PortalShell kind="admin"><PortalHeading title=
 function AdminSettings() { return <PortalShell kind="admin"><PortalHeading title="Configuración" copy="Personaliza los parámetros generales de la operación." /><div className="max-w-3xl space-y-5"><SettingsSection title="Empresa" copy="Información visible en comunicaciones y comprobantes." fields={[["Nombre comercial", "Nómada Race"], ["Email de contacto", CONTACT_EMAIL]]} /><SettingsSection title="Notificaciones" copy="Preferencias de alertas internas." fields={[["Ventas nuevas", "Recibir resumen diario"], ["Procesamiento completado", "Notificar al fotógrafo"]]} toggles /><SettingsSection title="Integraciones" copy="Conexiones que se activarán en una próxima etapa." fields={[["Pagos", "Próximamente"], ["Almacenamiento", "Próximamente"]]} /></div></PortalShell>; }
 function SettingsSection({ title, copy, fields, toggles }: { title: string; copy: string; fields: string[][]; toggles?: boolean }) { return <section className="rounded-2xl border border-zinc-200 bg-white p-6"><p className="font-black">{title}</p><p className="mt-1 text-sm text-zinc-500">{copy}</p><div className="mt-6 divide-y divide-zinc-100">{fields.map(([label, value]) => <div key={label} className="flex items-center justify-between gap-4 py-4 first:pt-0 last:pb-0"><div><p className="text-sm font-bold">{label}</p><p className="mt-1 text-xs text-zinc-500">{value}</p></div>{toggles ? <button className="h-6 w-11 rounded-full bg-lime-300 p-1"><span className="block ml-auto h-4 w-4 rounded-full bg-white" /></button> : <button className="text-xs font-black text-orange-600">Configurar</button>}</div>)}</div></section>; }
 
+type Guide = {
+  slug: string;
+  category: string;
+  title: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+  readTime: string;
+  sections: { title: string; copy: string; tipTitle?: string; tip?: string }[];
+  sources: readonly [string, string][];
+};
+
+const guides: Guide[] = [
+  {
+    slug: "primeros-10k", category: "Guía para principiantes", title: "Tips previos a tu primer 10K", readTime: "8 min de lectura",
+    description: "Un plan simple para llegar con calma a la línea de partida: ritmo, descanso, hidratación y lo que realmente necesitas para disfrutar la experiencia.",
+    image: "https://images.unsplash.com/photo-1567856539622-15401a9e8317?auto=format&fit=crop&w=2000&q=90", imageAlt: "Corredor preparando su primer 10K al amanecer",
+    sections: [
+      { title: "Construye confianza, no kilómetros de golpe", copy: "Alternar caminata y trote es una estrategia inteligente si estás empezando. Prioriza sesiones separadas por descanso y aumenta la carga gradualmente; el cuerpo necesita tiempo para adaptarse al impacto de correr.", tipTitle: "La señal de un buen ritmo", tip: "Durante la mayor parte del trote deberías poder decir una frase corta. Si no puedes hablar, baja el ritmo o intercala caminata." },
+      { title: "La semana previa: menos es más", copy: "No intentes recuperar entrenamientos a última hora. Prioriza sueño, comidas conocidas y trotes suaves. Llegar descansado vale más que sumar una sesión intensa sin tiempo para asimilarla." },
+      { title: "Prepara lo esencial la noche anterior", copy: "Deja lista tu ropa, zapatillas que ya usaste, dorsal si corresponde y agua. No estrenes zapatillas, calcetines ni alimentos el día de la carrera: lo conocido reduce sorpresas." },
+      { title: "Parte más lento de lo que crees", copy: "Los primeros kilómetros deberían sentirse controlados. Guarda energía para la segunda mitad, hidrátate según lo necesites y detente si aparece dolor agudo, mareo o un malestar que empeora." },
+    ],
+    sources: [["NHS: Couch to 5K running plan", "https://www.nhs.uk/better-health/get-active/get-running-with-couch-to-5k/couch-to-5k-running-plan/"], ["American Heart Association: Warm Up, Cool Down", "https://www.heart.org/en/healthy-living/exercise-and-physical-activity/fitness-basics/warm-up-cool-down"]],
+  },
+  {
+    slug: "como-correr-mas-rapido", category: "Entrenamiento", title: "Cómo correr más rápido sin quemarte en el intento", readTime: "7 min de lectura",
+    description: "Una guía práctica para sumar cambios de ritmo, recuperar mejor y construir velocidad de forma gradual en tus carreras.",
+    image: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=2000&q=90", imageAlt: "Corredor entrenando velocidad en una pista al atardecer",
+    sections: [
+      { title: "Primero crea una base que puedas repetir", copy: "La velocidad se sostiene sobre semanas consistentes, no sobre un entrenamiento heroico. Mantén la mayoría de tus salidas a un esfuerzo cómodo y reserva los estímulos intensos para cuando ya recuperas bien entre sesiones.", tipTitle: "Habla antes de acelerar", tip: "Si tu trote fácil ya te deja sin aire, todavía no es el momento de añadir series. Baja el ritmo y prioriza regularidad." },
+      { title: "Usa cambios de ritmo cortos", copy: "Una opción accesible es incluir tramos breves algo más rápidos dentro de una salida fácil, con recuperación caminando o trotando suave. El objetivo es terminar con buena técnica, no vaciarte en la primera repetición." },
+      { title: "Calienta y vuelve a la calma", copy: "Antes de acelerar, camina o trota suave varios minutos y mueve articulaciones de manera dinámica. Al terminar, baja el ritmo de forma gradual. Preparar y cerrar la sesión ayuda a que el cambio de intensidad sea más tolerable." },
+      { title: "Mide progreso con paciencia", copy: "Compara sensaciones y constancia, no solo el reloj. Si aparece dolor persistente, fatiga inusual o deterioro de la técnica, reduce la carga y considera la evaluación de un profesional." },
+    ],
+    sources: [["American Heart Association: Warm Up, Cool Down", "https://www.heart.org/en/healthy-living/exercise-and-physical-activity/fitness-basics/warm-up-cool-down"], ["ACSM: Healthy Habits for Distance Running", "https://acsm.org/distance-running-form-tips/"]],
+  },
+  {
+    slug: "ejercicios-fuerza-corredores", category: "Fuerza para running", title: "Ejercicios de fuerza que complementan tu carrera", readTime: "7 min de lectura",
+    description: "Sentadillas, bisagra de cadera, pantorrillas y estabilidad: una rutina simple para complementar tus kilómetros con fuerza útil.",
+    image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=2000&q=90", imageAlt: "Persona realizando un ejercicio de fuerza en un gimnasio luminoso",
+    sections: [
+      { title: "La fuerza es un complemento, no un castigo", copy: "Entrenar fuerza ayuda a desarrollar capacidad muscular y a tolerar mejor el volumen de actividad. Para corredores recreativos, una rutina simple y repetible suele aportar más que perseguir ejercicios complejos.", tipTitle: "Empieza con poco", tip: "Dos sesiones semanales bien espaciadas son un buen punto de partida. Deja repeticiones en reserva y aprende el movimiento antes de aumentar la carga." },
+      { title: "Trabaja los patrones que usas al correr", copy: "Incluye una sentadilla o zancada, una bisagra de cadera como peso muerto ligero, elevaciones de pantorrilla y un ejercicio de empuje o tracción. Añade estabilidad con planchas o trabajo unilateral si lo toleras bien." },
+      { title: "Cuida la técnica y la recuperación", copy: "La carga adecuada te permite controlar el movimiento y terminar sin dolor articular. Evita estrenar una sesión pesada antes de una carrera o del día de series; ubícala lejos de los entrenamientos exigentes al comenzar." },
+      { title: "Busca ayuda si la necesitas", copy: "Dolor agudo, una lesión reciente o una condición médica cambian el plan. Un kinesiólogo, médico o profesional de ejercicio puede adaptar la selección de ejercicios a tu caso." },
+    ],
+    sources: [["ACSM: Resistance Training and Injury Prevention", "https://www.acsm.org/docs/default-source/files-for-resource-library/smb-resistance-training-and-injury-prevention.pdf"], ["American Heart Association: Exercise and Physical Activity", "https://www.heart.org/en/healthy-living/exercise-and-physical-activity/"]],
+  },
+  {
+    slug: "alimentacion-para-corredores", category: "Nutrición deportiva", title: "Alimentación para corredores: cómo acompañar tus entrenamientos", readTime: "8 min de lectura",
+    description: "Ideas simples para planificar comida, hidratación y recuperación alrededor de tus entrenamientos sin seguir fórmulas rígidas.",
+    image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=2000&q=90", imageAlt: "Comida equilibrada con vegetales, cereales y proteínas para apoyar el entrenamiento",
+    sections: [
+      { title: "No copies la dieta de otro corredor", copy: "La cantidad y el momento de comer dependen de la duración, la intensidad, el clima, horarios y tolerancia individual. Empieza observando qué comidas conocidas te sientan bien antes y después de entrenar.", tipTitle: "Prueba durante el entrenamiento", tip: "Nunca estrenes geles, bebidas o una comida distinta el día de una carrera. Ensáyalos primero en una salida fácil." },
+      { title: "Antes de correr, prioriza lo tolerable", copy: "La Academy of Nutrition and Dietetics sugiere que muchas personas se sienten mejor al comer con antelación, ajustando el tiempo según tolerancia. Una combinación simple de carbohidrato y algo de proteína puede ser práctica, sin necesidad de complicarla." },
+      { title: "Después, vuelve a comer e hidratarte", copy: "Tras una sesión, retoma una comida o colación que combine alimentos habituales y líquidos. La recuperación no depende de un producto específico: importa la alimentación diaria, el descanso y reponer lo que gastaste de una forma que te resulte sostenible." },
+      { title: "Hidratación: escucha el contexto", copy: "El calor, la duración y cuánto sudas cambian lo que necesitas. Bebe de acuerdo con sed y condiciones; en entrenamientos largos o con mucho calor puede ser útil recibir asesoría individual, especialmente si tienes una condición médica." },
+    ],
+    sources: [["Academy of Nutrition and Dietetics: Timing Your Pre- and Post-Workout Nutrition", "https://www.eatright.org/fitness/physical-activity/exercise-nutrition/timing-your-pre-and-post-workout-nutrition"], ["Academy of Nutrition and Dietetics: How Much Water Do You Need?", "https://www.eatright.org/health/essential-nutrients/water/how-much-water-do-you-need"]],
+  },
+];
+
+function BlogHub() { return <PublicShell><main><section className="border-b border-zinc-200 bg-[#f2f6e7]"><div className="mx-auto max-w-7xl px-5 py-16 sm:py-20 lg:px-8"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-600">BLOG NÓMADA RACE</p><h1 className="mt-3 max-w-3xl text-5xl font-black leading-[.92] tracking-[-.075em] text-zinc-950 sm:text-7xl">Corre con más información.</h1><p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-600">Guías claras para entrenar, recuperarte y disfrutar mejor cada kilómetro. Información general: adapta siempre el plan a tu salud y experiencia.</p></div></section><section className="mx-auto max-w-7xl px-5 py-14 sm:py-16 lg:px-8"><div className="grid gap-5 md:grid-cols-2">{guides.map((guide, index) => <Link key={guide.slug} href={`/blog/${guide.slug}`} className={cn("group overflow-hidden rounded-[2rem] border border-zinc-200 bg-white shadow-[0_16px_44px_rgba(24,28,31,.08)] transition duration-300 hover:-translate-y-1 hover:border-orange-200", index === 0 && "md:col-span-2 md:grid md:grid-cols-2")}><div className="relative aspect-[16/10] overflow-hidden"><img src={guide.image} alt={guide.imageAlt} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" /></div><div className="p-6 sm:p-8"><p className="text-xs font-black uppercase tracking-[.16em] text-orange-600">{guide.category} · {guide.readTime}</p><h2 className="mt-4 text-3xl font-black leading-[.96] tracking-[-.06em] text-zinc-950">{guide.title}</h2><p className="mt-4 leading-7 text-zinc-600">{guide.description}</p><span className="mt-6 flex items-center gap-2 text-sm font-black text-zinc-950 group-hover:text-orange-600">Leer artículo <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></div></Link>)}</div></section></main></PublicShell>; }
+
+function GuideArticle({ guide }: { guide: Guide }) { const current = guides.findIndex(item => item.slug === guide.slug); const recommendations = [guides[(current + 1) % guides.length], guides[(current + 2) % guides.length]]; return <PublicShell><article><header className="relative isolate overflow-hidden bg-zinc-950 text-white"><img src={guide.image} alt={guide.imageAlt} className="absolute inset-0 h-full w-full object-cover opacity-35" /><div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/85 to-zinc-950/30" /><div className="relative mx-auto max-w-5xl px-5 py-16 sm:py-28 lg:px-8"><Link href="/blog" className="text-sm font-bold text-zinc-300 hover:text-white">← Volver al blog</Link><p className="mt-10 text-xs font-black uppercase tracking-[.2em] text-orange-300">{guide.category} · {guide.readTime}</p><h1 className="mt-5 max-w-4xl text-5xl font-black leading-[.9] tracking-[-.08em] sm:text-7xl">{guide.title}</h1><p className="mt-7 max-w-2xl text-lg leading-8 text-zinc-200">{guide.description}</p><p className="mt-8 text-sm font-semibold text-zinc-400">Nómada Race · 9 de septiembre de 2026</p></div></header><div className="mx-auto max-w-5xl px-5 py-14 sm:py-16 lg:px-8"><div className="max-w-3xl text-[1.0625rem] leading-8 text-zinc-700"><p className="text-xl leading-8 text-zinc-600">Esta guía entrega orientación general para corredores recreativos. Ajusta la carga según tu experiencia y pide apoyo profesional si tienes dolor persistente, una lesión o una condición de salud.</p>{guide.sections.map((section, index) => <section key={section.title} className="mt-12"><h2 className="text-3xl font-black tracking-[-.055em] text-zinc-950">{index + 1}. {section.title}</h2><p className="mt-4">{section.copy}</p>{section.tip && <div className="mt-7 rounded-3xl border border-orange-100 bg-orange-50 p-6"><h3 className="text-lg font-black text-zinc-950">{section.tipTitle}</h3><p className="mt-2 text-base leading-7 text-zinc-600">{section.tip}</p></div>}</section>)}<section className="mt-12 rounded-[1.75rem] bg-zinc-950 p-7 text-white"><h2 className="text-2xl font-black tracking-[-.05em]">La constancia gana a la perfección.</h2><p className="mt-3 leading-7 text-zinc-300">El mejor plan es el que puedes sostener. Avanza de forma gradual y consulta a un profesional de salud, nutrición o movimiento cuando necesites una recomendación personal.</p></section><section className="mt-12 border-t border-zinc-200 pt-10"><h2 className="text-2xl font-black tracking-[-.05em] text-zinc-950">Fuentes para seguir aprendiendo</h2><ul className="mt-5 grid gap-3 text-sm leading-6 text-zinc-600">{guide.sources.map(([label, href]) => <li key={href}><a className="font-bold text-orange-600 hover:underline" href={href} target="_blank" rel="noreferrer">{label}</a></li>)}</ul></section></div></div><section className="border-t border-zinc-200 bg-white"><div className="mx-auto max-w-5xl px-5 py-14 lg:px-8"><p className="text-xs font-black uppercase tracking-[.18em] text-orange-600">SIGUE LEYENDO</p><h2 className="mt-3 text-3xl font-black tracking-[-.06em] text-zinc-950">Artículos que te pueden servir después.</h2><div className="mt-7 grid gap-5 md:grid-cols-2">{recommendations.map(item => <Link key={item.slug} href={`/blog/${item.slug}`} className="group rounded-[1.75rem] border border-zinc-200 bg-[#f7f8fa] p-6 transition hover:-translate-y-1 hover:border-orange-200"><p className="text-xs font-black uppercase tracking-[.15em] text-orange-600">{item.category}</p><h3 className="mt-3 text-2xl font-black leading-tight text-zinc-950">{item.title}</h3><p className="mt-3 text-sm leading-6 text-zinc-600">{item.description}</p><span className="mt-5 flex items-center gap-2 text-sm font-black text-zinc-950 group-hover:text-orange-600">Leer siguiente <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></Link>)}</div></div></section></article></PublicShell>; }
+
 export function NomadaApp() {
   const path = usePathname();
   if (path === "/demo") return <DemoPage />;
@@ -322,8 +389,9 @@ export function NomadaApp() {
   if (path === "/organizadores") return <PublicInfoPage kind="organizadores" />;
   if (path === "/fotografos") return <PublicInfoPage kind="fotografos" />;
   if (path === "/preguntas-frecuentes") return <PublicInfoPage kind="faq" />;
-  if (path === "/blog/primeros-10k") return <TenKArticle />;
-  if (path === "/blog") return <PublicInfoPage kind="blog" />;
+  const guide = guides.find(item => path === `/blog/${item.slug}`);
+  if (guide) return <GuideArticle guide={guide} />;
+  if (path === "/blog") return <BlogHub />;
   if (path === "/contacto") return <PublicInfoPage kind="contacto" />;
   return <HomePage />;
 }
