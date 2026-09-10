@@ -127,7 +127,7 @@ function PublicShell({ children }: { children: React.ReactNode }) { return <div 
 function HomePage() {
   const featuredRaces = calendarRaces.filter(race => race.month === "Septiembre").slice(0, 3);
   const racePhotoLinks: Record<string, string> = {
-    "Media Maratón de Mujeres de Santiago": "https://nomadarace.fotop.com.br/fotos/eventos/?evento=330033",
+    "Media Maratón de Mujeres de Santiago": PHOTO_STORE_URL,
   };
   const pastRaces = calendarRaces.filter(race => {
     const monthIndex = ["Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"].indexOf(race.month) + 7;
