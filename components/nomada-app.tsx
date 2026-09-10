@@ -26,8 +26,8 @@ const PUBLIC_LINKS = [
 ] as const;
 
 function Logo({ inverse = false, small = false }: { inverse?: boolean; small?: boolean }) {
-  const size = small ? "w-36" : "w-40 sm:w-44";
-  const imageClass = cn("h-10 object-cover object-center transition-opacity duration-300", size);
+  const size = small ? "w-32 sm:w-36" : "w-32 sm:w-44";
+  const imageClass = cn("h-8 sm:h-10 object-cover object-center transition-opacity duration-300", size);
   if (inverse) return <Link href="/" className="inline-flex items-center" aria-label="Nómada Race, inicio">
     <img src="/nomada-race-wordmark-night.png" alt="Nómada Race" className={cn(imageClass, "hover:opacity-80")} />
   </Link>;
@@ -97,13 +97,13 @@ function EventCard({ event, priority = false }: { event: RaceEvent; priority?: b
 function PublicHeader() {
   const [open, setOpen] = useState(false);
   return <header className="premium-nav sticky top-0 z-40 border-b">
-    <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-5 lg:px-8">
+    <div className="mx-auto flex h-[4.25rem] max-w-7xl items-center justify-between px-4 sm:h-[4.5rem] sm:px-5 lg:px-8">
       <Logo />
       <nav className="hidden items-center gap-7 lg:flex">{PUBLIC_LINKS.map(([label, href]) => <Link key={href} href={href} className={cn("text-sm font-semibold transition-colors duration-200 hover:text-brand-neon", label === "Comprar fotos" ? "text-brand-carbon" : "text-zinc-500")}>{label}</Link>)}</nav>
       <div className="hidden items-center gap-4 lg:flex"><ThemeToggle /></div>
-      <div className="flex items-center gap-2 lg:hidden"><ThemeToggle compact /><button onClick={() => setOpen(!open)} className="grid h-10 w-10 place-items-center rounded-full border border-zinc-200 bg-white/70 shadow-sm transition hover:border-brand-neon hover:shadow-md" aria-label="Abrir menú">{open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</button></div>
+      <div className="flex items-center gap-2 lg:hidden"><ThemeToggle compact /><button onClick={() => setOpen(!open)} aria-expanded={open} className="grid h-10 w-10 place-items-center rounded-full border border-zinc-200 bg-white/70 shadow-sm transition hover:border-brand-neon hover:shadow-md" aria-label={open ? "Cerrar menú" : "Abrir menú"}>{open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</button></div>
     </div>
-    {open && <div className="border-t border-white/70 bg-white/84 px-5 py-5 backdrop-blur-xl lg:hidden"><nav className="grid gap-4">{PUBLIC_LINKS.map(([label, href]) => <Link onClick={() => setOpen(false)} key={href} href={href} className="font-semibold text-zinc-700 transition hover:text-brand-neon">{label}</Link>)}</nav></div>}
+    {open && <div className="border-t border-white/70 bg-white/84 px-5 py-5 shadow-lg backdrop-blur-xl lg:hidden"><nav className="grid gap-2">{PUBLIC_LINKS.map(([label, href]) => <Link onClick={() => setOpen(false)} key={href} href={href} className="rounded-xl px-3 py-3 font-semibold text-zinc-700 transition hover:bg-orange-50 hover:text-brand-neon">{label}</Link>)}</nav></div>}
   </header>;
 }
 
@@ -128,7 +128,7 @@ function HomePage() {
   }).slice(-3).reverse();
   return <PublicShell>
     <main>
-      <section className="home-hero relative isolate min-h-[640px] overflow-hidden bg-[#F7F8FC]">
+      <section className="home-hero relative isolate min-h-[35rem] overflow-hidden bg-[#F7F8FC] sm:min-h-[40rem]">
         <div className="home-hero-wash pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,.98)_0%,_rgba(255,255,255,.84)_37%,_rgba(247,248,252,.42)_70%)]" />
         <div className="pointer-events-none absolute left-1/2 top-[18%] h-72 w-72 -translate-x-1/2 rounded-full bg-brand-neon/10 blur-[100px]" />
         <HeroBackdropPhoto src={photoCards[4].src} className="-left-9 top-20 h-32 w-24 sm:left-4 sm:h-36 sm:w-28 lg:left-9 lg:h-44 lg:w-32" />
@@ -138,11 +138,11 @@ function HomePage() {
         <HeroBackdropPhoto src={photoCards[1].src} className="right-5 top-14 hidden h-36 w-28 sm:block lg:right-10 lg:h-44 lg:w-32" />
         <HeroBackdropPhoto src={photoCards[6].src} className="right-[12%] top-44 hidden h-28 w-32 md:block lg:right-[15%] lg:h-36 lg:w-40" />
         <HeroBackdropPhoto src={photoCards[3].src} className="bottom-8 -right-12 hidden h-40 w-52 sm:block lg:bottom-14 lg:right-6 lg:h-48 lg:w-60" />
-        <div className="relative mx-auto grid min-h-[640px] max-w-4xl place-items-center px-5 py-20 text-center">
+        <div className="relative mx-auto grid min-h-[35rem] max-w-4xl place-items-center px-5 py-14 text-center sm:min-h-[40rem] sm:py-20">
           <div className="animate-reveal w-full">
-            <h1 className="text-5xl font-black leading-[.9] tracking-[-.08em] text-brand-carbon sm:text-7xl lg:text-8xl">TU FOTO YA<br />ESTÁ LISTA.<br /><span className="text-brand-neon">BÚSCALA AQUÍ.</span></h1>
-            <p className="mx-auto mt-7 max-w-xl text-base leading-7 text-zinc-600 sm:text-lg">Elige tus momentos favoritos y llévalos en alta resolución.</p>
-            <Link href={PHOTO_STORE_URL} className="mt-8 inline-flex"><Button className="h-12 px-6 text-sm">Buscar y comprar <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
+            <h1 className="text-[2.65rem] font-black leading-[.9] tracking-[-.08em] text-brand-carbon sm:text-7xl lg:text-8xl">TU FOTO YA<br />ESTÁ LISTA.<br /><span className="text-brand-neon">BÚSCALA AQUÍ.</span></h1>
+            <p className="mx-auto mt-6 max-w-xl text-base leading-7 text-zinc-600 sm:mt-7 sm:text-lg">Elige tus momentos favoritos y llévalos en alta resolución.</p>
+            <Link href={PHOTO_STORE_URL} className="mt-7 inline-flex sm:mt-8"><Button className="h-12 px-6 text-sm">Buscar y comprar <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
           </div>
         </div>
       </section>
