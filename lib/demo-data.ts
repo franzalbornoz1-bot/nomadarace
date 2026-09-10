@@ -53,14 +53,14 @@ export const photographers = [
 ];
 
 const photoImages = [
-  "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=700&q=80",
-  "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=700&q=80",
-  "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=700&q=80",
-  "https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=700&q=80",
-  "https://images.unsplash.com/photo-1502904550040-7534597429ae?auto=format&fit=crop&w=700&q=80",
-  "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=700&q=80",
-  "https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=700&q=80",
-  "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=700&q=80",
+  "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=480&q=65",
+  "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=480&q=65",
+  "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=480&q=65",
+  "https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=480&q=65",
+  "https://images.unsplash.com/photo-1502904550040-7534597429ae?auto=format&fit=crop&w=480&q=65",
+  "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=480&q=65",
+  "https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=480&q=65",
+  "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=480&q=65",
 ];
 
 export const photoCards = Array.from({ length: 50 }, (_, index) => ({
