@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 import { clients, events, orders, photoCards, photographers, type EventStatus, type RaceEvent } from "@/lib/demo-data";
 import { calendarRaces } from "@/lib/calendar-2026";
 
-const PHOTO_STORE_URL = "https://fotos.nomadarace.cl";
+const PHOTO_STORE_URL = "https://misfotos.nomadarace.cl";
 const CONTACT_EMAIL = "contacto@nomadafilms.cl";
 const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
 
