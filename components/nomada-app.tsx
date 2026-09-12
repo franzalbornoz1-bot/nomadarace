@@ -129,7 +129,7 @@ function HomePage() {
   // Esta lista se habilita manualmente cuando el álbum de un evento está listo.
   // Así, el bloque “Revive la carrera” no se llena solo con carreras que ya pasaron.
   const racePhotoLinks: Record<string, string> = {
-    "Media Maratón de Mujeres de Santiago": PHOTO_STORE_URL,
+    "Media Maratón de Mujeres de Santiago": "https://misfotos.nomadarace.cl/fotos/eventos?evento=330033",
     "Corrida Glorias del Ejército": "http://fotop.com/fotos/eventos?evento=332429",
   };
   const pastRaces = calendarRaces.filter(race => {
