@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { NomadaApp } from "@/components/nomada-app";
+import { getBlogPublicationDate } from "@/lib/blog-publication";
 
 const title = "Cómo correr más rápido sin quemarte en el intento";
 const description = "Consejos para corredores: cambios de ritmo, recuperación, calentamiento y progresión gradual para correr más rápido con seguridad.";
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function FasterRunningPage() {
-  const article = { "@context": "https://schema.org", "@type": "Article", headline: title, description, image, datePublished: "2026-09-09", dateModified: "2026-09-09", inLanguage: "es-CL", author: { "@type": "Organization", name: "Nómada Race", url: "https://nomadarace.cl" }, publisher: { "@type": "Organization", name: "Nómada Race", logo: { "@type": "ImageObject", url: "https://nomadarace.cl/icon.png" } }, mainEntityOfPage: "https://nomadarace.cl/blog/como-correr-mas-rapido" };
+  const publicationDate = getBlogPublicationDate("como-correr-mas-rapido");
+  const article = { "@context": "https://schema.org", "@type": "Article", headline: title, description, image, datePublished: publicationDate.iso, dateModified: publicationDate.iso, inLanguage: "es-CL", author: { "@type": "Organization", name: "Nómada Race", url: "https://nomadarace.cl" }, publisher: { "@type": "Organization", name: "Nómada Race", logo: { "@type": "ImageObject", url: "https://nomadarace.cl/icon.png" } }, mainEntityOfPage: "https://nomadarace.cl/blog/como-correr-mas-rapido" };
   return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(article) }} /><NomadaApp /></>;
 }

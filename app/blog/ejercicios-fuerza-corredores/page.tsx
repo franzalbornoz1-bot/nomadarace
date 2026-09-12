@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { NomadaApp } from "@/components/nomada-app";
+import { getBlogPublicationDate } from "@/lib/blog-publication";
 
 const title = "Ejercicios de fuerza que complementan tu carrera";
 const description = "Rutina de fuerza para corredores con movimientos básicos, estabilidad y recomendaciones para complementar el running de forma gradual.";
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function StrengthForRunnersPage() {
-  const article = { "@context": "https://schema.org", "@type": "Article", headline: title, description, image, datePublished: "2026-09-09", dateModified: "2026-09-09", inLanguage: "es-CL", author: { "@type": "Organization", name: "Nómada Race", url: "https://nomadarace.cl" }, publisher: { "@type": "Organization", name: "Nómada Race", logo: { "@type": "ImageObject", url: "https://nomadarace.cl/icon.png" } }, mainEntityOfPage: "https://nomadarace.cl/blog/ejercicios-fuerza-corredores" };
+  const publicationDate = getBlogPublicationDate("ejercicios-fuerza-corredores");
+  const article = { "@context": "https://schema.org", "@type": "Article", headline: title, description, image, datePublished: publicationDate.iso, dateModified: publicationDate.iso, inLanguage: "es-CL", author: { "@type": "Organization", name: "Nómada Race", url: "https://nomadarace.cl" }, publisher: { "@type": "Organization", name: "Nómada Race", logo: { "@type": "ImageObject", url: "https://nomadarace.cl/icon.png" } }, mainEntityOfPage: "https://nomadarace.cl/blog/ejercicios-fuerza-corredores" };
   return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(article) }} /><NomadaApp /></>;
 }

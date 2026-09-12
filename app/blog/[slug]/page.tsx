@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { NomadaApp } from "@/components/nomada-app";
+import { getBlogPublicationDate } from "@/lib/blog-publication";
 
 const articles = {
   "plan-para-correr-5k": { title: "Plan simple para correr tus primeros 5K", description: "Guía para empezar a correr 5K con trote, caminata, descanso y una progresión realista.", image: "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=2000&q=90", alt: "Corredor avanzando por un parque durante un entrenamiento suave" },
@@ -41,6 +42,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
   const article = articles[slug as ArticleSlug];
   if (!article) notFound();
   const url = `https://nomadarace.cl/blog/${slug}`;
-  const schema = { "@context": "https://schema.org", "@type": "Article", headline: article.title, description: article.description, image: article.image, datePublished: "2026-09-09", dateModified: "2026-09-09", inLanguage: "es-CL", author: { "@type": "Organization", name: "Nómada Race", url: "https://nomadarace.cl" }, publisher: { "@type": "Organization", name: "Nómada Race", logo: { "@type": "ImageObject", url: "https://nomadarace.cl/icon.png" } }, mainEntityOfPage: url };
+  const publicationDate = getBlogPublicationDate(slug);
+  const schema = { "@context": "https://schema.org", "@type": "Article", headline: article.title, description: article.description, image: article.image, datePublished: publicationDate.iso, dateModified: publicationDate.iso, inLanguage: "es-CL", author: { "@type": "Organization", name: "Nómada Race", url: "https://nomadarace.cl" }, publisher: { "@type": "Organization", name: "Nómada Race", logo: { "@type": "ImageObject", url: "https://nomadarace.cl/icon.png" } }, mainEntityOfPage: url };
   return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} /><NomadaApp /></>;
 }
