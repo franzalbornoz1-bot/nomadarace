@@ -130,6 +130,7 @@ function HomePage() {
   // Así, el bloque “Revive la carrera” no se llena solo con carreras que ya pasaron.
   const racePhotoLinks: Record<string, string> = {
     "Media Maratón de Mujeres de Santiago": PHOTO_STORE_URL,
+    "Corrida Glorias del Ejército": "http://fotop.com/fotos/eventos?evento=332429",
   };
   const pastRaces = calendarRaces.filter(race => {
     const monthIndex = ["Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"].indexOf(race.month) + 7;
