@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Archivo } from "next/font/google";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -47,6 +48,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       })();`}</Script>
       <Script id="nomada-structured-data" type="application/ld+json" strategy="beforeInteractive">{JSON.stringify({ "@context": "https://schema.org", "@graph": [{ "@type": "Organization", "@id": "https://nomadarace.cl/#organization", name: "Nómada Race", alternateName: "Nomada Race", url: "https://nomadarace.cl", logo: { "@type": "ImageObject", url: "https://nomadarace.cl/icon.png", width: 144, height: 144 }, email: "contacto@nomadafilms.cl", areaServed: { "@type": "Country", name: "Chile" }, sameAs: ["https://www.instagram.com/nomadarace.cl/", "https://www.facebook.com/nomadarace.cl"], description: "Nómada Race es una plataforma chilena para encontrar y comprar fotos profesionales de carreras." }, { "@type": "WebSite", "@id": "https://nomadarace.cl/#website", name: "Nómada Race", alternateName: "Nomada Race", url: "https://nomadarace.cl", inLanguage: "es-CL", publisher: { "@id": "https://nomadarace.cl/#organization" } }] })}</Script>
     </head>
-    <body>{children}<Analytics /></body>
+    <body>{children}<Analytics /><SpeedInsights /></body>
   </html>;
 }
