@@ -20,6 +20,34 @@ import { calendarRaceDescription, calendarRaces, type CalendarRace } from "@/lib
 const PHOTO_STORE_URL = "https://misfotos.nomadarace.cl";
 const CONTACT_EMAIL = "contacto@nomadafilms.cl";
 const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
+const CALENDAR_MONTHS = ["Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"] as const;
+
+function calendarRaceDateKey(race: CalendarRace) {
+  const month = CALENDAR_MONTHS.indexOf(race.month) + 8;
+  return `2026-${String(month).padStart(2, "0")}-${String(race.day).padStart(2, "0")}`;
+}
+
+function chileTodayKey() {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Santiago",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+}
+
+function useChileToday() {
+  const [today, setToday] = useState<string | null>(null);
+
+  useEffect(() => {
+    const updateToday = () => setToday(chileTodayKey());
+    updateToday();
+    const interval = window.setInterval(updateToday, 60_000);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  return today;
+}
 
 const PUBLIC_LINKS = [
   ["Inicio", "/"], ["Eventos", "/eventos"], ["Blog", "/blog"], ["Comprar fotos", PHOTO_STORE_URL], ["Ayuda", "/preguntas-frecuentes"],
@@ -125,7 +153,8 @@ function SectionHeading({ title, copy, action }: { eyebrow?: string; title: stri
 function PublicShell({ children }: { children: React.ReactNode }) { return <div className="min-h-screen bg-brand-pure"><PublicHeader />{children}<Footer /></div>; }
 
 function HomePage() {
-  const featuredRaces = calendarRaces.filter(race => race.month === "Septiembre").slice(0, 3);
+  const today = useChileToday();
+  const featuredRaces = calendarRaces.filter(race => race.month === "Septiembre" && (!today || calendarRaceDateKey(race) >= today)).slice(0, 3);
   // Esta lista se habilita manualmente cuando el álbum de un evento está listo.
   // Así, el bloque “Revive la carrera” no se llena solo con carreras que ya pasaron.
   const racePhotoLinks: Record<string, string> = {
@@ -133,9 +162,9 @@ function HomePage() {
     "Corrida Glorias del Ejército": "http://fotop.com/fotos/eventos?evento=332429",
   };
   const pastRaces = calendarRaces.filter(race => {
-    const monthIndex = ["Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"].indexOf(race.month) + 7;
     const albumIsReady = Boolean(racePhotoLinks[race.name]);
-    return albumIsReady && new Date(2026, monthIndex, race.day, 23, 59, 59) < new Date();
+    if (!today) return false;
+    return albumIsReady && calendarRaceDateKey(race) < today;
   }).slice(-3).reverse();
   return <PublicShell>
     <main>
@@ -195,9 +224,10 @@ function googleCalendarUrl(race: CalendarRace) {
 }
 
 function CalendarPage() {
-  const months = ["Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"] as const;
+  const months = CALENDAR_MONTHS;
   const [activeMonth, setActiveMonth] = useState<(typeof months)[number]>("Septiembre");
-  const monthRaces = calendarRaces.filter(race => race.month === activeMonth);
+  const today = useChileToday();
+  const monthRaces = calendarRaces.filter(race => race.month === activeMonth && (!today || calendarRaceDateKey(race) >= today));
   const plural = monthRaces.length === 1 ? "carrera" : "carreras";
 
   return <PublicShell><main className="mx-auto max-w-7xl px-5 py-14 lg:px-8">
