@@ -126,12 +126,15 @@ function PublicShell({ children }: { children: React.ReactNode }) { return <div 
 
 function HomePage() {
   const featuredRaces = calendarRaces.filter(race => race.month === "Septiembre").slice(0, 3);
+  // Esta lista se habilita manualmente cuando el álbum de un evento está listo.
+  // Así, el bloque “Revive la carrera” no se llena solo con carreras que ya pasaron.
   const racePhotoLinks: Record<string, string> = {
     "Media Maratón de Mujeres de Santiago": PHOTO_STORE_URL,
   };
   const pastRaces = calendarRaces.filter(race => {
     const monthIndex = ["Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"].indexOf(race.month) + 7;
-    return new Date(2026, monthIndex, race.day, 23, 59, 59) < new Date();
+    const albumIsReady = Boolean(racePhotoLinks[race.name]);
+    return albumIsReady && new Date(2026, monthIndex, race.day, 23, 59, 59) < new Date();
   }).slice(-3).reverse();
   return <PublicShell>
     <main>
