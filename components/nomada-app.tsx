@@ -50,6 +50,19 @@ function useChileToday() {
   return today;
 }
 
+function useCurrentTime() {
+  const [now, setNow] = useState<number | null>(null);
+
+  useEffect(() => {
+    const updateNow = () => setNow(Date.now());
+    updateNow();
+    const interval = window.setInterval(updateNow, 30_000);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  return now;
+}
+
 const PUBLIC_LINKS = [
   ["Inicio", "/"], ["Eventos", "/eventos"], ["Blog", "/blog"], ["Comprar fotos", PHOTO_STORE_URL], ["Ayuda", "/preguntas-frecuentes"],
 ] as const;
@@ -153,7 +166,9 @@ function SectionHeading({ title, copy, action }: { eyebrow?: string; title: stri
 
 const GLORIAS_ALBUM_URL = "https://fotop.com/fotos/eventos?evento=332429";
 const GLORIAS_POPUP_START = new Date("2026-09-13T00:00:00-03:00").getTime();
+const GLORIAS_CARD_START = new Date("2026-09-13T05:00:00-03:00").getTime();
 const GLORIAS_POPUP_DISMISSED_KEY = "nomada-glorias-popup-dismissed";
+const GLORIAS_EVENT_NAME = "Corrida Glorias del Ejército";
 
 function GloriasPhotosPopup() {
   const [open, setOpen] = useState(false);
@@ -192,17 +207,21 @@ function PublicShell({ children }: { children: React.ReactNode }) { return <div 
 
 function HomePage() {
   const today = useChileToday();
+  const now = useCurrentTime();
   const featuredRaces = calendarRaces.filter(race => race.month === "Septiembre" && (!today || calendarRaceDateKey(race) >= today)).slice(0, 3);
   // Esta lista se habilita manualmente cuando el álbum de un evento está listo.
   // Así, el bloque “Revive la carrera” no se llena solo con carreras que ya pasaron.
   const racePhotoLinks: Record<string, string> = {
     "Media Maratón de Mujeres de Santiago": "https://misfotos.nomadarace.cl/fotos/eventos?evento=330033",
-    "Corrida Glorias del Ejército": GLORIAS_ALBUM_URL,
+    [GLORIAS_EVENT_NAME]: GLORIAS_ALBUM_URL,
   };
   const pastRaces = calendarRaces.filter(race => {
-    const albumIsReady = Boolean(racePhotoLinks[race.name]);
     if (!today) return false;
-    return albumIsReady && calendarRaceDateKey(race) < today;
+    const albumIsReady = Boolean(racePhotoLinks[race.name]);
+    const isGlorias = race.name === GLORIAS_EVENT_NAME;
+    const albumIsPublished = !isGlorias || (now !== null && now >= GLORIAS_CARD_START);
+    const isPastOrReleased = calendarRaceDateKey(race) < today || (isGlorias && now !== null && now >= GLORIAS_CARD_START);
+    return albumIsReady && albumIsPublished && isPastOrReleased;
   }).slice(-3).reverse();
   return <PublicShell>
     <main>
