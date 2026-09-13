@@ -151,7 +151,44 @@ function FooterLinks({ title, links }: { title: string; links: readonly (readonl
 
 function SectionHeading({ title, copy, action }: { eyebrow?: string; title: string; copy?: string; action?: React.ReactNode }) { return <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><h2 className="text-3xl font-black tracking-[-.055em] text-zinc-950 sm:text-4xl">{title}</h2>{copy && <p className="mt-3 max-w-xl text-sm leading-6 text-zinc-500">{copy}</p>}</div>{action}</div>; }
 
-function PublicShell({ children }: { children: React.ReactNode }) { return <div className="min-h-screen bg-brand-pure"><PublicHeader />{children}<Footer /></div>; }
+const GLORIAS_ALBUM_URL = "https://fotop.com/fotos/eventos?evento=332429";
+const GLORIAS_POPUP_START = new Date("2026-09-13T00:00:00-03:00").getTime();
+const GLORIAS_POPUP_DISMISSED_KEY = "nomada-glorias-popup-dismissed";
+
+function GloriasPhotosPopup() {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const updateVisibility = () => {
+      const wasDismissed = window.localStorage.getItem(GLORIAS_POPUP_DISMISSED_KEY) === "true";
+      setOpen(Date.now() >= GLORIAS_POPUP_START && !wasDismissed);
+    };
+
+    updateVisibility();
+    const interval = window.setInterval(updateVisibility, 30_000);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  const close = () => {
+    window.localStorage.setItem(GLORIAS_POPUP_DISMISSED_KEY, "true");
+    setOpen(false);
+  };
+
+  if (!open) return null;
+
+  return <div className="fixed inset-0 z-[70] flex items-center justify-center bg-zinc-950/65 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="glorias-popup-title">
+    <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] border border-white/20 bg-white p-7 shadow-2xl sm:p-9">
+      <button type="button" onClick={close} className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-950" aria-label="Cerrar aviso"><X className="h-5 w-5" /></button>
+      <span className="grid h-12 w-12 place-items-center rounded-2xl bg-orange-100 text-orange-600"><Camera className="h-6 w-6" /></span>
+      <p className="mt-6 text-xs font-black uppercase tracking-[.18em] text-orange-600">FOTOS DISPONIBLES</p>
+      <h2 id="glorias-popup-title" className="mt-3 pr-8 text-3xl font-black leading-[1.02] tracking-[-.055em] text-zinc-950">Las fotos de Corrida Glorias del Ejército ya están aquí.</h2>
+      <p className="mt-4 text-sm leading-6 text-zinc-600">Encuentra tus recuerdos de carrera y elige tus fotos favoritas.</p>
+      <a href={GLORIAS_ALBUM_URL} target="_blank" rel="noreferrer" className="mt-7 inline-flex"><Button>Buscar mis fotos <ScanFace className="ml-2 h-4 w-4" /></Button></a>
+    </div>
+  </div>;
+}
+
+function PublicShell({ children }: { children: React.ReactNode }) { return <div className="min-h-screen bg-brand-pure"><PublicHeader />{children}<Footer /><GloriasPhotosPopup /></div>; }
 
 function HomePage() {
   const today = useChileToday();
@@ -160,7 +197,7 @@ function HomePage() {
   // Así, el bloque “Revive la carrera” no se llena solo con carreras que ya pasaron.
   const racePhotoLinks: Record<string, string> = {
     "Media Maratón de Mujeres de Santiago": "https://misfotos.nomadarace.cl/fotos/eventos?evento=330033",
-    "Corrida Glorias del Ejército": "http://fotop.com/fotos/eventos?evento=332429",
+    "Corrida Glorias del Ejército": GLORIAS_ALBUM_URL,
   };
   const pastRaces = calendarRaces.filter(race => {
     const albumIsReady = Boolean(racePhotoLinks[race.name]);
