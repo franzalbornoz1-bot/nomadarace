@@ -1,9 +1,12 @@
 import type { NextConfig } from "next";
 
+const isStaticExport = process.env.STATIC_EXPORT === "1";
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  async headers() {
+  ...(isStaticExport ? { output: "export" } : {}),
+  ...(!isStaticExport && { async headers() {
     const contentSecurityPolicy = [
       "default-src 'self'",
       "base-uri 'self'",
@@ -29,7 +32,7 @@ const nextConfig: NextConfig = {
         { key: "Permissions-Policy", value: "accelerometer=(), camera=(), geolocation=(), gyroscope=(), microphone=(), payment=(), usb=()" },
       ],
     }];
-  },
+  } }),
 };
 
 export default nextConfig;

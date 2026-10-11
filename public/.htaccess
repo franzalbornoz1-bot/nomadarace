@@ -1,0 +1,29 @@
+Options -Indexes -MultiViews
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Resolve exported pages even when a folder with the same name exists.
+  # Keep files such as Google's HTML verification at their original URL.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  # Prefer the exported directory page (for example /blog/index.html) over
+  # legacy flat files such as /blog.html left by a previous export.
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+  RewriteRule ^(.+?)/?$ $1.html [END]
+</IfModule>
+
+<IfModule mod_headers.c>
+  # HTML must always be revalidated after a deployment so visitors do not keep
+  # an older navigation bundle with stale outbound links.
+  <FilesMatch "\.(html|txt)$">
+    Header set Cache-Control "no-cache, max-age=0, must-revalidate"
+  </FilesMatch>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), microphone=(), payment=(), usb=()"
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com; connect-src 'self'; worker-src 'self' blob:; upgrade-insecure-requests"
+</IfModule>

@@ -1,0 +1,49 @@
+name: Publicar en BlueHosting
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bluehosting-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Construir y publicar
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Obtener el código
+        uses: actions/checkout@v4
+
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Instalar dependencias
+        run: |
+          corepack enable
+          pnpm install --frozen-lockfile
+
+      - name: Generar sitio estático
+        run: STATIC_EXPORT=1 pnpm build
+
+      - name: Instalar cliente SFTP
+        run: sudo apt-get update && sudo apt-get install --yes lftp
+
+      - name: Publicar en BlueHosting por SFTP
+        env:
+          SFTP_HOST: ${{ secrets.BLUEHOSTING_SFTP_HOST }}
+          SFTP_PORT: ${{ secrets.BLUEHOSTING_SFTP_PORT }}
+          SFTP_USERNAME: ${{ secrets.BLUEHOSTING_SFTP_USERNAME }}
+          SFTP_PASSWORD: ${{ secrets.BLUEHOSTING_SFTP_PASSWORD }}
+        run: |
+          lftp -u "$SFTP_USERNAME","$SFTP_PASSWORD" -p "$SFTP_PORT" "sftp://$SFTP_HOST" -e "set sftp:auto-confirm yes; set net:max-retries 2; mirror --reverse --only-newer --verbose out/ public_html/; bye"

@@ -18,7 +18,7 @@ import { clients, events, orders, photoCards, photographers, type EventStatus, t
 import { calendarRaceDescription, calendarRaces, type CalendarRace } from "@/lib/calendar-2026";
 import { getBlogPublicationDate } from "@/lib/blog-publication";
 
-const PHOTO_STORE_URL = "https://misfotos.nomadarace.cl";
+const PHOTO_STORE_URL = "http://fotop.com/fotos/eventos?evento=345521";
 const CONTACT_EMAIL = "contacto@nomadafilms.cl";
 const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
 const CALENDAR_MONTHS = ["Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"] as const;
@@ -165,55 +165,104 @@ function FooterLinks({ title, links }: { title: string; links: readonly (readonl
 function SectionHeading({ title, copy, action }: { eyebrow?: string; title: string; copy?: string; action?: React.ReactNode }) { return <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><h2 className="text-3xl font-black tracking-[-.055em] text-zinc-950 sm:text-4xl">{title}</h2>{copy && <p className="mt-3 max-w-xl text-sm leading-6 text-zinc-500">{copy}</p>}</div>{action}</div>; }
 
 const GLORIAS_ALBUM_URL = "https://fotop.com/fotos/eventos?evento=332429";
-const GLORIAS_POPUP_START = new Date("2026-09-13T00:00:00-03:00").getTime();
-const GLORIAS_CARD_START = new Date("2026-09-13T05:00:00-03:00").getTime();
-const GLORIAS_POPUP_DISMISSED_KEY = "nomada-glorias-popup-dismissed";
+const CORRAMOS_JUNTAS_ALBUM_URL = "http://fotop.com/fotos/eventos?evento=345521";
+const GLORIAS_CARD_START = new Date("2026-09-13T00:00:00-03:00").getTime();
 const GLORIAS_EVENT_NAME = "Corrida Glorias del Ejército";
+const IDEAL_GLOBAL_RACE_NAME = "Ideal Global Race";
+const FEATURED_RACE_NAME = "Corramos Juntas – Cáncer de Mamas";
+const HIDDEN_HOME_RACE_NAME = "Media Maratón Cuesta Lastarria Loncoche";
+const PHOTOS_READY_POPUP_RELEASE = "2026-10-11T08:30:00-03:00";
+let cyberPopupShownThisSession = false;
 
-function GloriasPhotosPopup() {
+let photosReadyPopupShownThisSession = false;
+
+function PhotosReadyPopup() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const updateVisibility = () => {
-      const wasDismissed = window.localStorage.getItem(GLORIAS_POPUP_DISMISSED_KEY) === "true";
-      setOpen(Date.now() >= GLORIAS_POPUP_START && !wasDismissed);
+    const releaseAt = new Date(PHOTOS_READY_POPUP_RELEASE).getTime();
+    const checkRelease = () => {
+      if (pathname === "/" && !photosReadyPopupShownThisSession && Date.now() >= releaseAt) {
+        photosReadyPopupShownThisSession = true;
+        setOpen(true);
+      }
     };
+    checkRelease();
+    const timer = window.setInterval(checkRelease, 15_000);
+    return () => window.clearInterval(timer);
+  }, [pathname]);
 
-    updateVisibility();
-    const interval = window.setInterval(updateVisibility, 30_000);
-    return () => window.clearInterval(interval);
-  }, []);
+  if (pathname !== "/" || !open) return null;
 
-  const close = () => {
-    window.localStorage.setItem(GLORIAS_POPUP_DISMISSED_KEY, "true");
-    setOpen(false);
-  };
-
-  if (!open) return null;
-
-  return <div className="fixed inset-0 z-[70] flex items-center justify-center bg-zinc-950/65 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="glorias-popup-title">
-    <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] border border-white/20 bg-white p-7 shadow-2xl sm:p-9">
-      <button type="button" onClick={close} className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-950" aria-label="Cerrar aviso"><X className="h-5 w-5" /></button>
-      <span className="grid h-12 w-12 place-items-center rounded-2xl bg-orange-100 text-orange-600"><Camera className="h-6 w-6" /></span>
-      <p className="mt-6 text-xs font-black uppercase tracking-[.18em] text-orange-600">FOTOS DISPONIBLES</p>
-      <h2 id="glorias-popup-title" className="mt-3 pr-8 text-3xl font-black leading-[1.02] tracking-[-.055em] text-zinc-950">Las fotos de Corrida Glorias del Ejército ya están aquí.</h2>
-      <p className="mt-4 text-sm leading-6 text-zinc-600">Encuentra tus recuerdos de carrera y elige tus fotos favoritas.</p>
-      <a href={GLORIAS_ALBUM_URL} target="_blank" rel="noreferrer" className="mt-7 inline-flex"><Button>Buscar mis fotos <ScanFace className="ml-2 h-4 w-4" /></Button></a>
+  return <div className="fixed inset-0 z-[80] flex items-center justify-center bg-zinc-950/75 p-4 backdrop-blur-md sm:p-6" role="dialog" aria-modal="true" aria-labelledby="photos-ready-popup-title">
+    <div className="relative isolate w-full max-w-2xl overflow-hidden rounded-[2rem] border border-white/25 bg-zinc-950 shadow-[0_30px_100px_rgba(0,0,0,.65)] sm:rounded-[2.5rem]">
+      <img src="/corramos-juntas-2026-popup.png" alt="Corramos Juntas 2026" draggable={false} onContextMenu={event => event.preventDefault()} className="pointer-events-none absolute inset-0 -z-20 h-full w-full select-none object-cover object-center" />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-zinc-950/20 via-zinc-950/35 to-zinc-950/95" />
+      <button type="button" onClick={() => setOpen(false)} className="absolute right-4 top-4 z-10 grid h-11 w-11 place-items-center rounded-full border border-white/30 bg-zinc-950/55 text-white shadow-lg backdrop-blur transition hover:scale-105 hover:bg-white hover:text-zinc-950" aria-label="Cerrar aviso"><X className="h-5 w-5" /></button>
+      <div className="flex min-h-[min(620px,calc(100svh-2rem))] items-end p-7 text-white sm:min-h-[560px] sm:p-12">
+        <div className="w-full max-w-xl">
+          <p className="text-sm font-black uppercase tracking-[.16em] text-pink-200 sm:text-base">Corramos Juntas 2026</p>
+          <h2 id="photos-ready-popup-title" className="mt-3 text-5xl font-black leading-[.9] tracking-[-.07em] sm:text-7xl">Qué gusto verte.<br /><span className="text-pink-200">Tus fotos ya están listas.</span></h2>
+          <p className="mt-5 max-w-md text-lg leading-7 text-white/90 sm:text-xl">Encuentra tus momentos de Corramos Juntas y vuelve a vivir la carrera.</p>
+          <a href={CORRAMOS_JUNTAS_ALBUM_URL} target="_blank" rel="noreferrer" className="mt-8 flex w-full sm:w-auto"><Button className="h-auto min-h-16 w-full bg-pink-600 px-8 py-4 text-lg text-white hover:bg-pink-700 sm:min-w-80 sm:text-xl">Encuéntralas aquí <ArrowRight className="ml-3 h-5 w-5" /></Button></a>
+        </div>
+      </div>
     </div>
   </div>;
 }
 
-function PublicShell({ children }: { children: React.ReactNode }) { return <div className="min-h-screen bg-brand-pure"><PublicHeader />{children}<Footer /><GloriasPhotosPopup /></div>; }
+function CyberSalePopup() {
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const shouldShow = pathname === "/" && !cyberPopupShownThisSession;
+    if (shouldShow) {
+        cyberPopupShownThisSession = true;
+        setOpen(true);
+    } else {
+      setOpen(false);
+    }
+  }, [pathname]);
+
+  if (pathname !== "/" || !open) return null;
+
+  return <div className="fixed inset-0 z-[80] flex items-center justify-center bg-zinc-950/80 p-4 backdrop-blur-md sm:p-6" role="dialog" aria-modal="true" aria-labelledby="cyber-popup-title">
+    <div className="relative isolate w-full max-w-4xl overflow-hidden rounded-[2rem] border border-white/20 bg-zinc-950 shadow-[0_30px_100px_rgba(0,0,0,.65)] sm:rounded-[2.5rem]">
+      <img src="/glorias-del-ejercito-2026.jpg" alt="" aria-hidden="true" draggable={false} onContextMenu={event => event.preventDefault()} className="pointer-events-none absolute inset-0 -z-20 h-full w-full scale-105 select-none object-cover object-center blur-[2px] opacity-55" />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(120deg,rgba(9,9,11,.96)_5%,rgba(9,9,11,.78)_50%,rgba(234,88,12,.76)_125%)]" />
+      <button type="button" onClick={() => setOpen(false)} className="absolute right-4 top-4 z-10 grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-zinc-950/55 text-white shadow-lg backdrop-blur transition hover:scale-105 hover:bg-white hover:text-zinc-950" aria-label="Cerrar aviso"><X className="h-5 w-5" /></button>
+      <div className="grid min-h-[min(690px,calc(100svh-2rem))] items-end p-7 text-white sm:min-h-[620px] sm:p-12 lg:p-16">
+        <div className="max-w-2xl">
+          <div className="inline-flex items-center gap-2 rounded-full border border-orange-300/45 bg-orange-500/20 px-4 py-2 text-xs font-black uppercase tracking-[.17em] text-orange-100 backdrop-blur"><Sparkles className="h-4 w-4" /> Cyber Nómada Race</div>
+          <p className="mt-8 text-lg font-black uppercase tracking-[.12em] text-orange-200 sm:text-xl">Ya comenzó el</p>
+          <h1 id="cyber-popup-title" className="mt-1 text-5xl font-black leading-[.86] tracking-[-.08em] text-white sm:text-7xl lg:text-8xl">CYBER<br /><span className="text-orange-500">EN NÓMADA RACE.</span></h1>
+          <p className="mt-7 max-w-xl text-lg leading-7 text-zinc-100 sm:text-2xl sm:leading-9">Usa el código <strong className="rounded bg-white px-2 py-1 font-black tracking-wide text-zinc-950">NOMADARACE</strong> y obtén <strong className="font-black text-orange-300">50% de descuento</strong> en tu pack de fotos.</p>
+          <div className="mt-7 inline-flex items-center rounded-2xl border border-white/20 bg-white/10 px-5 py-3 font-black tracking-[.12em] text-white backdrop-blur">CÓDIGO: NOMADARACE</div>
+          <a href={PHOTO_STORE_URL} target="_blank" rel="noreferrer" className="mt-8 flex w-full sm:w-auto"><Button className="h-auto min-h-16 w-full px-8 py-4 text-lg sm:min-w-80 sm:text-xl">Comprar mis fotos <ArrowRight className="ml-3 h-5 w-5" /></Button></a>
+          <p className="mt-4 text-sm font-medium text-zinc-300">Corre a elegir tus recuerdos. Promoción por tiempo limitado.</p>
+        </div>
+      </div>
+    </div>
+  </div>;
+}
+
+function PublicShell({ children }: { children: React.ReactNode }) { return <div className="min-h-screen bg-brand-pure"><PublicHeader />{children}<Footer /></div>; }
 
 function HomePage() {
   const today = useChileToday();
   const now = useCurrentTime();
-  const featuredRaces = calendarRaces.filter(race => race.month === "Septiembre" && (!today || calendarRaceDateKey(race) >= today)).slice(0, 3);
+  const featuredRaces = calendarRaces
+    .filter(race => race.month === "Septiembre" && race.name !== HIDDEN_HOME_RACE_NAME && (!today || calendarRaceDateKey(race) > today))
+    .sort((a, b) => Number(b.name === FEATURED_RACE_NAME) - Number(a.name === FEATURED_RACE_NAME))
+    .slice(0, 3);
   // Esta lista se habilita manualmente cuando el álbum de un evento está listo.
   // Así, el bloque “Revive la carrera” no se llena solo con carreras que ya pasaron.
   const racePhotoLinks: Record<string, string> = {
-    "Media Maratón de Mujeres de Santiago": "https://misfotos.nomadarace.cl/fotos/eventos?evento=330033",
-    [GLORIAS_EVENT_NAME]: GLORIAS_ALBUM_URL,
+    "Media Maratón de Mujeres de Santiago": CORRAMOS_JUNTAS_ALBUM_URL,
+    [GLORIAS_EVENT_NAME]: CORRAMOS_JUNTAS_ALBUM_URL,
+    [FEATURED_RACE_NAME]: CORRAMOS_JUNTAS_ALBUM_URL,
   };
   const pastRaces = calendarRaces.filter(race => {
     if (!today) return false;
@@ -223,7 +272,7 @@ function HomePage() {
     const isPastOrReleased = calendarRaceDateKey(race) < today || (isGlorias && now !== null && now >= GLORIAS_CARD_START);
     return albumIsReady && albumIsPublished && isPastOrReleased;
   }).slice(-3).reverse();
-  return <PublicShell>
+  return <><PublicShell>
     <main>
       <section className="home-hero relative isolate min-h-[35rem] overflow-hidden bg-[#F7F8FC] sm:min-h-[40rem]">
         <div className="home-hero-wash pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,.98)_0%,_rgba(255,255,255,.84)_37%,_rgba(247,248,252,.42)_70%)]" />
@@ -245,21 +294,23 @@ function HomePage() {
         </div>
       </section>
 
-      {pastRaces.length > 0 && <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><SectionHeading eyebrow="FOTOS DISPONIBLES" title="Revive la carrera" copy="Tus recuerdos ya están listos. Busca y compra las fotos de las carreras que vivimos juntos." action={<Link href="/eventos" className="items-center gap-2 text-sm font-black sm:flex">Ver calendario <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid gap-5 md:grid-cols-3">{pastRaces.map(race => <HomeRaceCard key={`${race.month}-${race.day}-${race.name}`} race={race} past photoUrl={racePhotoLinks[race.name]} />)}</div></section>}
-
-      <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><SectionHeading eyebrow="CALENDARIO 2026" title="Próximas carreras" copy="Consulta las fechas, ubicaciones y distancias de cada evento en nuestro calendario." action={<Link href="/eventos" className="hidden items-center gap-2 text-sm font-black sm:flex">Ver calendario <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{featuredRaces.map(race => <HomeRaceCard key={race.name} race={race} />)}</div></section>
+      <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><SectionHeading eyebrow="CALENDARIO 2026" title="Próximas carreras" copy="Consulta las fechas, ubicaciones y distancias de cada evento en nuestro calendario." action={<Link href="/eventos" className="hidden items-center gap-2 text-sm font-black sm:flex">Ver calendario <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{featuredRaces.map(race => <HomeRaceCard key={race.name} race={race} spotlight={race.name === FEATURED_RACE_NAME} />)}</div></section>
 
       <section className="bg-[#FFF0E8]"><div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 lg:grid-cols-[.85fr_1.15fr] lg:px-8"><div className="self-center"><h2 className="text-4xl font-black leading-none tracking-[-.06em] text-zinc-950 sm:text-5xl">Tu foto puede<br />estar esperándote.</h2><p className="mt-5 max-w-md leading-7 text-zinc-600">Busca por dorsal o usa una selfie. En segundos encontrarás las fotos que cuentan cómo viviste la carrera.</p><Link href={PHOTO_STORE_URL}><Button className="mt-7">Buscar mis fotos <ScanFace className="ml-2 h-4 w-4" /></Button></Link></div><div className="grid grid-cols-2 gap-3 sm:grid-cols-3"><PhotoMosaic src={photoCards[4].src} className="mt-8" /><PhotoMosaic src={photoCards[6].src} /><PhotoMosaic src={photoCards[2].src} className="mt-12" /><PhotoMosaic src={photoCards[0].src} className="hidden sm:block" /><PhotoMosaic src={photoCards[5].src} className="hidden sm:mt-8 sm:block" /><PhotoMosaic src={photoCards[3].src} className="hidden sm:block" /></div></div></section>
+      <section className="bg-[#FFF0E8]"><div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 lg:grid-cols-[.85fr_1.15fr] lg:px-8"><div className="self-center"><h2 className="text-4xl font-black leading-none tracking-[-.06em] text-zinc-950 sm:text-5xl">Tu foto puede<br />estar esperándote.</h2><p className="mt-5 max-w-md leading-7 text-zinc-600">Busca por dorsal o usa una selfie. En segundos encontrarás las fotos que cuentan cómo viviste la carrera.</p><Link href={PHOTO_STORE_URL}><Button className="mt-7">Buscar mis fotos <ScanFace className="ml-2 h-4 w-4" /></Button></Link></div><div className="grid grid-cols-2 gap-3 sm:grid-cols-3"><PhotoMosaic src={photoCards[4].src} className="mt-8" /><PhotoMosaic src={photoCards[6].src} /><PhotoMosaic src={photoCards[2].src} className="mt-12" /><PhotoMosaic src={photoCards[0].src} className="hidden sm:block" /><PhotoMosaic src={photoCards[5].src} className="hidden sm:mt-8 sm:block" /><PhotoMosaic src={photoCards[3].src} className="hidden sm:block" /></div></div></section>
+
+      <section className="bg-zinc-950 text-white"><div className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="text-xs font-black uppercase tracking-[.2em] text-lime-300">TUS FOTOS EN 3 PASOS</p><h2 className="mt-3 text-4xl font-black tracking-[-.06em] sm:text-5xl">De la meta a<br />tus recuerdos.</h2></div><Link href={PHOTO_STORE_URL}><Button>Buscar mis fotos <Search className="ml-2 h-4 w-4" /></Button></Link></div><div className="mt-10 grid gap-4 md:grid-cols-3"><PurchaseStep icon={Search} number="01" title="Busca tu dorsal" copy="Elige tu evento e ingresa el número con el que corriste." /><PurchaseStep icon={Heart} number="02" title="Elige tus momentos" copy="Marca las fotos que mejor cuentan tu esfuerzo y tu llegada." /><PurchaseStep icon={Download} number="03" title="Compra y disfruta" copy="Escoge tu pack y recibe tus recuerdos en alta resolución." /></div></div></section>
+      {pastRaces.length > 0 && <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><SectionHeading eyebrow="FOTOS DISPONIBLES" title="Revive la carrera" copy="Tus recuerdos ya están listos. Busca y compra las fotos de las carreras que vivimos juntos." action={<Link href="/eventos" className="items-center gap-2 text-sm font-black sm:flex">Ver calendario <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid gap-5 md:grid-cols-3">{pastRaces.map(race => <HomeRaceCard key={`${race.month}-${race.day}-${race.name}`} race={race} past photoUrl={racePhotoLinks[race.name]} spotlight={race.name === FEATURED_RACE_NAME} />)}</div></section>}
 
       <section className="bg-zinc-950 text-white"><div className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="text-xs font-black uppercase tracking-[.2em] text-lime-300">TUS FOTOS EN 3 PASOS</p><h2 className="mt-3 text-4xl font-black tracking-[-.06em] sm:text-5xl">De la meta a<br />tus recuerdos.</h2></div><Link href={PHOTO_STORE_URL}><Button>Buscar mis fotos <Search className="ml-2 h-4 w-4" /></Button></Link></div><div className="mt-10 grid gap-4 md:grid-cols-3"><PurchaseStep icon={Search} number="01" title="Busca tu dorsal" copy="Elige tu evento e ingresa el número con el que corriste." /><PurchaseStep icon={Heart} number="02" title="Elige tus momentos" copy="Marca las fotos que mejor cuentan tu esfuerzo y tu llegada." /><PurchaseStep icon={Download} number="03" title="Compra y disfruta" copy="Escoge tu pack y recibe tus recuerdos en alta resolución." /></div></div></section>
 
       <section className="mx-auto max-w-4xl px-5 py-20"><div className="rounded-[2rem] bg-orange-500 px-7 py-12 text-white sm:px-12"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-100">¿Dudas antes de correr?</p><div className="mt-4 grid gap-8 sm:grid-cols-[1fr_auto] sm:items-end"><div><h2 className="text-3xl font-black tracking-[-.06em] sm:text-4xl">Todo lo que necesitas saber, sin perder el ritmo.</h2><p className="mt-4 max-w-xl text-orange-50">Resolvemos las preguntas más frecuentes sobre fotos, preventas y tus recuerdos de carrera.</p></div><Link href="/preguntas-frecuentes"><Button variant="dark" className="shrink-0">Ir a ayuda <ArrowRight className="ml-2 h-4 w-4" /></Button></Link></div></div></section>
-    </main>
-  </PublicShell>;
+  </main>
+  </PublicShell><PhotosReadyPopup /></>;
 }
 
-function RaceDateBadge({ day, weekday }: { day: number; weekday: string }) { return <span className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-2xl bg-zinc-950 text-center leading-none text-white"><b className="text-xl leading-none">{String(day).padStart(2, "0")}</b><small className="mt-1 text-[9px] font-bold uppercase tracking-wide text-zinc-400">{weekday.slice(0, 3)}</small></span>; }
-function HomeRaceCard({ race, past = false, photoUrl }: { race: (typeof calendarRaces)[number]; past?: boolean; photoUrl?: string }) { return <Link href={photoUrl ?? "/eventos"} className="group rounded-[1.75rem] border border-zinc-200 bg-white p-6 shadow-[0_12px_36px_rgba(24,28,31,.06)] transition duration-300 hover:-translate-y-1 hover:border-orange-200 hover:shadow-[0_20px_48px_rgba(254,92,19,.12)]"><div className="flex items-start gap-4"><RaceDateBadge day={race.day} weekday={race.weekday} /><div className="min-w-0"><p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-600">{past ? "Carrera realizada" : `${race.month} 2026`}</p><h3 className="mt-1 text-xl font-black leading-tight tracking-[-.035em] text-zinc-950">{race.name}</h3></div></div><div className="mt-5 border-t border-zinc-100 pt-4 text-sm text-zinc-600"><p className="flex items-center gap-2"><MapPin className="h-4 w-4 text-orange-500" />{race.city}</p><p className="mt-2 flex items-center gap-2 font-semibold"><span className="grid h-4 w-4 place-items-center rounded-full bg-orange-100 text-[8px] font-black text-orange-700">KM</span>{race.distances}</p></div><span className="mt-5 flex items-center gap-2 text-sm font-black text-zinc-950 group-hover:text-orange-600">{photoUrl ? "Comprar tus fotos" : "Ver en calendario"} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></Link>; }
+function RaceDateBadge({ day, weekday, spotlight = false }: { day: number; weekday: string; spotlight?: boolean }) { return <span className={cn("flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-2xl text-center leading-none", spotlight ? "border border-white/30 bg-white/15 text-white" : "bg-zinc-950 text-white")}><b className="text-xl leading-none">{String(day).padStart(2, "0")}</b><small className={cn("mt-1 text-[9px] font-bold uppercase tracking-wide", spotlight ? "text-orange-100" : "text-zinc-400")}>{weekday.slice(0, 3)}</small></span>; }
+function HomeRaceCard({ race, past = false, photoUrl, spotlight = false }: { race: (typeof calendarRaces)[number]; past?: boolean; photoUrl?: string; spotlight?: boolean }) { return <Link href={photoUrl ?? "/eventos"} className={cn("group rounded-[1.75rem] border p-6 shadow-[0_12px_36px_rgba(24,28,31,.06)] transition duration-300 hover:-translate-y-1", spotlight ? "border-orange-500 bg-orange-500 text-white hover:border-orange-600 hover:bg-orange-600 hover:shadow-[0_20px_48px_rgba(254,92,19,.28)]" : "border-zinc-200 bg-white hover:border-orange-200 hover:shadow-[0_20px_48px_rgba(254,92,19,.12)]")}><div className="flex items-start gap-4"><RaceDateBadge day={race.day} weekday={race.weekday} spotlight={spotlight} /><div className="min-w-0"><p className={cn("text-[10px] font-black uppercase tracking-[.16em]", spotlight ? "text-orange-100" : "text-orange-600")}>{past ? "Carrera realizada" : `${race.month} 2026`}</p><h3 className={cn("mt-1 text-xl font-black leading-tight tracking-[-.035em]", spotlight ? "text-white" : "text-zinc-950")}>{race.name}</h3>{spotlight && <span className="mt-3 inline-flex rounded-full bg-white/15 px-3 py-1.5 text-[10px] font-black uppercase tracking-[.12em] text-white">Nómada Race estará ahí</span>}</div></div><div className={cn("mt-5 border-t pt-4 text-sm", spotlight ? "border-white/25 text-orange-50" : "border-zinc-100 text-zinc-600")}><p className="flex items-center gap-2"><MapPin className={cn("h-4 w-4", spotlight ? "text-white" : "text-orange-500")} />{race.city}</p><p className="mt-2 flex items-center gap-2 font-semibold"><span className={cn("grid h-4 w-4 place-items-center rounded-full text-[8px] font-black", spotlight ? "bg-white text-orange-600" : "bg-orange-100 text-orange-700")}>KM</span>{race.distances}</p></div><span className={cn("mt-5 flex items-center gap-2 text-sm font-black", spotlight ? "text-white" : "text-zinc-950 group-hover:text-orange-600")}>{photoUrl ? "Comprar tus fotos" : "Ver en calendario"} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></Link>; }
 function HeroBackdropPhoto({ src, className }: { src: string; className: string }) { return <div className={cn("animate-float pointer-events-none absolute overflow-hidden rounded-3xl border border-white/70 bg-brand-pure/50 opacity-40 shadow-[0_22px_52px_rgba(53,58,62,.14)] saturate-[.72]", className)}><img src={src} alt="" loading="lazy" decoding="async" className="h-full w-full scale-105 object-cover blur-[.45px]" /></div>; }
 function HeroMetric({ value, label }: { value: string; label: string }) { return <div className="px-3 py-6 text-center sm:px-7"><p className="text-2xl font-black tracking-[-.06em] text-lime-300 sm:text-3xl">{value}</p><p className="mt-1 text-[10px] font-bold uppercase tracking-wide text-zinc-400 sm:text-xs">{label}</p></div>; }
 function PhotoMosaic({ src, className }: { src: string; className?: string }) { return <div className={cn("interactive-card aspect-[4/5] overflow-hidden rounded-2xl bg-zinc-200 shadow-lg", className)}><img className="h-full w-full object-cover transition duration-500 hover:scale-105" src={src} alt="Corredor en competencia" loading="lazy" decoding="async" /></div>; }

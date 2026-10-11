@@ -7,6 +7,26 @@ type CatchAllPageProps = { params: Promise<{ path?: string[] }> };
 
 const SITE_URL = "https://nomadarace.cl";
 
+export function generateStaticParams() {
+  const publicRoutes = [
+    [],
+    ["eventos"],
+    ["preguntas-frecuentes"],
+    ["contacto"],
+    ["organizadores"],
+  ];
+
+  return [
+    ...publicRoutes.map(path => ({ path })),
+    ...events.flatMap(event => [
+      { path: ["eventos", event.slug] },
+      { path: ["eventos", event.slug, "fotos"] },
+    ]),
+  ];
+}
+
+export const dynamicParams = false;
+
 function routeMetadata(path: string[]): Metadata {
   const pathname = path.length ? `/${path.join("/")}` : "/";
   const canonical = new URL(pathname, SITE_URL).toString();
