@@ -171,7 +171,6 @@ const GLORIAS_EVENT_NAME = "Corrida Glorias del Ejército";
 const IDEAL_GLOBAL_RACE_NAME = "Ideal Global Race";
 const FEATURED_RACE_NAME = "Corramos Juntas – Cáncer de Mamas";
 const HIDDEN_HOME_RACE_NAME = "Media Maratón Cuesta Lastarria Loncoche";
-const PHOTOS_READY_POPUP_RELEASE = "2026-10-11T08:30:00-03:00";
 let cyberPopupShownThisSession = false;
 
 let photosReadyPopupShownThisSession = false;
@@ -181,16 +180,12 @@ function PhotosReadyPopup() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const releaseAt = new Date(PHOTOS_READY_POPUP_RELEASE).getTime();
-    const checkRelease = () => {
-      if (pathname === "/" && !photosReadyPopupShownThisSession && Date.now() >= releaseAt) {
-        photosReadyPopupShownThisSession = true;
-        setOpen(true);
-      }
-    };
-    checkRelease();
-    const timer = window.setInterval(checkRelease, 15_000);
-    return () => window.clearInterval(timer);
+    if (pathname === "/" && !photosReadyPopupShownThisSession) {
+      photosReadyPopupShownThisSession = true;
+      setOpen(true);
+    } else if (pathname !== "/") {
+      setOpen(false);
+    }
   }, [pathname]);
 
   if (pathname !== "/" || !open) return null;
@@ -253,10 +248,14 @@ function PublicShell({ children }: { children: React.ReactNode }) { return <div 
 function HomePage() {
   const today = useChileToday();
   const now = useCurrentTime();
-  const featuredRaces = calendarRaces
-    .filter(race => race.month === "Septiembre" && race.name !== HIDDEN_HOME_RACE_NAME && (!today || calendarRaceDateKey(race) > today))
-    .sort((a, b) => Number(b.name === FEATURED_RACE_NAME) - Number(a.name === FEATURED_RACE_NAME))
-    .slice(0, 3);
+  const upcomingRaces = calendarRaces
+    .filter(race => race.name !== HIDDEN_HOME_RACE_NAME && (!today || calendarRaceDateKey(race) > today))
+    .sort((a, b) => calendarRaceDateKey(a).localeCompare(calendarRaceDateKey(b)));
+  const corramosJuntas = calendarRaces.find(race => race.name === FEATURED_RACE_NAME);
+  const featuredRaces = [
+    ...upcomingRaces.filter(race => race.name !== FEATURED_RACE_NAME).slice(0, 3),
+    ...(corramosJuntas ? [corramosJuntas] : []),
+  ];
   // Esta lista se habilita manualmente cuando el álbum de un evento está listo.
   // Así, el bloque “Revive la carrera” no se llena solo con carreras que ya pasaron.
   const racePhotoLinks: Record<string, string> = {
@@ -294,15 +293,11 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><SectionHeading eyebrow="CALENDARIO 2026" title="Próximas carreras" copy="Consulta las fechas, ubicaciones y distancias de cada evento en nuestro calendario." action={<Link href="/eventos" className="hidden items-center gap-2 text-sm font-black sm:flex">Ver calendario <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{featuredRaces.map(race => <HomeRaceCard key={race.name} race={race} spotlight={race.name === FEATURED_RACE_NAME} />)}</div></section>
+      <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><SectionHeading eyebrow="CALENDARIO 2026" title="Próximas carreras" copy="Consulta las fechas, ubicaciones y distancias de cada evento en nuestro calendario." action={<Link href="/eventos" className="hidden items-center gap-2 text-sm font-black sm:flex">Ver calendario <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">{featuredRaces.map((race, index) => <HomeRaceCard key={`${race.month}-${race.day}-${race.name}-${index}`} race={race} spotlight={race.name === FEATURED_RACE_NAME} />)}</div></section>
 
       <section className="bg-[#FFF0E8]"><div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 lg:grid-cols-[.85fr_1.15fr] lg:px-8"><div className="self-center"><h2 className="text-4xl font-black leading-none tracking-[-.06em] text-zinc-950 sm:text-5xl">Tu foto puede<br />estar esperándote.</h2><p className="mt-5 max-w-md leading-7 text-zinc-600">Busca por dorsal o usa una selfie. En segundos encontrarás las fotos que cuentan cómo viviste la carrera.</p><Link href={PHOTO_STORE_URL}><Button className="mt-7">Buscar mis fotos <ScanFace className="ml-2 h-4 w-4" /></Button></Link></div><div className="grid grid-cols-2 gap-3 sm:grid-cols-3"><PhotoMosaic src={photoCards[4].src} className="mt-8" /><PhotoMosaic src={photoCards[6].src} /><PhotoMosaic src={photoCards[2].src} className="mt-12" /><PhotoMosaic src={photoCards[0].src} className="hidden sm:block" /><PhotoMosaic src={photoCards[5].src} className="hidden sm:mt-8 sm:block" /><PhotoMosaic src={photoCards[3].src} className="hidden sm:block" /></div></div></section>
-      <section className="bg-[#FFF0E8]"><div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 lg:grid-cols-[.85fr_1.15fr] lg:px-8"><div className="self-center"><h2 className="text-4xl font-black leading-none tracking-[-.06em] text-zinc-950 sm:text-5xl">Tu foto puede<br />estar esperándote.</h2><p className="mt-5 max-w-md leading-7 text-zinc-600">Busca por dorsal o usa una selfie. En segundos encontrarás las fotos que cuentan cómo viviste la carrera.</p><Link href={PHOTO_STORE_URL}><Button className="mt-7">Buscar mis fotos <ScanFace className="ml-2 h-4 w-4" /></Button></Link></div><div className="grid grid-cols-2 gap-3 sm:grid-cols-3"><PhotoMosaic src={photoCards[4].src} className="mt-8" /><PhotoMosaic src={photoCards[6].src} /><PhotoMosaic src={photoCards[2].src} className="mt-12" /><PhotoMosaic src={photoCards[0].src} className="hidden sm:block" /><PhotoMosaic src={photoCards[5].src} className="hidden sm:mt-8 sm:block" /><PhotoMosaic src={photoCards[3].src} className="hidden sm:block" /></div></div></section>
-
       <section className="bg-zinc-950 text-white"><div className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="text-xs font-black uppercase tracking-[.2em] text-lime-300">TUS FOTOS EN 3 PASOS</p><h2 className="mt-3 text-4xl font-black tracking-[-.06em] sm:text-5xl">De la meta a<br />tus recuerdos.</h2></div><Link href={PHOTO_STORE_URL}><Button>Buscar mis fotos <Search className="ml-2 h-4 w-4" /></Button></Link></div><div className="mt-10 grid gap-4 md:grid-cols-3"><PurchaseStep icon={Search} number="01" title="Busca tu dorsal" copy="Elige tu evento e ingresa el número con el que corriste." /><PurchaseStep icon={Heart} number="02" title="Elige tus momentos" copy="Marca las fotos que mejor cuentan tu esfuerzo y tu llegada." /><PurchaseStep icon={Download} number="03" title="Compra y disfruta" copy="Escoge tu pack y recibe tus recuerdos en alta resolución." /></div></div></section>
       {pastRaces.length > 0 && <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><SectionHeading eyebrow="FOTOS DISPONIBLES" title="Revive la carrera" copy="Tus recuerdos ya están listos. Busca y compra las fotos de las carreras que vivimos juntos." action={<Link href="/eventos" className="items-center gap-2 text-sm font-black sm:flex">Ver calendario <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid gap-5 md:grid-cols-3">{pastRaces.map(race => <HomeRaceCard key={`${race.month}-${race.day}-${race.name}`} race={race} past photoUrl={racePhotoLinks[race.name]} spotlight={race.name === FEATURED_RACE_NAME} />)}</div></section>}
-
-      <section className="bg-zinc-950 text-white"><div className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="text-xs font-black uppercase tracking-[.2em] text-lime-300">TUS FOTOS EN 3 PASOS</p><h2 className="mt-3 text-4xl font-black tracking-[-.06em] sm:text-5xl">De la meta a<br />tus recuerdos.</h2></div><Link href={PHOTO_STORE_URL}><Button>Buscar mis fotos <Search className="ml-2 h-4 w-4" /></Button></Link></div><div className="mt-10 grid gap-4 md:grid-cols-3"><PurchaseStep icon={Search} number="01" title="Busca tu dorsal" copy="Elige tu evento e ingresa el número con el que corriste." /><PurchaseStep icon={Heart} number="02" title="Elige tus momentos" copy="Marca las fotos que mejor cuentan tu esfuerzo y tu llegada." /><PurchaseStep icon={Download} number="03" title="Compra y disfruta" copy="Escoge tu pack y recibe tus recuerdos en alta resolución." /></div></div></section>
 
       <section className="mx-auto max-w-4xl px-5 py-20"><div className="rounded-[2rem] bg-orange-500 px-7 py-12 text-white sm:px-12"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-100">¿Dudas antes de correr?</p><div className="mt-4 grid gap-8 sm:grid-cols-[1fr_auto] sm:items-end"><div><h2 className="text-3xl font-black tracking-[-.06em] sm:text-4xl">Todo lo que necesitas saber, sin perder el ritmo.</h2><p className="mt-4 max-w-xl text-orange-50">Resolvemos las preguntas más frecuentes sobre fotos, preventas y tus recuerdos de carrera.</p></div><Link href="/preguntas-frecuentes"><Button variant="dark" className="shrink-0">Ir a ayuda <ArrowRight className="ml-2 h-4 w-4" /></Button></Link></div></div></section>
   </main>
