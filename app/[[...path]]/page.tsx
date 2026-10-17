@@ -15,6 +15,8 @@ export function generateStaticParams() {
     ["preguntas-frecuentes"],
     ["contacto"],
     ["organizadores"],
+    ["privacidad"],
+    ["terminos"],
   ];
 
   return [
@@ -80,7 +82,7 @@ export async function generateMetadata({ params }: CatchAllPageProps): Promise<M
 
 function isPublicRoute(path: string[]) {
   if (path.length === 0) return true;
-  if (["organizadores", "preguntas-frecuentes", "contacto"].includes(path[0]) && path.length === 1) return true;
+  if (["organizadores", "preguntas-frecuentes", "contacto", "privacidad", "terminos"].includes(path[0]) && path.length === 1) return true;
   if (path[0] !== "eventos") return false;
   if (path.length === 1) return true;
   if (path.length === 2 && path[1] === "detalles") return true;
