@@ -176,45 +176,46 @@ const PRIMARY_UPCOMING_RACE_NAMES = [SANTANDER_RACE_NAME, SANTIAGO_ASICS_RACE_NA
 const SECONDARY_UPCOMING_RACE_NAMES = ["The North Face Endurance Trail", "Garganta del Diablo Trail Running", "Trail Eco Run Papudo", "Dog Race"] as const;
 const NEXT_RACE_NAMES = [...PRIMARY_UPCOMING_RACE_NAMES, ...SECONDARY_UPCOMING_RACE_NAMES] as const;
 const HIDDEN_HOME_RACE_NAME = "Media Maratón Cuesta Lastarria Loncoche";
-let cyberPopupShownThisSession = false;
+let rockNRollPopupShownThisSession = false;
 
-function CyberSalePopup() {
+function RockNRollReadyPopup() {
   const pathname = usePathname();
+  const now = useCurrentTime();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const shouldShow = pathname === "/" && !cyberPopupShownThisSession;
+    // Activación: sábado 17 de octubre de 2026, 09:30 en Santiago de Chile.
+    const activationTime = new Date("2026-10-17T09:30:00-03:00").getTime();
+    const shouldShow = pathname === "/" && now !== null && now >= activationTime && !rockNRollPopupShownThisSession;
     if (shouldShow) {
-        cyberPopupShownThisSession = true;
-        setOpen(true);
+      rockNRollPopupShownThisSession = true;
+      setOpen(true);
     } else {
       setOpen(false);
     }
-  }, [pathname]);
+  }, [pathname, now]);
 
   if (pathname !== "/" || !open) return null;
 
-  return <div className="fixed inset-0 z-[80] flex items-center justify-center bg-zinc-950/80 p-4 backdrop-blur-md sm:p-6" role="dialog" aria-modal="true" aria-labelledby="cyber-popup-title">
+  return <div className="fixed inset-0 z-[80] flex items-center justify-center bg-zinc-950/80 p-4 backdrop-blur-md sm:p-6" role="dialog" aria-modal="true" aria-labelledby="rocknroll-popup-title">
     <div className="relative isolate w-full max-w-4xl overflow-hidden rounded-[2rem] border border-white/20 bg-zinc-950 shadow-[0_30px_100px_rgba(0,0,0,.65)] sm:rounded-[2.5rem]">
-      <img src="/glorias-del-ejercito-2026.jpg" alt="" aria-hidden="true" draggable={false} onContextMenu={event => event.preventDefault()} className="pointer-events-none absolute inset-0 -z-20 h-full w-full scale-105 select-none object-cover object-center blur-[2px] opacity-55" />
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(120deg,rgba(9,9,11,.96)_5%,rgba(9,9,11,.78)_50%,rgba(234,88,12,.76)_125%)]" />
+      <img src="/stock/SRC_6981_4306237_333466.jpg" alt="" aria-hidden="true" draggable={false} onContextMenu={event => event.preventDefault()} className="pointer-events-none absolute inset-0 -z-20 h-full w-full scale-105 select-none object-cover object-center grayscale blur-[4px] opacity-55" />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(120deg,rgba(9,9,11,.91)_8%,rgba(9,9,11,.63)_52%,rgba(9,9,11,.82)_100%)]" />
       <button type="button" onClick={() => setOpen(false)} className="absolute right-4 top-4 z-10 grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-zinc-950/55 text-white shadow-lg backdrop-blur transition hover:scale-105 hover:bg-white hover:text-zinc-950" aria-label="Cerrar aviso"><X className="h-5 w-5" /></button>
-      <div className="grid min-h-[min(690px,calc(100svh-2rem))] items-end p-7 text-white sm:min-h-[620px] sm:p-12 lg:p-16">
+      <div className="grid min-h-[min(620px,calc(100svh-2rem))] items-end p-7 text-white sm:min-h-[540px] sm:p-12 lg:p-16">
         <div className="max-w-2xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-orange-300/45 bg-orange-500/20 px-4 py-2 text-xs font-black uppercase tracking-[.17em] text-orange-100 backdrop-blur"><Sparkles className="h-4 w-4" /> Cyber Nómada Race</div>
-          <p className="mt-8 text-lg font-black uppercase tracking-[.12em] text-orange-200 sm:text-xl">Ya comenzó el</p>
-          <h1 id="cyber-popup-title" className="mt-1 text-5xl font-black leading-[.86] tracking-[-.08em] text-white sm:text-7xl lg:text-8xl">CYBER<br /><span className="text-orange-500">EN NÓMADA RACE.</span></h1>
-          <p className="mt-7 max-w-xl text-lg leading-7 text-zinc-100 sm:text-2xl sm:leading-9">Usa el código <strong className="rounded bg-white px-2 py-1 font-black tracking-wide text-zinc-950">NOMADARACE</strong> y obtén <strong className="font-black text-orange-300">50% de descuento</strong> en tu pack de fotos.</p>
-          <div className="mt-7 inline-flex items-center rounded-2xl border border-white/20 bg-white/10 px-5 py-3 font-black tracking-[.12em] text-white backdrop-blur">CÓDIGO: NOMADARACE</div>
-          <a href={PHOTO_STORE_URL} target="_blank" rel="noreferrer" className="mt-8 flex w-full sm:w-auto"><Button className="h-auto min-h-16 w-full px-8 py-4 text-lg sm:min-w-80 sm:text-xl">Comprar mis fotos <ArrowRight className="ml-3 h-5 w-5" /></Button></a>
-          <p className="mt-4 text-sm font-medium text-zinc-300">Corre a elegir tus recuerdos. Promoción por tiempo limitado.</p>
+          <img src="/rock-n-roll-running-series.webp" alt="Rock ’n’ Roll Running Series" width="320" height="90" draggable={false} onContextMenu={event => event.preventDefault()} className="pointer-events-none mb-8 h-auto w-56 select-none object-contain object-left sm:w-72" />
+          <p className="text-lg font-black uppercase tracking-[.12em] text-orange-200 sm:text-xl">Rock ’n’ Roll Running Series</p>
+          <h1 id="rocknroll-popup-title" className="mt-2 text-5xl font-black leading-[.9] tracking-[-.07em] text-white sm:text-7xl lg:text-8xl">Tus fotos<br /><span className="text-orange-500">ya están listas.</span></h1>
+          <p className="mt-7 max-w-xl text-lg leading-7 text-zinc-100 sm:text-2xl sm:leading-9">Vuelve a vivir tu carrera y encuentra tus mejores momentos en la galería oficial.</p>
+          <a href={PHOTO_STORE_URL} target="_blank" rel="noreferrer" className="mt-8 flex w-full sm:w-auto"><Button className="h-auto min-h-16 w-full px-8 py-4 text-lg sm:min-w-80 sm:text-xl">Ver mis fotos <ArrowRight className="ml-3 h-5 w-5" /></Button></a>
         </div>
       </div>
     </div>
   </div>;
 }
 
-function PublicShell({ children }: { children: React.ReactNode }) { return <div className="min-h-screen bg-brand-pure"><PublicHeader />{children}<Footer /></div>; }
+function PublicShell({ children }: { children: React.ReactNode }) { return <div className="min-h-screen bg-brand-pure"><PublicHeader />{children}<Footer /><RockNRollReadyPopup /></div>; }
 
 function HomePage() {
   const today = useChileToday();
