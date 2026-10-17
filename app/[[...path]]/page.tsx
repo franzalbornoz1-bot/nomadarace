@@ -107,6 +107,15 @@ export default async function CatchAllPage({ params }: CatchAllPageProps) {
     url: `${SITE_URL}${pathname}`,
     location: { "@type": "Place", name: event.place, address: { "@type": "PostalAddress", addressLocality: event.city, addressCountry: "CL" } },
     organizer: { "@type": "Organization", name: "Nómada Race", url: SITE_URL },
+  } : path[0] === "eventos" && path[1] === "detalles" ? {
+    "@context": "https://schema.org",
+    "@type": "SportsEvent",
+    name: "STGO10K by ASICS 2026",
+    description: "Información y fotografías profesionales para STGO10K by ASICS en Ñuñoa, Santiago.",
+    startDate: "2026-10-18T08:00:00-03:00",
+    url: `${SITE_URL}${pathname}`,
+    location: { "@type": "Place", name: "Ñuñoa, Santiago", address: { "@type": "PostalAddress", addressLocality: "Ñuñoa", addressRegion: "Santiago", addressCountry: "CL" } },
+    organizer: { "@type": "Organization", name: "STGO10K", url: "https://stgo10k.cl/" },
   } : null;
   return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />{eventSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(eventSchema) }} />}<NomadaApp /></>;
 }
