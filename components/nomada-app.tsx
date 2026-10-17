@@ -165,8 +165,8 @@ function FooterLinks({ title, links }: { title: string; links: readonly (readonl
 
 function SectionHeading({ title, copy, action }: { eyebrow?: string; title: string; copy?: string; action?: React.ReactNode }) { return <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><h2 className="text-3xl font-black tracking-[-.055em] text-zinc-950 sm:text-4xl">{title}</h2>{copy && <p className="mt-3 max-w-xl text-sm leading-6 text-zinc-500">{copy}</p>}</div>{action}</div>; }
 
-const GLORIAS_ALBUM_URL = "https://fotop.com/fotos/eventos?evento=332429";
-const CORRAMOS_JUNTAS_ALBUM_URL = "https://nomadarace.fotop.com/events/corramos-juntas/e/345521";
+const GLORIAS_ALBUM_URL = "https://nomadarace.fotop.com.br/events/corrida-glorias-del-ejercito-2026/e/332429";
+const CORRAMOS_JUNTAS_ALBUM_URL = "https://nomadarace.fotop.com.br/events/corramos-juntas/e/345521";
 const IDEAL_GLOBAL_RACE_ALBUM_URL = "https://nomadarace.fotop.com.br/events/ideal-global-race/e/333466";
 const GLORIAS_CARD_START = new Date("2026-09-13T00:00:00-03:00").getTime();
 const GLORIAS_EVENT_NAME = "Corrida Glorias del Ejército";
@@ -262,10 +262,10 @@ function HomePage() {
   const racePhotoLinks: Record<string, string> = {
     [IDEAL_GLOBAL_RACE_NAME]: IDEAL_GLOBAL_RACE_ALBUM_URL,
     "Media Maratón de Mujeres de Santiago": CORRAMOS_JUNTAS_ALBUM_URL,
-    [GLORIAS_EVENT_NAME]: CORRAMOS_JUNTAS_ALBUM_URL,
+    [GLORIAS_EVENT_NAME]: GLORIAS_ALBUM_URL,
     [FEATURED_RACE_NAME]: CORRAMOS_JUNTAS_ALBUM_URL,
   };
-  const reviveRaces = [IDEAL_GLOBAL_RACE_NAME, FEATURED_RACE_NAME]
+  const reviveRaces = [FEATURED_RACE_NAME, IDEAL_GLOBAL_RACE_NAME, GLORIAS_EVENT_NAME]
     .map(name => calendarRaces.find(race => race.name === name))
     .filter((race): race is (typeof calendarRaces)[number] => Boolean(race));
   return <><PublicShell>
@@ -290,7 +290,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><SectionHeading title="Revive la carrera" copy="Tus recuerdos ya están listos. Busca y compra las fotos de las carreras que vivimos juntos." action={<Link href="/eventos" className="items-center gap-2 text-sm font-black sm:flex">Ver calendario <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid gap-5 md:grid-cols-2">{reviveRaces.map(race => <HomeRaceCard key={`${race.month}-${race.day}-${race.name}`} race={race} past photoUrl={racePhotoLinks[race.name]} statusLabel="Fotos disponibles" spotlight={race.name === FEATURED_RACE_NAME} />)}</div></section>
+      <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><SectionHeading title="Revive la carrera" copy="Tus recuerdos ya están listos. Busca y compra las fotos de las carreras que vivimos juntos." action={<Link href="/eventos" className="items-center gap-2 text-sm font-black sm:flex">Ver calendario <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{reviveRaces.map(race => <HomeRaceCard key={`${race.month}-${race.day}-${race.name}`} race={race} past photoUrl={racePhotoLinks[race.name]} statusLabel="Fotos disponibles" spotlight={race.name === FEATURED_RACE_NAME} />)}</div></section>
 
       <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><SectionHeading title="Próximas carreras" copy="Consulta las fechas, ubicaciones y distancias de cada evento en nuestro calendario." action={<Link href="/eventos" className="hidden items-center gap-2 text-sm font-black sm:flex">Ver calendario <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">{featuredRaces.map((race, index) => <HomeRaceCard key={`${race.month}-${race.day}-${race.name}-${index}`} race={race} spotlight={race.name === FEATURED_RACE_NAME} />)}</div></section>
 
