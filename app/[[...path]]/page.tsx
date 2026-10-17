@@ -5,12 +5,13 @@ import { events } from "@/lib/demo-data";
 
 type CatchAllPageProps = { params: Promise<{ path?: string[] }> };
 
-const SITE_URL = "https://nomadarace.cl";
+const SITE_URL = "https://www.nomadarace.cl";
 
 export function generateStaticParams() {
   const publicRoutes = [
     [],
     ["eventos"],
+    ["eventos", "detalles"],
     ["preguntas-frecuentes"],
     ["contacto"],
     ["organizadores"],
@@ -37,6 +38,12 @@ function routeMetadata(path: string[]): Metadata {
     ...defaults,
     title: "Calendario de carreras 2026 en Chile",
     description: "Calendario referencial de carreras 2026 en Chile: revisa fechas, ciudades y distancias para planificar tu próxima ruta.",
+  };
+  if (path[0] === "eventos" && path[1] === "detalles" && path.length === 2) return {
+    ...defaults,
+    title: "STGO10K | Detalles de la carrera",
+    description: "Fecha, horarios, ubicación, kit y cuenta regresiva para STGO10K by ASICS en Ñuñoa.",
+    openGraph: { url: canonical, title: "STGO10K | Nómada Race", description: "Toda la información para correr STGO10K by ASICS." },
   };
   if (path[0] === "preguntas-frecuentes") return {
     ...defaults,
@@ -75,6 +82,7 @@ function isPublicRoute(path: string[]) {
   if (["organizadores", "preguntas-frecuentes", "contacto"].includes(path[0]) && path.length === 1) return true;
   if (path[0] !== "eventos") return false;
   if (path.length === 1) return true;
+  if (path.length === 2 && path[1] === "detalles") return true;
 
   const event = events.find(item => item.slug === path[1]);
   return Boolean(event) && (path.length === 2 || (path.length === 3 && path[2] === "fotos"));
