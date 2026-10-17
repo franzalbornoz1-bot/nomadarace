@@ -41,9 +41,10 @@ function routeMetadata(path: string[]): Metadata {
   };
   if (path[0] === "eventos" && path[1] === "detalles" && path.length === 2) return {
     ...defaults,
-    title: "STGO10K | Detalles de la carrera",
-    description: "Fecha, horarios, ubicación, kit y cuenta regresiva para STGO10K by ASICS en Ñuñoa.",
-    openGraph: { url: canonical, title: "STGO10K | Nómada Race", description: "Toda la información para correr STGO10K by ASICS." },
+    title: "Santiago 10K 2026 | Fotos y detalles de la carrera | Nómada Race",
+    description: "Santiago 10K 2026: fecha, horarios, ubicación, kit, cuenta regresiva y fotos profesionales de STGO10K by ASICS en Ñuñoa.",
+    keywords: ["Santiago 10K", "Santiago10K 2026", "STGO10K", "fotos Santiago 10K", "fotos de carrera Santiago", "Nómada Race"],
+    openGraph: { url: canonical, title: "Santiago 10K 2026 | Nómada Race", description: "Información y fotos profesionales para vivir STGO10K by ASICS." },
   };
   if (path[0] === "preguntas-frecuentes") return {
     ...defaults,
