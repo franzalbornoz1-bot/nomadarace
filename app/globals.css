@@ -5,6 +5,7 @@
 :root {
   --background: #f7f8fa;
   --foreground: #252a2e;
+  --font-archivo: "Arial", "Helvetica Neue", Helvetica, sans-serif;
 }
 
 html.dark {
@@ -33,6 +34,11 @@ input:focus-visible, textarea:focus-visible { box-shadow: 0 0 0 4px rgba(254,92,
 @keyframes nomada-float {
   0%, 100% { transform: translate3d(0, 0, 0) rotate(0.001deg); }
   50% { transform: translate3d(0, -9px, 0) rotate(0.001deg); }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(0); }
+  55%, 100% { transform: translateX(420%); }
 }
 
 .glass-panel {

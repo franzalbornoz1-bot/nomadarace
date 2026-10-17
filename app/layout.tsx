@@ -1,16 +1,8 @@
 import type { Metadata } from "next";
-import { Archivo } from "next/font/google";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
-
-const archivo = Archivo({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  display: "swap",
-  variable: "--font-archivo",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://nomadarace.cl"),
@@ -30,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="es" className={archivo.variable} suppressHydrationWarning>
+  return <html lang="es" suppressHydrationWarning>
     <head>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

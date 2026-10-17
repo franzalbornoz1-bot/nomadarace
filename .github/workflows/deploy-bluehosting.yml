@@ -1,10 +1,11 @@
-name: Publicar en BlueHosting
+name: Publicar manualmente en BlueHosting (legacy)
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
+
+# La web pública se publica desde Vercel mediante la integración de GitHub.
+# Bluehost queda reservado para correo/cPanel; esta rutina solo se puede
+# ejecutar manualmente y no sobrescribe la web en cada push.
 
 permissions:
   contents: read

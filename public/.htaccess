@@ -5,12 +5,9 @@ ErrorDocument 404 /404.html
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # Resolve exported pages even when a folder with the same name exists.
+  # Resolve the current flat export before any legacy same-named folder.
   # Keep files such as Google's HTML verification at their original URL.
   RewriteCond %{REQUEST_FILENAME} !-f
-  # Prefer the exported directory page (for example /blog/index.html) over
-  # legacy flat files such as /blog.html left by a previous export.
-  RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{DOCUMENT_ROOT}/$1.html -f
   RewriteRule ^(.+?)/?$ $1.html [END]
 </IfModule>
