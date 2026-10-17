@@ -174,8 +174,9 @@ const IDEAL_GLOBAL_RACE_NAME = "Ideal Global Race";
 const FEATURED_RACE_NAME = "Corramos Juntas – Cáncer de Mamas";
 const SANTANDER_RACE_NAME = "Santander Rock ‘n’ Roll Running Series";
 const SANTIAGO_ASICS_RACE_NAME = "STGO10K by ASICS";
-const NEXT_RACE_NAMES = [SANTANDER_RACE_NAME, SANTIAGO_ASICS_RACE_NAME, "The North Face Endurance Trail", "Trail Eco Run Papudo"] as const;
-const HIGHLIGHTED_UPCOMING_RACE_NAMES = new Set<string>([SANTANDER_RACE_NAME, SANTIAGO_ASICS_RACE_NAME]);
+const PRIMARY_UPCOMING_RACE_NAMES = [SANTANDER_RACE_NAME, SANTIAGO_ASICS_RACE_NAME] as const;
+const SECONDARY_UPCOMING_RACE_NAMES = ["The North Face Endurance Trail", "Garganta del Diablo Trail Running", "Trail Eco Run Papudo", "Dog Race"] as const;
+const NEXT_RACE_NAMES = [...PRIMARY_UPCOMING_RACE_NAMES, ...SECONDARY_UPCOMING_RACE_NAMES] as const;
 const HIDDEN_HOME_RACE_NAME = "Media Maratón Cuesta Lastarria Loncoche";
 let cyberPopupShownThisSession = false;
 
@@ -260,6 +261,8 @@ function HomePage() {
   const featuredRaces = NEXT_RACE_NAMES
     .map(name => upcomingRaces.find(race => race.name === name))
     .filter((race): race is (typeof calendarRaces)[number] => Boolean(race));
+  const primaryUpcomingRaces = featuredRaces.filter(race => PRIMARY_UPCOMING_RACE_NAMES.includes(race.name as (typeof PRIMARY_UPCOMING_RACE_NAMES)[number]));
+  const secondaryUpcomingRaces = featuredRaces.filter(race => SECONDARY_UPCOMING_RACE_NAMES.includes(race.name as (typeof SECONDARY_UPCOMING_RACE_NAMES)[number]));
   // Esta lista se habilita manualmente cuando el álbum de un evento está listo.
   // Así, el bloque “Revive la carrera” no se llena solo con carreras que ya pasaron.
   const racePhotoLinks: Record<string, string> = {
@@ -293,7 +296,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><SectionHeading title="Próximas carreras" copy="Consulta las fechas, ubicaciones y distancias de cada evento en nuestro calendario." action={<Link href="/eventos" className="hidden items-center gap-2 text-sm font-black sm:flex">Ver calendario <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">{featuredRaces.map((race, index) => <HomeRaceCard key={`${race.month}-${race.day}-${race.name}-${index}`} race={race} spotlight={HIGHLIGHTED_UPCOMING_RACE_NAMES.has(race.name)} />)}</div></section>
+      <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><SectionHeading title="Próximas carreras" copy="Consulta las fechas, ubicaciones y distancias de cada evento en nuestro calendario." action={<Link href="/eventos" className="hidden items-center gap-2 text-sm font-black sm:flex">Ver calendario <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid gap-5 lg:grid-cols-2">{primaryUpcomingRaces.map(race => <HomeRaceCard key={`${race.month}-${race.day}-${race.name}`} race={race} spotlight />)}</div><div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{secondaryUpcomingRaces.map(race => <HomeRaceCard key={`${race.month}-${race.day}-${race.name}`} race={race} />)}</div></section>
 
       <section className="bg-[#FFF0E8]"><div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 lg:grid-cols-[.85fr_1.15fr] lg:px-8"><div className="self-center"><h2 className="text-4xl font-black leading-none tracking-[-.06em] text-zinc-950 sm:text-5xl">Tu foto puede<br />estar esperándote.</h2><p className="mt-5 max-w-md leading-7 text-zinc-600">Busca por dorsal o usa una selfie. En segundos encontrarás las fotos que cuentan cómo viviste la carrera.</p><Link href={PHOTO_STORE_URL}><Button className="mt-7">Buscar mis fotos <ScanFace className="ml-2 h-4 w-4" /></Button></Link></div><div className="grid grid-cols-2 gap-3 sm:grid-cols-3"><PhotoMosaic src={photoCards[4].src} className="mt-8" /><PhotoMosaic src={photoCards[6].src} /><PhotoMosaic src={photoCards[2].src} className="mt-12" /><PhotoMosaic src={photoCards[0].src} className="hidden sm:block" /><PhotoMosaic src={photoCards[5].src} className="hidden sm:mt-8 sm:block" /><PhotoMosaic src={photoCards[3].src} className="hidden sm:block" /></div></div></section>
       <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><SectionHeading title="Revive la carrera" copy="Tus recuerdos ya están listos. Busca y compra las fotos de las carreras que vivimos juntos." action={<Link href="/eventos" className="items-center gap-2 text-sm font-black sm:flex">Ver calendario <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{reviveRaces.map(race => <HomeRaceCard key={`${race.month}-${race.day}-${race.name}`} race={race} past photoUrl={racePhotoLinks[race.name]} statusLabel="Fotos disponibles" />)}</div></section>
