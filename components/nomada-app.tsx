@@ -181,40 +181,6 @@ const NEXT_RACE_NAMES = [...PRIMARY_UPCOMING_RACE_NAMES, ...SECONDARY_UPCOMING_R
 const HIDDEN_HOME_RACE_NAME = "Media Maratón Cuesta Lastarria Loncoche";
 let cyberPopupShownThisSession = false;
 
-let photosReadyPopupShownThisSession = false;
-
-function PhotosReadyPopup() {
-  const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (pathname === "/" && !photosReadyPopupShownThisSession) {
-      photosReadyPopupShownThisSession = true;
-      setOpen(true);
-    } else if (pathname !== "/") {
-      setOpen(false);
-    }
-  }, [pathname]);
-
-  if (pathname !== "/" || !open) return null;
-
-  return <div className="fixed inset-0 z-[80] flex items-center justify-center bg-zinc-950/75 p-4 backdrop-blur-md sm:p-6" role="dialog" aria-modal="true" aria-labelledby="photos-ready-popup-title">
-    <div className="relative isolate w-full max-w-2xl overflow-hidden rounded-[2rem] border border-white/25 bg-zinc-950 shadow-[0_30px_100px_rgba(0,0,0,.65)] sm:rounded-[2.5rem]">
-      <img src="/corramos-juntas-2026-popup.png" alt="Corramos Juntas 2026" draggable={false} onContextMenu={event => event.preventDefault()} className="pointer-events-none absolute inset-0 -z-20 h-full w-full select-none object-cover object-center" />
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-zinc-950/20 via-zinc-950/35 to-zinc-950/95" />
-      <button type="button" onClick={() => setOpen(false)} className="absolute right-4 top-4 z-10 grid h-11 w-11 place-items-center rounded-full border border-white/30 bg-zinc-950/55 text-white shadow-lg backdrop-blur transition hover:scale-105 hover:bg-white hover:text-zinc-950" aria-label="Cerrar aviso"><X className="h-5 w-5" /></button>
-      <div className="flex min-h-[min(620px,calc(100svh-2rem))] items-end p-7 text-white sm:min-h-[560px] sm:p-12">
-        <div className="w-full max-w-xl">
-          <p className="text-sm font-black uppercase tracking-[.16em] text-pink-200 sm:text-base">Corramos Juntas 2026</p>
-          <h2 id="photos-ready-popup-title" className="mt-3 text-5xl font-black leading-[.9] tracking-[-.07em] sm:text-7xl">Qué gusto verte.<br /><span className="text-pink-200">Tus fotos ya están listas.</span></h2>
-          <p className="mt-5 max-w-md text-lg leading-7 text-white/90 sm:text-xl">Encuentra tus momentos de Corramos Juntas y vuelve a vivir la carrera.</p>
-          <a href={CORRAMOS_JUNTAS_ALBUM_URL} target="_blank" rel="noreferrer" className="mt-8 flex w-full sm:w-auto"><Button className="h-auto min-h-16 w-full bg-pink-600 px-8 py-4 text-lg text-white hover:bg-pink-700 sm:min-w-80 sm:text-xl">Encuéntralas aquí <ArrowRight className="ml-3 h-5 w-5" /></Button></a>
-        </div>
-      </div>
-    </div>
-  </div>;
-}
-
 function CyberSalePopup() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -305,7 +271,7 @@ function HomePage() {
       <section className="mx-auto max-w-4xl px-5 py-20"><div className="rounded-[2rem] bg-orange-500 px-7 py-12 text-white sm:px-12"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-100">¿Dudas antes de correr?</p><div className="mt-4 grid gap-8 sm:grid-cols-[1fr_auto] sm:items-end"><div><h2 className="text-3xl font-black tracking-[-.06em] sm:text-4xl">Todo lo que necesitas saber, sin perder el ritmo.</h2><p className="mt-4 max-w-xl text-orange-50">Resolvemos las preguntas más frecuentes sobre fotos, preventas y tus recuerdos de carrera.</p></div><Link href="/preguntas-frecuentes"><Button variant="dark" className="shrink-0">Ir a ayuda <ArrowRight className="ml-2 h-4 w-4" /></Button></Link></div></div></section>
       <section className="relative isolate overflow-hidden bg-zinc-950 text-white"><img src={HOME_GALLERY_IMAGES[4]} alt="Comunidad de corredores compartiendo la energía de una carrera" loading="lazy" decoding="async" draggable={false} onContextMenu={event => event.preventDefault()} className="pointer-events-none absolute inset-0 h-full w-full select-none scale-105 object-cover blur-[3px]" /><div className="absolute inset-0 bg-gradient-to-r from-zinc-950/90 via-zinc-950/70 to-orange-950/45" /><div className="relative mx-auto flex min-h-[25rem] max-w-5xl flex-col items-center justify-center px-5 py-20 text-center sm:min-h-[30rem]"><p className="text-xs font-black uppercase tracking-[.22em] text-lime-300">COMUNIDAD NÓMADA RACE</p><h2 className="mt-5 max-w-4xl text-4xl font-black leading-[.95] tracking-[-.07em] sm:text-6xl">Más de mil personas ya son parte de la comunidad.</h2><p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-100 sm:text-xl">Te damos la bienvenida a Nómada Race.</p><a href="https://www.instagram.com/nomadarace.cl/" target="_blank" rel="noreferrer" className="mt-8 inline-flex"><Button className="min-h-14 px-8 text-base sm:text-lg">Súmate tú también <Instagram className="ml-3 h-5 w-5" /></Button></a></div></section>
   </main>
-  </PublicShell><PhotosReadyPopup /></>;
+  </PublicShell></>;
 }
 
 function RaceDateBadge({ day, weekday, spotlight = false }: { day: number; weekday: string; spotlight?: boolean }) { return <span className={cn("flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-2xl text-center leading-none", spotlight ? "border border-white/30 bg-white/15 text-white" : "bg-zinc-950 text-white")}><b className="text-xl leading-none">{String(day).padStart(2, "0")}</b><small className={cn("mt-1 text-[9px] font-bold uppercase tracking-wide", spotlight ? "text-orange-100" : "text-zinc-400")}>{weekday.slice(0, 3)}</small></span>; }
