@@ -335,11 +335,14 @@ function EventDetailPage({ event }: { event: RaceEvent }) {
 
 function EventDetailsPage() {
   const detail = activeEventDetail;
-  const now = useCurrentTime();
-  const remaining = useMemo(() => {
-    if (now === null) return null;
-    return Math.max(0, new Date(detail.startIso).getTime() - now);
-  }, [detail.startIso, now]);
+  const [now, setNow] = useState<number | null>(null);
+  useEffect(() => {
+    const update = () => setNow(Date.now());
+    update();
+    const interval = window.setInterval(update, 1_000);
+    return () => window.clearInterval(interval);
+  }, []);
+  const remaining = useMemo(() => now === null ? null : Math.max(0, new Date(detail.startIso).getTime() - now), [detail.startIso, now]);
   const countdown = remaining === null ? ["--", "--", "--", "--"] : [
     Math.floor(remaining / 86_400_000),
     Math.floor((remaining / 3_600_000) % 24),
@@ -351,7 +354,7 @@ function EventDetailsPage() {
     <section className="relative isolate bg-zinc-950 text-white">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_15%,rgba(254,92,19,.35),transparent_38%),linear-gradient(135deg,#101214_0%,#202326_58%,#111315_100%)]" />
       <div className="relative mx-auto grid max-w-7xl gap-12 px-5 pb-16 pt-14 lg:grid-cols-[1.1fr_.9fr] lg:items-end lg:px-8 lg:pb-24 lg:pt-24">
-        <div><Link href="/eventos" className="text-sm font-bold text-zinc-300 transition hover:text-white">← Volver al calendario</Link><p className="mt-14 text-xs font-black uppercase tracking-[.24em] text-orange-400">{detail.eyebrow}</p><h1 className="mt-4 max-w-3xl text-6xl font-black leading-[.86] tracking-[-.09em] sm:text-8xl">{detail.title}<span className="text-orange-500">.</span></h1><p className="mt-7 max-w-xl text-xl leading-8 text-zinc-200 sm:text-2xl">{detail.subtitle}</p><div className="mt-8 flex flex-wrap gap-3 text-sm font-bold"><span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2"><CalendarDays className="h-4 w-4 text-orange-400" />{detail.dateLabel}</span><span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2"><MapPin className="h-4 w-4 text-orange-400" />{detail.locationName}</span></div><div className="mt-9 flex flex-wrap gap-3"><a href={detail.officialUrl} target="_blank" rel="noreferrer"><Button className="h-12 px-6">Ver sitio oficial <ArrowRight className="ml-2 h-4 w-4" /></Button></a><a href={detail.mapUrl} target="_blank" rel="noreferrer" className="inline-flex h-12 items-center gap-2 rounded-xl border border-white/20 px-5 text-sm font-black text-white transition hover:bg-white/10"><MapPin className="h-4 w-4" />Ver ubicación</a></div></div>
+        <div><Link href="/eventos" className="text-sm font-bold text-zinc-300 transition hover:text-white">← Volver al calendario</Link><img src="https://stgo10k.cl/img/logos/2026/logo-heaer-STGO10K_present_MC.svg" alt="Santiago10K" width="360" height="92" className="mt-12 h-auto w-64 max-w-full object-contain object-left sm:w-80" /><p className="mt-8 text-xs font-black uppercase tracking-[.24em] text-orange-400">{detail.eyebrow}</p><h1 className="mt-4 max-w-3xl text-6xl font-black leading-[.86] tracking-[-.09em] sm:text-8xl">{detail.title}<span className="text-orange-500">.</span></h1><p className="mt-7 max-w-xl text-xl leading-8 text-zinc-200 sm:text-2xl">{detail.subtitle}</p><div className="mt-8 flex flex-wrap gap-3 text-sm font-bold"><span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2"><CalendarDays className="h-4 w-4 text-orange-400" />{detail.dateLabel}</span><span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2"><MapPin className="h-4 w-4 text-orange-400" />{detail.locationName}</span></div><div className="mt-9 flex flex-wrap gap-3"><a href={detail.officialUrl} target="_blank" rel="noreferrer"><Button className="h-12 px-6">Ver sitio oficial <ArrowRight className="ml-2 h-4 w-4" /></Button></a><a href={detail.mapUrl} target="_blank" rel="noreferrer" className="inline-flex h-12 items-center gap-2 rounded-xl border border-white/20 px-5 text-sm font-black text-white transition hover:bg-white/10"><MapPin className="h-4 w-4" />Ver ubicación</a></div></div>
         <div className="rounded-[2rem] border border-white/15 bg-white/[.08] p-6 shadow-2xl backdrop-blur sm:p-8"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-300">CUENTA REGRESIVA</p><p className="mt-3 text-lg font-bold text-zinc-200">Nos vemos en la línea de partida.</p><div className="mt-7 grid grid-cols-4 gap-2 sm:gap-3">{countdown.map((value, index) => <div key={index} className="rounded-2xl bg-zinc-950/70 px-2 py-4 text-center"><p className="text-3xl font-black tracking-[-.07em] sm:text-5xl">{value}</p><p className="mt-1 text-[9px] font-black uppercase tracking-[.16em] text-zinc-500">{["días", "horas", "min", "seg"][index]}</p></div>)}</div><p className="mt-6 text-sm leading-6 text-zinc-400">Cuatro oportunidades para vivir la experiencia, superarte y correr junto a la comunidad de Santiago.</p></div>
       </div>
     </section>

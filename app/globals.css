@@ -181,6 +181,7 @@ html, body, .premium-nav, .glass-panel, .theme-toggle, input, textarea {
 .dark input, .dark textarea { color: #f4f7f8; }
 .dark input::placeholder, .dark textarea::placeholder { color: #849199; }
 .dark section[class*="bg-[#FFF0E8]"] { background: radial-gradient(38rem 25rem at 85% 20%, rgba(254,92,19,.13), transparent 62%), #171412 !important; }
+.dark section[class*="bg-[#f4f6ee]"] { background: #151a1e !important; }
 
 /* The compact all-caps labels made sections feel templated. Headings now carry the hierarchy. */
 p[class*="uppercase"][class*="tracking-[.2em]"][class*="text-orange-600"] { display: none; }

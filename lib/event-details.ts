@@ -25,7 +25,7 @@ export const activeEventDetail: EventDetailConfig = {
   startIso: "2026-10-18T08:00:00-03:00",
   locationName: "Ñuñoa, Santiago",
   locationDescription: "Circuito oficial por las calles de la comuna de Ñuñoa.",
-  mapUrl: "https://www.google.com/maps/search/?api=1&query=Ñuñoa%2C%20Santiago%2C%20Chile",
+  mapUrl: "https://maps.app.goo.gl/8tumukvqKoug8b8VA",
   distances: [
     { label: "10K", time: "08:00 hrs", description: "El desafío principal" },
     { label: "5K", time: "08:00 hrs", description: "Corre a tu propio ritmo" },
