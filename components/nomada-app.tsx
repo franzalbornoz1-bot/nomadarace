@@ -18,7 +18,7 @@ import { clients, events, orders, photoCards, photographers, type EventStatus, t
 import { calendarRaceDescription, calendarRaces, type CalendarRace } from "@/lib/calendar-2026";
 import { getBlogPublicationDate } from "@/lib/blog-publication";
 
-const PHOTO_STORE_URL = "http://fotop.com/fotos/eventos?evento=345521";
+const PHOTO_STORE_URL = "https://nomadarace.fotop.com.br/";
 const HOME_GALLERY_IMAGES = ["/home-photo-1.jpg", "/home-photo-2.jpg", "/home-photo-3.jpg", "/home-photo-4.jpg", "/home-photo-5.jpg", "/home-photo-6.jpg"] as const;
 const CONTACT_EMAIL = "contacto@nomadafilms.cl";
 const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
@@ -166,9 +166,6 @@ function FooterLinks({ title, links }: { title: string; links: readonly (readonl
 
 function SectionHeading({ title, copy, action }: { eyebrow?: string; title: string; copy?: string; action?: React.ReactNode }) { return <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><h2 className="text-3xl font-black tracking-[-.055em] text-zinc-950 sm:text-4xl">{title}</h2>{copy && <p className="mt-3 max-w-xl text-sm leading-6 text-zinc-500">{copy}</p>}</div>{action}</div>; }
 
-const GLORIAS_ALBUM_URL = "https://nomadarace.fotop.com.br/events/corrida-glorias-del-ejercito-2026/e/332429";
-const CORRAMOS_JUNTAS_ALBUM_URL = "https://nomadarace.fotop.com.br/events/corramos-juntas/e/345521";
-const IDEAL_GLOBAL_RACE_ALBUM_URL = "https://nomadarace.fotop.com.br/events/ideal-global-race/e/333466";
 const GLORIAS_CARD_START = new Date("2026-09-13T00:00:00-03:00").getTime();
 const GLORIAS_EVENT_NAME = "Corrida Glorias del Ejército";
 const IDEAL_GLOBAL_RACE_NAME = "Ideal Global Race";
@@ -233,10 +230,10 @@ function HomePage() {
   // Esta lista se habilita manualmente cuando el álbum de un evento está listo.
   // Así, el bloque “Revive la carrera” no se llena solo con carreras que ya pasaron.
   const racePhotoLinks: Record<string, string> = {
-    [IDEAL_GLOBAL_RACE_NAME]: IDEAL_GLOBAL_RACE_ALBUM_URL,
-    "Media Maratón de Mujeres de Santiago": CORRAMOS_JUNTAS_ALBUM_URL,
-    [GLORIAS_EVENT_NAME]: GLORIAS_ALBUM_URL,
-    [FEATURED_RACE_NAME]: CORRAMOS_JUNTAS_ALBUM_URL,
+    [IDEAL_GLOBAL_RACE_NAME]: PHOTO_STORE_URL,
+    "Media Maratón de Mujeres de Santiago": PHOTO_STORE_URL,
+    [GLORIAS_EVENT_NAME]: PHOTO_STORE_URL,
+    [FEATURED_RACE_NAME]: PHOTO_STORE_URL,
   };
   const reviveRaces = [FEATURED_RACE_NAME, IDEAL_GLOBAL_RACE_NAME, GLORIAS_EVENT_NAME]
     .map(name => calendarRaces.find(race => race.name === name))
