@@ -5,7 +5,9 @@
 :root {
   --background: #f7f8fa;
   --foreground: #252a2e;
-  --font-archivo: "Arial", "Helvetica Neue", Helvetica, sans-serif;
+  /* Keep the same deterministic font stack on desktop and mobile. Using
+     Helvetica Neue first caused iOS to render a different face and width. */
+  --font-archivo: Arial, Helvetica, sans-serif;
 }
 
 html.dark {
@@ -15,10 +17,10 @@ html.dark {
 
 * { box-sizing: border-box; }
 html { overflow-x: hidden; scroll-behavior: smooth; background: var(--background); }
-body { margin: 0; min-width: 320px; overflow-x: hidden; background: radial-gradient(65rem 38rem at 6% -8%, rgba(254,92,19,.11), transparent 52%), radial-gradient(52rem 32rem at 96% 8%, rgba(86,25,152,.07), transparent 50%), var(--background); color: var(--foreground); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body { margin: 0; min-width: 320px; overflow-x: hidden; background: radial-gradient(65rem 38rem at 6% -8%, rgba(254,92,19,.11), transparent 52%), radial-gradient(52rem 32rem at 96% 8%, rgba(86,25,152,.07), transparent 50%), var(--background); color: var(--foreground); font-family: Arial, Helvetica, sans-serif; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 button, input, textarea { font: inherit; }
 button { cursor: pointer; }
-h1, h2, h3, .font-display { font-family: var(--font-archivo), "Helvetica Neue", Arial, sans-serif; }
+h1, h2, h3, .font-display { font-family: var(--font-archivo); }
 h1 { letter-spacing: -.065em !important; }
 h2, h3 { letter-spacing: -.035em !important; }
 h1, h2 { text-wrap: balance; }
