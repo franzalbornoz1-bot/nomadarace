@@ -637,6 +637,22 @@ function GuideArticle({ guide }: { guide: Guide }) { const current = guides.find
 
 export function NomadaApp() {
   const path = usePathname();
+  useEffect(() => {
+    const protectStockImages = (event: MouseEvent) => {
+      const target = event.target;
+      if (target instanceof HTMLImageElement && target.src.includes("/stock/")) event.preventDefault();
+    };
+    const preventStockDrag = (event: DragEvent) => {
+      const target = event.target;
+      if (target instanceof HTMLImageElement && target.src.includes("/stock/")) event.preventDefault();
+    };
+    document.addEventListener("contextmenu", protectStockImages);
+    document.addEventListener("dragstart", preventStockDrag);
+    return () => {
+      document.removeEventListener("contextmenu", protectStockImages);
+      document.removeEventListener("dragstart", preventStockDrag);
+    };
+  }, []);
   if (path === "/demo") return <DemoPage />;
   if (path === "/fotografos/login") return <PhotographerLogin />;
   if (path === "/fotografos/dashboard") return <PhotographerDashboard />;

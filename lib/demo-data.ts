@@ -53,14 +53,22 @@ export const photographers = [
 ];
 
 const photoImages = [
-  "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=480&q=65",
-  "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=480&q=65",
-  "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=480&q=65",
-  "https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=480&q=65",
-  "https://images.unsplash.com/photo-1502904550040-7534597429ae?auto=format&fit=crop&w=480&q=65",
-  "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=480&q=65",
-  "https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=480&q=65",
-  "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=480&q=65",
+  "/stock/SRC_6981_4306237_333466.jpg",
+  "/stock/SRC_6980_4306237_333466.jpg",
+  "/stock/NOMADARACE-1373_4306237_332429.jpg",
+  "/stock/NOMADARACE-1064_4306237_332429.jpg",
+  "/stock/NOMADARACE-1061_4306237_332429.jpg",
+  "/stock/DSC09170_4306237_330033.jpg",
+  "/stock/DSC01999_4306237_332429.jpg",
+  "/stock/B58A2042_4306237_333466.jpg",
+  "/stock/B58A0164_4306237_333466.jpg",
+  "/stock/DSC06112_4306237_333466.jpg",
+  "/stock/SRC_8053_4306237_333466.jpg",
+  "/stock/SRC_7171_4306237_333466.jpg",
+  "/stock/DSC06004_4306237_332429.jpg",
+  "/stock/DSC04233_4306237_333466.jpg",
+  "/stock/DSC00213_4306237_332429.jpg",
+  "/stock/DSC05097_4306237_333466.jpg",
 ];
 
 export const photoCards = Array.from({ length: 50 }, (_, index) => ({
