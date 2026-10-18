@@ -264,7 +264,7 @@ function HomePage() {
     [SANTANDER_RACE_NAME]: SANTANDER_RACE_URL,
     [SANTIAGO_ASICS_RACE_NAME]: SANTIAGO_10K_PHOTO_URL,
   };
-  const reviveRaces = [GLORIAS_EVENT_NAME, IDEAL_GLOBAL_RACE_NAME, FEATURED_RACE_NAME, SANTANDER_RACE_NAME, SANTIAGO_ASICS_RACE_NAME]
+  const reviveRaces = [SANTIAGO_ASICS_RACE_NAME, SANTANDER_RACE_NAME, FEATURED_RACE_NAME, IDEAL_GLOBAL_RACE_NAME, GLORIAS_EVENT_NAME]
     .map(name => calendarRaces.find(race => race.name === name))
     .filter((race): race is (typeof calendarRaces)[number] => Boolean(race));
   return <><PublicShell>
