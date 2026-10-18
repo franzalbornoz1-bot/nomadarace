@@ -28,7 +28,7 @@ declare global {
 
 const PHOTO_STORE_URL = "https://nomadarace.fotop.com.br/";
 const SANTANDER_RACE_URL = "https://nomadarace.fotop.com.br/events/santander-rock-n-roll-running/e/348604";
-const SANTIAGO_10K_PHOTO_URL = PHOTO_STORE_URL;
+const SANTIAGO_10K_PHOTO_URL = "https://nomadarace.fotop.com.br/events/marley-coffee-stgo-10k/e/349044";
 const HOME_GALLERY_IMAGES = ["/home-photo-1.jpg", "/home-photo-2.jpg", "/home-photo-3.jpg", "/home-photo-4.jpg", "/home-photo-5.jpg", "/home-photo-6.jpg"] as const;
 const CONTACT_EMAIL = "contacto@nomadafilms.cl";
 const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
