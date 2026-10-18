@@ -46,5 +46,5 @@ export const activeEventDetail: EventDetailConfig = {
     address: "Alcaldesa Balbina Vera 3526, Ñuñoa (detrás de la Municipalidad de Ñuñoa)",
     details: "Retira tu polera técnica, bolsa, dorsal con chip de tiempos y medalla de finisher. Lleva tu cédula o pasaporte; para retiros por terceros se solicita copia y autorización simple.",
   },
-  officialUrl: "https://stgo10k.cl/",
+  officialUrl: "https://nomadarace.fotop.com.br/",
 };
