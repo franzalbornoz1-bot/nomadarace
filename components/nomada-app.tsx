@@ -201,9 +201,9 @@ const PRIMARY_UPCOMING_RACE_NAMES = [SANTANDER_RACE_NAME, SANTIAGO_ASICS_RACE_NA
 const SECONDARY_UPCOMING_RACE_NAMES = ["The North Face Endurance Trail", "Garganta del Diablo Trail Running", "Trail Eco Run Papudo", "Dog Race"] as const;
 const NEXT_RACE_NAMES = [...PRIMARY_UPCOMING_RACE_NAMES, ...SECONDARY_UPCOMING_RACE_NAMES] as const;
 const HIDDEN_HOME_RACE_NAME = "Media Maratón Cuesta Lastarria Loncoche";
-let rockNRollPopupShownThisSession = false;
+let readyPhotosPopupShownThisSession = false;
 
-function RockNRollReadyPopup() {
+function ReadyPhotosPopup() {
   const pathname = usePathname();
   const now = useCurrentTime();
   const [open, setOpen] = useState(false);
@@ -211,9 +211,9 @@ function RockNRollReadyPopup() {
   useEffect(() => {
     // Activación: sábado 17 de octubre de 2026, 09:30 en Santiago de Chile.
     const activationTime = new Date("2026-10-17T09:30:00-03:00").getTime();
-    const shouldShow = pathname === "/" && now !== null && now >= activationTime && !rockNRollPopupShownThisSession;
+    const shouldShow = pathname === "/" && now !== null && now >= activationTime && !readyPhotosPopupShownThisSession;
     if (shouldShow) {
-      rockNRollPopupShownThisSession = true;
+      readyPhotosPopupShownThisSession = true;
       setOpen(true);
     } else {
       setOpen(false);
@@ -222,20 +222,18 @@ function RockNRollReadyPopup() {
 
   if (pathname !== "/" || !open) return null;
 
-  return <div className="fixed inset-0 z-[80] flex items-center justify-center bg-zinc-950/80 p-4 backdrop-blur-md sm:p-6" role="dialog" aria-modal="true" aria-labelledby="rocknroll-popup-title">
+  return <div className="fixed inset-0 z-[80] flex items-center justify-center bg-zinc-950/80 p-4 backdrop-blur-md sm:p-6" role="dialog" aria-modal="true" aria-labelledby="ready-photos-popup-title">
     <div className="relative isolate w-full max-w-4xl overflow-hidden rounded-[2rem] border border-white/20 bg-zinc-950 shadow-[0_30px_100px_rgba(0,0,0,.65)] sm:rounded-[2.5rem]">
       <img src="/stock/SRC_6981_4306237_333466.jpg" alt="" aria-hidden="true" draggable={false} onContextMenu={event => event.preventDefault()} className="pointer-events-none absolute inset-0 -z-20 h-full w-full scale-105 select-none object-cover object-center grayscale blur-[4px] opacity-55" />
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(120deg,rgba(9,9,11,.91)_8%,rgba(9,9,11,.63)_52%,rgba(9,9,11,.82)_100%)]" />
       <button type="button" onClick={() => setOpen(false)} className="absolute right-4 top-4 z-10 grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-zinc-950/55 text-white shadow-lg backdrop-blur transition hover:scale-105 hover:bg-white hover:text-zinc-950" aria-label="Cerrar aviso"><X className="h-5 w-5" /></button>
       <div className="grid min-h-[min(620px,calc(100svh-2rem))] items-end p-7 text-white sm:min-h-[540px] sm:p-12 lg:p-16">
         <div className="max-w-2xl">
-          <img src="/rock-n-roll-running-series.webp" alt="Rock ’n’ Roll Running Series" width="320" height="90" draggable={false} onContextMenu={event => event.preventDefault()} className="pointer-events-none mb-8 h-auto w-56 select-none object-contain object-left sm:w-72" />
-          <p className="text-lg font-black uppercase tracking-[.12em] text-orange-200 sm:text-xl">Rock ’n’ Roll Running Series</p>
-          <h1 id="rocknroll-popup-title" className="mt-2 text-5xl font-black leading-[.9] tracking-[-.07em] text-white sm:text-7xl lg:text-8xl">Tus fotos<br /><span className="text-orange-500">ya están listas.</span></h1>
+          <h1 id="ready-photos-popup-title" className="text-5xl font-black leading-[.9] tracking-[-.07em] text-white sm:text-7xl lg:text-8xl">Tus fotos<br /><span className="text-orange-500">ya están listas.</span></h1>
           <p className="mt-7 max-w-xl text-lg leading-7 text-zinc-100 sm:text-2xl sm:leading-9">Vuelve a vivir cada kilómetro y encuentra tus mejores momentos de carrera.</p>
           <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row">
-            <a href={SANTIAGO_10K_DETAILS_URL} onClick={() => trackAction("event_details_click", { placement: "popup", event: "stgo10k" })} className="flex w-full sm:w-auto"><Button className="h-auto min-h-16 w-full px-6 py-4 text-base sm:min-w-64 sm:text-lg">Ver Santiago 10K <ArrowRight className="ml-3 h-5 w-5" /></Button></a>
-            <a href={SANTANDER_RACE_URL} target="_blank" rel="noreferrer" onClick={() => trackAction("photo_purchase_click", { placement: "popup", event: "santander" })} className="flex w-full sm:w-auto"><Button variant="dark" className="h-auto min-h-16 w-full border-white/40 px-6 py-4 text-base sm:min-w-64 sm:text-lg">Ver fotos Santander <ArrowRight className="ml-3 h-5 w-5" /></Button></a>
+            <a href={SANTIAGO_10K_DETAILS_URL} onClick={() => trackAction("event_details_click", { placement: "popup", event: "stgo10k" })} className="flex w-full sm:w-auto"><Button className="h-auto min-h-16 w-full justify-between gap-3 px-5 py-3 text-base sm:min-w-64 sm:text-lg"><img src="/santiago10k-logo.svg" alt="Santiago 10K" width="150" height="38" draggable={false} onContextMenu={event => event.preventDefault()} className="pointer-events-none h-8 w-auto max-w-[9rem] select-none object-contain object-left" /><ArrowRight className="h-5 w-5 shrink-0" /></Button></a>
+            <a href={SANTANDER_RACE_URL} target="_blank" rel="noreferrer" onClick={() => trackAction("photo_purchase_click", { placement: "popup", event: "santander" })} className="flex w-full sm:w-auto"><Button variant="dark" className="h-auto min-h-16 w-full justify-between gap-3 border-white/40 px-5 py-3 text-base sm:min-w-64 sm:text-lg"><img src="/rock-n-roll-running-series.webp" alt="Rock ’n’ Roll Running Series" width="180" height="52" draggable={false} onContextMenu={event => event.preventDefault()} className="pointer-events-none h-9 w-auto max-w-[11rem] select-none object-contain object-left" /><ArrowRight className="h-5 w-5 shrink-0" /></Button></a>
           </div>
         </div>
       </div>
@@ -243,7 +241,7 @@ function RockNRollReadyPopup() {
   </div>;
 }
 
-function PublicShell({ children }: { children: React.ReactNode }) { return <div className="min-h-screen bg-brand-pure"><PublicHeader />{children}<Footer /><RockNRollReadyPopup /></div>; }
+function PublicShell({ children }: { children: React.ReactNode }) { return <div className="min-h-screen bg-brand-pure"><PublicHeader />{children}<Footer /><ReadyPhotosPopup /></div>; }
 
 function HomePage() {
   const today = useChileToday();
