@@ -28,6 +28,7 @@ declare global {
 
 const PHOTO_STORE_URL = "https://nomadarace.fotop.com.br/";
 const SANTANDER_RACE_URL = "https://nomadarace.fotop.com.br/events/santander-rock-n-roll-running/e/348604";
+const SANTIAGO_10K_DETAILS_URL = "/eventos/detalles";
 const HOME_GALLERY_IMAGES = ["/home-photo-1.jpg", "/home-photo-2.jpg", "/home-photo-3.jpg", "/home-photo-4.jpg", "/home-photo-5.jpg", "/home-photo-6.jpg"] as const;
 const CONTACT_EMAIL = "contacto@nomadafilms.cl";
 const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
@@ -231,8 +232,11 @@ function RockNRollReadyPopup() {
           <img src="/rock-n-roll-running-series.webp" alt="Rock ’n’ Roll Running Series" width="320" height="90" draggable={false} onContextMenu={event => event.preventDefault()} className="pointer-events-none mb-8 h-auto w-56 select-none object-contain object-left sm:w-72" />
           <p className="text-lg font-black uppercase tracking-[.12em] text-orange-200 sm:text-xl">Rock ’n’ Roll Running Series</p>
           <h1 id="rocknroll-popup-title" className="mt-2 text-5xl font-black leading-[.9] tracking-[-.07em] text-white sm:text-7xl lg:text-8xl">Tus fotos<br /><span className="text-orange-500">ya están listas.</span></h1>
-          <p className="mt-7 max-w-xl text-lg leading-7 text-zinc-100 sm:text-2xl sm:leading-9">Vuelve a vivir tu carrera y encuentra tus mejores momentos en la galería oficial.</p>
-          <a href={SANTANDER_RACE_URL} target="_blank" rel="noreferrer" onClick={() => trackAction("photo_purchase_click", { placement: "popup", event: "santander" })} className="mt-8 flex w-full sm:w-auto"><Button className="h-auto min-h-16 w-full px-8 py-4 text-lg sm:min-w-80 sm:text-xl">Ver mis fotos <ArrowRight className="ml-3 h-5 w-5" /></Button></a>
+          <p className="mt-7 max-w-xl text-lg leading-7 text-zinc-100 sm:text-2xl sm:leading-9">Vuelve a vivir cada kilómetro y encuentra tus mejores momentos de carrera.</p>
+          <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row">
+            <a href={SANTIAGO_10K_DETAILS_URL} onClick={() => trackAction("event_details_click", { placement: "popup", event: "stgo10k" })} className="flex w-full sm:w-auto"><Button className="h-auto min-h-16 w-full px-6 py-4 text-base sm:min-w-64 sm:text-lg">Ver Santiago 10K <ArrowRight className="ml-3 h-5 w-5" /></Button></a>
+            <a href={SANTANDER_RACE_URL} target="_blank" rel="noreferrer" onClick={() => trackAction("photo_purchase_click", { placement: "popup", event: "santander" })} className="flex w-full sm:w-auto"><Button variant="dark" className="h-auto min-h-16 w-full border-white/40 px-6 py-4 text-base sm:min-w-64 sm:text-lg">Ver fotos Santander <ArrowRight className="ml-3 h-5 w-5" /></Button></a>
+          </div>
         </div>
       </div>
     </div>
