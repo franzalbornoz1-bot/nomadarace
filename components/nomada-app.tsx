@@ -20,6 +20,12 @@ import { calendarRaceDescription, calendarRaces, type CalendarRace } from "@/lib
 import { getBlogPublicationDate } from "@/lib/blog-publication";
 import { activeEventDetail } from "@/lib/event-details";
 
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
 const PHOTO_STORE_URL = "https://nomadarace.fotop.com.br/";
 const SANTANDER_RACE_URL = "https://nomadarace.fotop.com.br/events/santander-rock-n-roll-running/e/348604";
 const HOME_GALLERY_IMAGES = ["/home-photo-1.jpg", "/home-photo-2.jpg", "/home-photo-3.jpg", "/home-photo-4.jpg", "/home-photo-5.jpg", "/home-photo-6.jpg"] as const;
@@ -30,6 +36,7 @@ const VISIBLE_CALENDAR_MONTHS = ["Octubre", "Noviembre", "Diciembre"] as const;
 
 function trackAction(name: string, properties: Record<string, string>) {
   void track(name, properties);
+  window.gtag?.("event", name, properties);
 }
 
 function calendarRaceDateKey(race: CalendarRace) {
