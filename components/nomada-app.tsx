@@ -273,6 +273,7 @@ function HomePage() {
   // Esta lista se habilita manualmente cuando el álbum de un evento está listo.
   // Así, el bloque “Revive la carrera” no se llena solo con carreras que ya pasaron.
   const racePhotoLinks: Record<string, string> = {
+    "Corrida por la Vida Yo Mujer": PHOTO_STORE_URL,
     [IDEAL_GLOBAL_RACE_NAME]: IDEAL_GLOBAL_RACE_URL,
     "Media Maratón de Mujeres de Santiago": PHOTO_STORE_URL,
     [GLORIAS_EVENT_NAME]: GLORIAS_RACE_URL,
@@ -280,11 +281,9 @@ function HomePage() {
     [SANTANDER_RACE_NAME]: SANTANDER_RACE_URL,
     [SANTIAGO_ASICS_RACE_NAME]: SANTIAGO_10K_PHOTO_URL,
   };
-  const reviveRaces = [SANTIAGO_ASICS_RACE_NAME, SANTANDER_RACE_NAME, FEATURED_RACE_NAME, IDEAL_GLOBAL_RACE_NAME, GLORIAS_EVENT_NAME]
+  const reviveRaces = ["Corrida por la Vida Yo Mujer", SANTIAGO_ASICS_RACE_NAME, SANTANDER_RACE_NAME, FEATURED_RACE_NAME, IDEAL_GLOBAL_RACE_NAME, GLORIAS_EVENT_NAME]
     .map(name => calendarRaces.find(race => race.name === name))
     .filter((race): race is (typeof calendarRaces)[number] => Boolean(race));
-  const newestReviveRaces = reviveRaces.slice(0, 2);
-  const olderReviveRaces = reviveRaces.slice(2);
   return <><PublicShell>
     <main>
       <section className="home-hero relative isolate min-h-[35rem] overflow-hidden bg-[#F7F8FC] sm:min-h-[40rem]">
@@ -306,7 +305,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-20"><SectionHeading title="Revive la carrera" copy="Tus recuerdos ya están listos. Busca y compra las fotos de las carreras que vivimos juntos." action={<Link href={PHOTO_STORE_URL} className="items-center gap-2 text-sm font-black sm:flex" onClick={() => trackAction("photo_search_click", { placement: "revive_races", destination: "photo_store" })}>Ver todas las fotos <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid gap-5 lg:grid-cols-2">{newestReviveRaces.map(race => <HomeRaceCard key={`${race.month}-${race.day}-${race.name}`} race={race} past photoUrl={racePhotoLinks[race.name]} statusLabel="Fotos disponibles" />)}</div><div className="mt-5 grid gap-3 sm:grid-cols-3">{olderReviveRaces.map(race => <PhotoRaceNameCard key={`${race.month}-${race.day}-${race.name}`} race={race} photoUrl={racePhotoLinks[race.name]} />)}</div></section>
+      <section className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-20"><SectionHeading title="Revive la carrera" copy="Tus recuerdos ya están listos. Busca y compra las fotos de las carreras que vivimos juntos." action={<Link href={PHOTO_STORE_URL} className="items-center gap-2 text-sm font-black sm:flex" onClick={() => trackAction("photo_search_click", { placement: "revive_races", destination: "photo_store" })}>Ver todas las fotos <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">{reviveRaces.map(race => <PhotoRaceNameCard key={`${race.month}-${race.day}-${race.name}`} race={race} photoUrl={racePhotoLinks[race.name]} />)}</div></section>
 
       <section className="bg-[#FFF0E8]"><div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 lg:grid-cols-[.85fr_1.15fr] lg:px-8"><div className="self-center"><h2 className="text-4xl font-black leading-none tracking-[-.06em] text-zinc-950 sm:text-5xl">Tu foto puede<br />estar esperándote.</h2><p className="mt-5 max-w-md leading-7 text-zinc-600">Usa una selfie para encontrar las fotos que cuentan cómo viviste la carrera.</p><Link href={PHOTO_STORE_URL} onClick={() => trackAction("photo_search_click", { placement: "waiting_photo", destination: "photo_store" })}><Button className="mt-7">Buscar mis fotos <ScanFace className="ml-2 h-4 w-4" /></Button></Link></div><div className="grid grid-cols-3 gap-2 sm:grid-cols-3 sm:gap-3"><PhotoMosaic src={HOME_GALLERY_IMAGES[0]} className="mt-4 sm:mt-8" /><PhotoMosaic src={HOME_GALLERY_IMAGES[1]} /><PhotoMosaic src={HOME_GALLERY_IMAGES[2]} className="mt-6 sm:mt-12" /><PhotoMosaic src={HOME_GALLERY_IMAGES[3]} className="hidden sm:block" /><PhotoMosaic src={HOME_GALLERY_IMAGES[4]} className="hidden sm:mt-8 sm:block" /><PhotoMosaic src={HOME_GALLERY_IMAGES[5]} className="hidden sm:block" /></div></div></section>
       <section className="border-y border-zinc-200 bg-white"><div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-20 sm:py-24 lg:grid-cols-[.9fr_1.1fr] lg:gap-20 lg:px-8"><div className="mx-auto w-full max-w-[15rem] sm:max-w-[30rem]"><div className="pointer-events-none aspect-square overflow-hidden rounded-full border-[10px] border-[#dce8ee] shadow-[0_24px_60px_rgba(24,28,31,.14)]"><img src="/home-circle.jpg" alt="Corredora celebrando después de una carrera" loading="lazy" decoding="async" draggable={false} onContextMenu={event => event.preventDefault()} className="pointer-events-none h-full w-full scale-[1.35] select-none object-cover object-[48%_48%]" /></div></div><div className="max-w-2xl text-center lg:text-left"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-600">MOMENTOS QUE QUEDAN</p><h2 className="mt-4 text-4xl font-black leading-[.95] tracking-[-.065em] text-zinc-950 sm:text-5xl">Lo que lograste<br />merece volver a sentirse.</h2><p className="mt-6 text-lg leading-8 text-zinc-600">No fotografiamos solo el paso por la meta. Buscamos esa mirada, ese gesto y esa energía que hacen que cada carrera sea tuya, para convertirlos en recuerdos que puedas revivir una y otra vez.</p><Link href="/sobre-nomada-race" className="mt-7 inline-flex"><Button variant="dark">Conoce Nómada Race <ArrowRight className="ml-2 h-4 w-4" /></Button></Link></div></div></section>
