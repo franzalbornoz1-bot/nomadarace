@@ -11,6 +11,7 @@ export function generateStaticParams() {
   const publicRoutes = [
     [],
     ["eventos"],
+    ["eventos", "2027"],
     ["eventos", "detalles"],
     ["preguntas-frecuentes"],
     ["contacto"],
@@ -42,6 +43,11 @@ function routeMetadata(path: string[]): Metadata {
     ...defaults,
     title: "Calendario de carreras 2026 en Chile",
     description: "Calendario referencial de carreras 2026 en Chile: revisa fechas, ciudades y distancias para planificar tu próxima ruta.",
+  };
+  if (path[0] === "eventos" && path[1] === "2027" && path.length === 2) return {
+    ...defaults,
+    title: "Carreras 2027 en Chile | Nómada Race",
+    description: "Conoce las próximas carreras de 2027 en Chile y planifica tu temporada junto a Nómada Race.",
   };
   if (path[0] === "eventos" && path[1] === "detalles" && path.length === 2) return {
     ...defaults,
