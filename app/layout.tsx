@@ -36,7 +36,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         {`window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', 'G-GPMLF3FKXN', { send_page_view: false });`}
+          gtag('config', 'G-GPMLF3FKXN');`}
       </Script>
       <Script id="nomada-theme" strategy="beforeInteractive">{`(function () {
         try {
