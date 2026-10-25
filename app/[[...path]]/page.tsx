@@ -97,6 +97,7 @@ function isPublicRoute(path: string[]) {
   if (["organizadores", "sobre-nomada-race", "packs-y-precios", "preguntas-frecuentes", "contacto", "privacidad", "terminos"].includes(path[0]) && path.length === 1) return true;
   if (path[0] !== "eventos") return false;
   if (path.length === 1) return true;
+  if (path.length === 2 && path[1] === "2027") return true;
   if (path.length === 2 && path[1] === "detalles") return true;
 
   const event = events.find(item => item.slug === path[1]);
