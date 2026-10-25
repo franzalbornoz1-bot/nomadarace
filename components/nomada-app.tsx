@@ -253,7 +253,7 @@ function ReadyPhotosPopup() {
   </div>;
 }
 
-function PublicShell({ children }: { children: React.ReactNode }) { return <div className="min-h-screen bg-brand-pure"><PublicHeader />{children}<Footer /><ReadyPhotosPopup /></div>; }
+function PublicShell({ children }: { children: React.ReactNode }) { return <div className="min-h-screen bg-brand-pure"><PublicHeader />{children}<Footer /></div>; }
 
 function HomePage() {
   const today = useChileToday();
