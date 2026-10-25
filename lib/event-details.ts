@@ -38,7 +38,7 @@ export const activeEventDetail: EventDetailConfig = {
     { src: "/stock/B58A2042_4306237_333466.jpg", alt: "Corredores avanzando juntos por la ruta" },
     { src: "/stock/DSC06004_4306237_332429.jpg", alt: "Grupo de runners disfrutando el recorrido" },
   ],
-  photoStoreUrl: "https://nomadarace.fotop.com.br/events/marley-coffee-stgo-10k/e/349044",
+  photoStoreUrl: "https://nomadarace.fotop.com/events/marley-coffee-stgo-10k/e/349044",
   kitPickup: {
     date: "Sábado 17 de octubre",
     time: "11:00 a 19:00 hrs",
@@ -46,5 +46,5 @@ export const activeEventDetail: EventDetailConfig = {
     address: "Alcaldesa Balbina Vera 3526, Ñuñoa (detrás de la Municipalidad de Ñuñoa)",
     details: "Retira tu polera técnica, bolsa, dorsal con chip de tiempos y medalla de finisher. Lleva tu cédula o pasaporte; para retiros por terceros se solicita copia y autorización simple.",
   },
-  officialUrl: "https://nomadarace.fotop.com.br/events/marley-coffee-stgo-10k/e/349044",
+  officialUrl: "https://nomadarace.fotop.com/events/marley-coffee-stgo-10k/e/349044",
 };

@@ -26,12 +26,12 @@ declare global {
   }
 }
 
-const PHOTO_STORE_URL = "https://nomadarace.fotop.com.br/";
-const SANTANDER_RACE_URL = "https://nomadarace.fotop.com.br/events/santander-rock-n-roll-running/e/348604";
-const SANTIAGO_10K_PHOTO_URL = "https://nomadarace.fotop.com.br/events/marley-coffee-stgo-10k/e/349044";
-const GLORIAS_RACE_URL = "https://nomadarace.fotop.com.br/events/corrida-glorias-del-ejercito-2026/e/332429";
-const IDEAL_GLOBAL_RACE_URL = "https://nomadarace.fotop.com.br/events/ideal-global-race/e/333466";
-const CORRAMOS_JUNTAS_RACE_URL = "https://nomadarace.fotop.com.br/events/corramos-juntas/e/345521";
+const PHOTO_STORE_URL = "https://nomadarace.fotop.com/";
+const SANTANDER_RACE_URL = "https://nomadarace.fotop.com/events/santander-rock-n-roll-running/e/348604";
+const SANTIAGO_10K_PHOTO_URL = "https://nomadarace.fotop.com/events/marley-coffee-stgo-10k/e/349044";
+const GLORIAS_RACE_URL = "https://nomadarace.fotop.com/events/corrida-glorias-del-ejercito-2026/e/332429";
+const IDEAL_GLOBAL_RACE_URL = "https://nomadarace.fotop.com/events/ideal-global-race/e/333466";
+const CORRAMOS_JUNTAS_RACE_URL = "https://nomadarace.fotop.com/events/corramos-juntas/e/345521";
 const HOME_GALLERY_IMAGES = ["/home-photo-1.jpg", "/home-photo-2.jpg", "/home-photo-3.jpg", "/home-photo-4.jpg", "/home-photo-5.jpg", "/home-photo-6.jpg"] as const;
 const CONTACT_EMAIL = "contacto@nomadafilms.cl";
 const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
