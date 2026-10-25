@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { AnalyticsPageview } from "@/components/analytics-pageview";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -32,7 +33,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         {`window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', 'G-GPMLF3FKXN');`}
+          gtag('config', 'G-GPMLF3FKXN', { send_page_view: false });`}
       </Script>
       <Script id="nomada-theme" strategy="beforeInteractive">{`(function () {
         try {
@@ -47,6 +48,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       })();`}</Script>
       <Script id="nomada-structured-data" type="application/ld+json" strategy="beforeInteractive">{JSON.stringify({ "@context": "https://schema.org", "@graph": [{ "@type": "Organization", "@id": "https://www.nomadarace.cl/#organization", name: "Nómada Race", alternateName: "Nomada Race", url: "https://www.nomadarace.cl", logo: { "@type": "ImageObject", url: "https://www.nomadarace.cl/icon.png", width: 144, height: 144 }, email: "contacto@nomadafilms.cl", areaServed: { "@type": "Country", name: "Chile" }, sameAs: ["https://www.instagram.com/nomadarace.cl/", "https://www.facebook.com/nomadarace.cl"], description: "Nómada Race es una plataforma chilena para encontrar y comprar fotos profesionales de carreras." }, { "@type": "WebSite", "@id": "https://www.nomadarace.cl/#website", name: "Nómada Race", alternateName: "Nomada Race", url: "https://www.nomadarace.cl", inLanguage: "es-CL", publisher: { "@id": "https://www.nomadarace.cl/#organization" } }] })}</Script>
     </head>
-    <body>{children}<Analytics /><SpeedInsights /></body>
+    <body>{children}<AnalyticsPageview /><Analytics /><SpeedInsights /></body>
   </html>;
 }
