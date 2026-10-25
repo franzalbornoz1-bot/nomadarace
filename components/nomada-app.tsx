@@ -268,8 +268,8 @@ function HomePage() {
   // con las siguientes fechas del calendario cuando ya quedaron atrás.
   const fallbackUpcomingRaces = upcomingRaces
     .filter(race => !configuredUpcomingRaces.some(selected => selected.name === race.name))
-    .slice(0, Math.max(0, 6 - configuredUpcomingRaces.length));
-  const upcomingDisplayRaces = [...configuredUpcomingRaces, ...fallbackUpcomingRaces].slice(0, 6);
+    .slice(0, Math.max(0, 4 - configuredUpcomingRaces.length));
+  const upcomingDisplayRaces = [...configuredUpcomingRaces, ...fallbackUpcomingRaces].slice(0, 4);
   const primaryUpcomingRaces = upcomingDisplayRaces.slice(0, 2);
   const secondaryUpcomingRaces = upcomingDisplayRaces.slice(2, 6);
   // Esta lista se habilita manualmente cuando el álbum de un evento está listo.
