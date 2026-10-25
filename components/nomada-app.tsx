@@ -259,7 +259,7 @@ function HomePage() {
   const today = useChileToday();
   const effectiveToday = today ?? chileTodayKey();
   const upcomingRaces = calendarRaces
-    .filter(race => race.name !== HIDDEN_HOME_RACE_NAME && calendarRaceDateKey(race) >= effectiveToday)
+    .filter(race => race.name !== HIDDEN_HOME_RACE_NAME && calendarRaceDateKey(race) > effectiveToday)
     .sort((a, b) => calendarRaceDateKey(a).localeCompare(calendarRaceDateKey(b)));
   const featuredRaces = NEXT_RACE_NAMES
     .map(name => upcomingRaces.find(race => race.name === name))
@@ -358,7 +358,7 @@ function CalendarPage() {
     const categoryMatches = category === "Todas" || calendarRaceCategory(race) === category;
     const cityMatches = city === "Todas" || race.city.startsWith(city);
     const distanceMatches = distance === "Todas" || race.distances.toLowerCase().includes(distance.toLowerCase());
-    const dateMatches = dateFilter === "Todas" || !today || dateKey >= today;
+    const dateMatches = dateFilter === "Todas" || !today || dateKey > today;
     return race.month === activeMonth && categoryMatches && cityMatches && distanceMatches && dateMatches;
   });
   const plural = monthRaces.length === 1 ? "carrera" : "carreras";
