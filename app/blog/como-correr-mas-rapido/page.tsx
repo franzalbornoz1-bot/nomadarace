@@ -8,12 +8,12 @@ const image = "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=fo
 
 export const metadata: Metadata = {
   title, description, alternates: { canonical: "/blog/como-correr-mas-rapido" },
-  openGraph: { type: "article", locale: "es_CL", title, description, url: "https://nomadarace.cl/blog/como-correr-mas-rapido", siteName: "Nómada Race", images: [{ url: image, width: 2000, height: 1125, alt: "Corredor entrenando velocidad en una pista al atardecer" }] },
+  openGraph: { type: "article", locale: "es_CL", title, description, url: "https://www.nomadarace.cl/blog/como-correr-mas-rapido", siteName: "Nómada Race", images: [{ url: image, width: 2000, height: 1125, alt: "Corredor entrenando velocidad en una pista al atardecer" }] },
   twitter: { card: "summary_large_image", title, description, images: [image] },
 };
 
 export default function FasterRunningPage() {
   const publicationDate = getBlogPublicationDate("como-correr-mas-rapido");
-  const article = { "@context": "https://schema.org", "@type": "Article", headline: title, description, image, datePublished: publicationDate.iso, dateModified: publicationDate.iso, inLanguage: "es-CL", author: { "@type": "Organization", name: "Nómada Race", url: "https://nomadarace.cl" }, publisher: { "@type": "Organization", name: "Nómada Race", logo: { "@type": "ImageObject", url: "https://nomadarace.cl/icon.png" } }, mainEntityOfPage: "https://nomadarace.cl/blog/como-correr-mas-rapido" };
+  const article = { "@context": "https://schema.org", "@type": "Article", headline: title, description, image, datePublished: publicationDate.iso, dateModified: publicationDate.iso, inLanguage: "es-CL", author: { "@type": "Organization", name: "Nómada Race", url: "https://www.nomadarace.cl" }, publisher: { "@type": "Organization", name: "Nómada Race", logo: { "@type": "ImageObject", url: "https://www.nomadarace.cl/icon.png" } }, mainEntityOfPage: { "@type": "WebPage", "@id": "https://www.nomadarace.cl/blog/como-correr-mas-rapido" } };
   return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(article) }} /><NomadaApp /></>;
 }

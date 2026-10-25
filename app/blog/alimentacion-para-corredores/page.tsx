@@ -8,12 +8,12 @@ const image = "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto
 
 export const metadata: Metadata = {
   title, description, alternates: { canonical: "/blog/alimentacion-para-corredores" },
-  openGraph: { type: "article", locale: "es_CL", title, description, url: "https://nomadarace.cl/blog/alimentacion-para-corredores", siteName: "Nómada Race", images: [{ url: image, width: 2000, height: 1125, alt: "Comida equilibrada con vegetales, cereales y proteínas para apoyar el entrenamiento" }] },
+  openGraph: { type: "article", locale: "es_CL", title, description, url: "https://www.nomadarace.cl/blog/alimentacion-para-corredores", siteName: "Nómada Race", images: [{ url: image, width: 2000, height: 1125, alt: "Comida equilibrada con vegetales, cereales y proteínas para apoyar el entrenamiento" }] },
   twitter: { card: "summary_large_image", title, description, images: [image] },
 };
 
 export default function RunningNutritionPage() {
   const publicationDate = getBlogPublicationDate("alimentacion-para-corredores");
-  const article = { "@context": "https://schema.org", "@type": "Article", headline: title, description, image, datePublished: publicationDate.iso, dateModified: publicationDate.iso, inLanguage: "es-CL", author: { "@type": "Organization", name: "Nómada Race", url: "https://nomadarace.cl" }, publisher: { "@type": "Organization", name: "Nómada Race", logo: { "@type": "ImageObject", url: "https://nomadarace.cl/icon.png" } }, mainEntityOfPage: "https://nomadarace.cl/blog/alimentacion-para-corredores" };
+  const article = { "@context": "https://schema.org", "@type": "Article", headline: title, description, image, datePublished: publicationDate.iso, dateModified: publicationDate.iso, inLanguage: "es-CL", author: { "@type": "Organization", name: "Nómada Race", url: "https://www.nomadarace.cl" }, publisher: { "@type": "Organization", name: "Nómada Race", logo: { "@type": "ImageObject", url: "https://www.nomadarace.cl/icon.png" } }, mainEntityOfPage: { "@type": "WebPage", "@id": "https://www.nomadarace.cl/blog/alimentacion-para-corredores" } };
   return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(article) }} /><NomadaApp /></>;
 }

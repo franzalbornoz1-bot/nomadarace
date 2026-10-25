@@ -10,12 +10,12 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: "/blog/primeros-10k" },
-  openGraph: { type: "article", locale: "es_CL", title, description, url: "https://nomadarace.cl/blog/primeros-10k", siteName: "Nómada Race", images: [{ url: image, width: 2000, height: 1125, alt: "Corredor preparando su primer 10K al amanecer" }] },
+  openGraph: { type: "article", locale: "es_CL", title, description, url: "https://www.nomadarace.cl/blog/primeros-10k", siteName: "Nómada Race", images: [{ url: image, width: 2000, height: 1125, alt: "Corredor preparando su primer 10K al amanecer" }] },
   twitter: { card: "summary_large_image", title, description, images: [image] },
 };
 
 export default function FirstTenKPage() {
   const publicationDate = getBlogPublicationDate("primeros-10k");
-  const article = { "@context": "https://schema.org", "@type": "Article", headline: title, description, image, datePublished: publicationDate.iso, dateModified: publicationDate.iso, inLanguage: "es-CL", author: { "@type": "Organization", name: "Nómada Race", url: "https://nomadarace.cl" }, publisher: { "@type": "Organization", name: "Nómada Race", logo: { "@type": "ImageObject", url: "https://nomadarace.cl/icon.png" } }, mainEntityOfPage: "https://nomadarace.cl/blog/primeros-10k" };
+  const article = { "@context": "https://schema.org", "@type": "Article", headline: title, description, image, datePublished: publicationDate.iso, dateModified: publicationDate.iso, inLanguage: "es-CL", author: { "@type": "Organization", name: "Nómada Race", url: "https://www.nomadarace.cl" }, publisher: { "@type": "Organization", name: "Nómada Race", logo: { "@type": "ImageObject", url: "https://www.nomadarace.cl/icon.png" } }, mainEntityOfPage: { "@type": "WebPage", "@id": "https://www.nomadarace.cl/blog/primeros-10k" } };
   return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(article) }} /><NomadaApp /></>;
 }

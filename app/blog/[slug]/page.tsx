@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const article = articles[slug as ArticleSlug];
   if (!article) return {};
-  const url = `https://nomadarace.cl/blog/${slug}`;
+  const url = `https://www.nomadarace.cl/blog/${slug}`;
   return { title: article.title, description: article.description, alternates: { canonical: `/blog/${slug}` }, openGraph: { type: "article", locale: "es_CL", title: article.title, description: article.description, url, siteName: "Nómada Race", images: [{ url: article.image, width: 2000, height: 1125, alt: article.alt }] }, twitter: { card: "summary_large_image", title: article.title, description: article.description, images: [article.image] } };
 }
 
@@ -41,8 +41,8 @@ export default async function BlogArticlePage({ params }: PageProps) {
   const { slug } = await params;
   const article = articles[slug as ArticleSlug];
   if (!article) notFound();
-  const url = `https://nomadarace.cl/blog/${slug}`;
+  const url = `https://www.nomadarace.cl/blog/${slug}`;
   const publicationDate = getBlogPublicationDate(slug);
-  const schema = { "@context": "https://schema.org", "@type": "Article", headline: article.title, description: article.description, image: article.image, datePublished: publicationDate.iso, dateModified: publicationDate.iso, inLanguage: "es-CL", author: { "@type": "Organization", name: "Nómada Race", url: "https://nomadarace.cl" }, publisher: { "@type": "Organization", name: "Nómada Race", logo: { "@type": "ImageObject", url: "https://nomadarace.cl/icon.png" } }, mainEntityOfPage: url };
+  const schema = { "@context": "https://schema.org", "@type": "Article", headline: article.title, description: article.description, image: article.image, datePublished: publicationDate.iso, dateModified: publicationDate.iso, inLanguage: "es-CL", author: { "@type": "Organization", name: "Nómada Race", url: "https://www.nomadarace.cl" }, publisher: { "@type": "Organization", name: "Nómada Race", logo: { "@type": "ImageObject", url: "https://www.nomadarace.cl/icon.png" } }, mainEntityOfPage: { "@type": "WebPage", "@id": url } };
   return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} /><NomadaApp /></>;
 }

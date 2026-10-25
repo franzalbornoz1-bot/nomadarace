@@ -8,12 +8,12 @@ const image = "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto
 
 export const metadata: Metadata = {
   title, description, alternates: { canonical: "/blog/ejercicios-fuerza-corredores" },
-  openGraph: { type: "article", locale: "es_CL", title, description, url: "https://nomadarace.cl/blog/ejercicios-fuerza-corredores", siteName: "Nómada Race", images: [{ url: image, width: 2000, height: 1125, alt: "Persona realizando un ejercicio de fuerza en un gimnasio luminoso" }] },
+  openGraph: { type: "article", locale: "es_CL", title, description, url: "https://www.nomadarace.cl/blog/ejercicios-fuerza-corredores", siteName: "Nómada Race", images: [{ url: image, width: 2000, height: 1125, alt: "Persona realizando un ejercicio de fuerza en un gimnasio luminoso" }] },
   twitter: { card: "summary_large_image", title, description, images: [image] },
 };
 
 export default function StrengthForRunnersPage() {
   const publicationDate = getBlogPublicationDate("ejercicios-fuerza-corredores");
-  const article = { "@context": "https://schema.org", "@type": "Article", headline: title, description, image, datePublished: publicationDate.iso, dateModified: publicationDate.iso, inLanguage: "es-CL", author: { "@type": "Organization", name: "Nómada Race", url: "https://nomadarace.cl" }, publisher: { "@type": "Organization", name: "Nómada Race", logo: { "@type": "ImageObject", url: "https://nomadarace.cl/icon.png" } }, mainEntityOfPage: "https://nomadarace.cl/blog/ejercicios-fuerza-corredores" };
+  const article = { "@context": "https://schema.org", "@type": "Article", headline: title, description, image, datePublished: publicationDate.iso, dateModified: publicationDate.iso, inLanguage: "es-CL", author: { "@type": "Organization", name: "Nómada Race", url: "https://www.nomadarace.cl" }, publisher: { "@type": "Organization", name: "Nómada Race", logo: { "@type": "ImageObject", url: "https://www.nomadarace.cl/icon.png" } }, mainEntityOfPage: { "@type": "WebPage", "@id": "https://www.nomadarace.cl/blog/ejercicios-fuerza-corredores" } };
   return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(article) }} /><NomadaApp /></>;
 }
