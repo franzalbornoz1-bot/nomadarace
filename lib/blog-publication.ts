@@ -22,8 +22,11 @@ export const blogPublicationDates = {
 } as const;
 
 export function getBlogPublicationDate(slug: string) {
-  return blogPublicationDates[slug as keyof typeof blogPublicationDates] ?? {
+  const date = blogPublicationDates[slug as keyof typeof blogPublicationDates] ?? {
     iso: "2026-09-12",
     label: "12 de septiembre de 2026",
   };
+
+  // Article structured data expects an unambiguous ISO 8601 date-time.
+  return { ...date, iso: `${date.iso}T00:00:00-03:00` };
 }
