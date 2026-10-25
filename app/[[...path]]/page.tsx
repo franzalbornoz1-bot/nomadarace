@@ -15,6 +15,8 @@ export function generateStaticParams() {
     ["preguntas-frecuentes"],
     ["contacto"],
     ["organizadores"],
+    ["sobre-nomada-race"],
+    ["packs-y-precios"],
     ["privacidad"],
     ["terminos"],
   ];
@@ -63,6 +65,16 @@ function routeMetadata(path: string[]): Metadata {
     title: "Fotografía deportiva para organizadores",
     description: "Conoce cómo Nómada Race puede acompañar carreras y eventos deportivos con fotografía para corredores en Chile.",
   };
+  if (path[0] === "sobre-nomada-race") return {
+    ...defaults,
+    title: "Sobre Nómada Race | Fotografías para corredores",
+    description: "Conoce Nómada Race: fotografías profesionales, calendario de carreras y recuerdos para volver a vivir cada ruta.",
+  };
+  if (path[0] === "packs-y-precios") return {
+    ...defaults,
+    title: "Packs y precios de fotos de carrera | Nómada Race",
+    description: "Consulta cómo funcionan los packs y precios de fotografías de carrera disponibles en cada galería.",
+  };
 
   const event = events.find(item => item.slug === path[1]);
   if (event) return {
@@ -82,7 +94,7 @@ export async function generateMetadata({ params }: CatchAllPageProps): Promise<M
 
 function isPublicRoute(path: string[]) {
   if (path.length === 0) return true;
-  if (["organizadores", "preguntas-frecuentes", "contacto", "privacidad", "terminos"].includes(path[0]) && path.length === 1) return true;
+  if (["organizadores", "sobre-nomada-race", "packs-y-precios", "preguntas-frecuentes", "contacto", "privacidad", "terminos"].includes(path[0]) && path.length === 1) return true;
   if (path[0] !== "eventos") return false;
   if (path.length === 1) return true;
   if (path.length === 2 && path[1] === "detalles") return true;
