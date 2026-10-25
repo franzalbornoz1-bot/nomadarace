@@ -58,7 +58,7 @@ function routeMetadata(path: string[]): Metadata {
   if (path[0] === "contacto") return {
     ...defaults,
     title: "Contacto",
-    description: "Contacta a Nómada Race para consultas sobre fotografías oficiales, eventos y cobertura deportiva en Chile.",
+    description: "Contacta a Nómada Race para consultas sobre fotografías profesionales, eventos y cobertura deportiva en Chile.",
   };
   if (path[0] === "organizadores") return {
     ...defaults,
@@ -80,8 +80,8 @@ function routeMetadata(path: string[]): Metadata {
   if (event) return {
     ...defaults,
     title: `${event.name} | Fotos y cobertura de carrera`,
-    description: `Información de ${event.name} en ${event.city}: fecha, ubicación y disponibilidad de fotografías oficiales de carrera.`,
-    openGraph: { url: canonical, title: `${event.name} | Nómada Race`, description: `Información y fotografías oficiales de ${event.name} en ${event.city}.` },
+    description: `Información de ${event.name} en ${event.city}: fecha, ubicación y disponibilidad de fotografías profesionales de carrera.`,
+    openGraph: { url: canonical, title: `${event.name} | Nómada Race`, description: `Información y fotografías profesionales de ${event.name} en ${event.city}.` },
   };
 
   return defaults;
