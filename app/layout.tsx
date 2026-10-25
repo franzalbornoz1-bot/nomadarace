@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: "Nómada Race es una plataforma chilena de fotos profesionales de carreras. Encuentra, compra y descarga tus imágenes por evento.",
   applicationName: "Nómada Race",
   alternates: { canonical: "/" },
-  keywords: ["fotos de carreras", "fotos running Chile", "fotos por dorsal", "fotografía deportiva", "Nómada Race"],
+  keywords: ["fotos de carreras", "fotos running Chile", "fotos con selfie", "fotografía deportiva", "Nómada Race"],
   openGraph: { type: "website", locale: "es_CL", url: "https://www.nomadarace.cl", siteName: "Nómada Race", title: "Nómada Race | Fotos profesionales de carreras en Chile", description: "Encuentra y compra fotos profesionales de carreras en Chile." },
   twitter: { card: "summary_large_image", title: "Nómada Race | Fotos profesionales de carreras en Chile", description: "Encuentra fotos profesionales de carreras en Chile." },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
