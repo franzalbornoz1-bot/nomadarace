@@ -261,11 +261,17 @@ function HomePage() {
   const upcomingRaces = calendarRaces
     .filter(race => race.name !== HIDDEN_HOME_RACE_NAME && calendarRaceDateKey(race) > effectiveToday)
     .sort((a, b) => calendarRaceDateKey(a).localeCompare(calendarRaceDateKey(b)));
-  const featuredRaces = NEXT_RACE_NAMES
+  const configuredUpcomingRaces = NEXT_RACE_NAMES
     .map(name => upcomingRaces.find(race => race.name === name))
     .filter((race): race is (typeof calendarRaces)[number] => Boolean(race));
-  const primaryUpcomingRaces = featuredRaces.filter(race => PRIMARY_UPCOMING_RACE_NAMES.includes(race.name as (typeof PRIMARY_UPCOMING_RACE_NAMES)[number]));
-  const secondaryUpcomingRaces = featuredRaces.filter(race => SECONDARY_UPCOMING_RACE_NAMES.includes(race.name as (typeof SECONDARY_UPCOMING_RACE_NAMES)[number]));
+  // Mantiene las carreras destacadas cuando siguen vigentes y completa la sección
+  // con las siguientes fechas del calendario cuando ya quedaron atrás.
+  const fallbackUpcomingRaces = upcomingRaces
+    .filter(race => !configuredUpcomingRaces.some(selected => selected.name === race.name))
+    .slice(0, Math.max(0, 6 - configuredUpcomingRaces.length));
+  const upcomingDisplayRaces = [...configuredUpcomingRaces, ...fallbackUpcomingRaces].slice(0, 6);
+  const primaryUpcomingRaces = upcomingDisplayRaces.slice(0, 2);
+  const secondaryUpcomingRaces = upcomingDisplayRaces.slice(2, 6);
   // Esta lista se habilita manualmente cuando el álbum de un evento está listo.
   // Así, el bloque “Revive la carrera” no se llena solo con carreras que ya pasaron.
   const racePhotoLinks: Record<string, string> = {
