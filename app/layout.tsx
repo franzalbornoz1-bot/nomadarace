@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "Nómada Race es una plataforma chilena de fotos profesionales de carreras. Encuentra, compra y descarga tus imágenes por evento.",
   applicationName: "Nómada Race",
   alternates: { canonical: "/" },
-  keywords: ["fotos de carreras", "fotos running Chile", "fotos con selfie", "fotografía deportiva", "fotógrafos de carreras", "fotos running Santiago", "calendario de carreras Chile", "fotos Santiago 10K", "fotos Rock n Roll Santiago", "Cada Huella Cuenta", "social run Santiago", "running social Chile", "dog social Santiago", "trote 3K Parque Juan Pablo II", "Fundación Apana", "Proyecto Here and Now", "Nómada Race"],
+  keywords: ["fotos de carreras", "fotos running Chile", "fotos con selfie", "fotografía deportiva", "fotógrafos de carreras", "fotos running Santiago", "calendario de carreras Chile", "fotos Santiago 10K", "fotos Rock n Roll Santiago", "DOGCIAL RUN 3", "Dogcial Run 3 Santiago", "social run Santiago", "running social Chile", "dog social Santiago", "trote 3K Parque Juan Pablo II", "Canil Parque Juan Pablo II", "rescate canino Las Condes", "Fundación APAÑA", "Nómada Race"],
   category: "Fotografía deportiva y carreras",
   creator: "Nómada Race",
   publisher: "Nómada Race",

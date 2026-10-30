@@ -19,7 +19,7 @@ export function calendarRaceDescription(race: CalendarRace) {
   const city = race.city;
   const seed = `${race.name}-${city}`;
 
-  if (race.name === "Cada Huella Cuenta") return "Social run y trote comunitario de 3K para disfrutar, conversar y conectar. Un encuentro dog social de ritmo amigable para todos, con reagrupamientos y acompañamiento junto a Proyecto Here & Now, en apoyo a Fundación Apana. Nadie corre solo y nadie se queda atrás. Parque Juan Pablo II · 10:00 hrs. · Largada 10:30 hrs. · Cupos gratuitos con aporte voluntario.";
+  if (race.name === "DOGCIAL RUN 3") return "Dogcial Run 3: trote social solidario de 3K para apoyar el rescate canino junto a Fundación APAÑA. La jornada es abierta a todos, con ritmo social, inscripción 100% gratuita y aporte voluntario para la fundación. Canil Parque Juan Pablo II, Las Condes · sábado 31 de octubre · 10:00 AM.";
 
   if (/familiar|family|kids|niños|inclusión|solidaria|cáncer|vida|mujer|nosotras|juntas/.test(name)) return chooseDescription([
     `Una jornada para compartir el running, apoyar una causa y sumar recuerdos en ${city}.`,
@@ -164,7 +164,7 @@ export const calendarRaces: CalendarRace[] = [
   race("Octubre", 31, "Sábado", "Tulahuén Fest", "Monte Patria", "10, 21 y 42 km"),
   race("Octubre", 31, "Sábado", "Trilogía Valle Las Trancas", "Pinto", "2, 10, 16 y 25 km"),
   race("Octubre", 31, "Sábado", "The Last Run", "Santiago, Providencia", "6 y 9 km"),
-  race("Octubre", 31, "Sábado", "Cada Huella Cuenta", "Santiago, Parque Juan Pablo II", "3 km", "Cupos gratuitos · aporte voluntario"),
+  race("Octubre", 31, "Sábado", "DOGCIAL RUN 3", "Las Condes, Canil Parque Juan Pablo II", "3 km", "Inscripción gratuita · aporte voluntario"),
 
   race("Noviembre", 1, "Domingo", "Corrida/Caminata por el Cáncer Temuco", "Temuco", "3.5, 5 y 10 km"),
   race("Noviembre", 1, "Domingo", "Chalón Molco Trail", "Nueva Imperial", "500 m; 5 y 10 km"),
