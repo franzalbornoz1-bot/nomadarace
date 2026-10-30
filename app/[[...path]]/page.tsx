@@ -42,7 +42,8 @@ function routeMetadata(path: string[]): Metadata {
   if (path[0] === "eventos" && path.length === 1) return {
     ...defaults,
     title: "Calendario de carreras 2026 en Chile",
-    description: "Calendario referencial de carreras 2026 en Chile: revisa fechas, ciudades y distancias para planificar tu próxima ruta.",
+    description: "Calendario de carreras 2026 en Chile: encuentra social runs, running social, trotes 3K y eventos comunitarios como Cada Huella Cuenta en el Parque Juan Pablo II. Revisa fechas, ciudades y distancias.",
+    keywords: ["calendario de carreras 2026 Chile", "social run Santiago", "running social Chile", "dog social Santiago", "Cada Huella Cuenta", "trote 3K Parque Juan Pablo II", "Fundación Apana", "Proyecto Here and Now", "Nómada Race"],
   };
   if (path[0] === "eventos" && path[1] === "2027" && path.length === 2) return {
     ...defaults,
