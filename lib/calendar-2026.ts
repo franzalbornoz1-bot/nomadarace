@@ -19,6 +19,8 @@ export function calendarRaceDescription(race: CalendarRace) {
   const city = race.city;
   const seed = `${race.name}-${city}`;
 
+  if (race.name === "Cada Huella Cuenta") return "Un trote de 3K para disfrutar, conversar y conectar. Ritmo amigable para todos, con reagrupamientos y acompañamiento junto a Proyecto Here & Now, en apoyo a Fundación Apana. Nadie corre solo y nadie se queda atrás. Parque Juan Pablo II · 10:00 hrs. · Largada 10:30 hrs. · Cupos gratuitos con aporte voluntario.";
+
   if (/familiar|family|kids|niños|inclusión|solidaria|cáncer|vida|mujer|nosotras|juntas/.test(name)) return chooseDescription([
     `Una jornada para compartir el running, apoyar una causa y sumar recuerdos en ${city}.`,
     `Ritmo, encuentro y comunidad: una invitación abierta a vivir la ruta junto a quienes más quieres en ${city}.`,
@@ -162,6 +164,7 @@ export const calendarRaces: CalendarRace[] = [
   race("Octubre", 31, "Sábado", "Tulahuén Fest", "Monte Patria", "10, 21 y 42 km"),
   race("Octubre", 31, "Sábado", "Trilogía Valle Las Trancas", "Pinto", "2, 10, 16 y 25 km"),
   race("Octubre", 31, "Sábado", "The Last Run", "Santiago, Providencia", "6 y 9 km"),
+  race("Octubre", 31, "Sábado", "Cada Huella Cuenta", "Santiago, Parque Juan Pablo II", "3 km", "Cupos gratuitos · aporte voluntario"),
 
   race("Noviembre", 1, "Domingo", "Corrida/Caminata por el Cáncer Temuco", "Temuco", "3.5, 5 y 10 km"),
   race("Noviembre", 1, "Domingo", "Chalón Molco Trail", "Nueva Imperial", "500 m; 5 y 10 km"),
