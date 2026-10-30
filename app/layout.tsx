@@ -31,12 +31,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       <link rel="preconnect" href="https://images.unsplash.com" />
-      <Script src="https://www.googletagmanager.com/gtag/js?id=G-GPMLF3FKXN" strategy="afterInteractive" />
-      <Script id="google-analytics" strategy="afterInteractive">
+      <Script src="https://www.googletagmanager.com/gtag/js?id=G-GPMLF3FKXN" strategy="beforeInteractive" />
+      <Script id="google-analytics" strategy="beforeInteractive">
         {`window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', 'G-GPMLF3FKXN');`}
+          gtag('config', 'G-GPMLF3FKXN', { send_page_view: false });
+          window.__nomadaGaInitialized = true;`}
       </Script>
       <Script id="nomada-theme" strategy="beforeInteractive">{`(function () {
         try {
