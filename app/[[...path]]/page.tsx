@@ -42,8 +42,8 @@ function routeMetadata(path: string[]): Metadata {
   if (path[0] === "eventos" && path.length === 1) return {
     ...defaults,
     title: "Calendario de carreras 2026 en Chile",
-    description: "Calendario de carreras 2026 en Chile: encuentra social runs, running social, trotes 3K y eventos comunitarios como DOGCIAL RUN 3 en el Canil Parque Juan Pablo II de Las Condes. Revisa fechas, ciudades y distancias.",
-    keywords: ["calendario de carreras 2026 Chile", "DOGCIAL RUN 3", "Dogcial Run 3 Santiago", "social run Santiago", "running social Chile", "dog social Santiago", "trote 3K Parque Juan Pablo II", "Canil Parque Juan Pablo II", "rescate canino Las Condes", "Fundación APAÑA", "Nómada Race"],
+    description: "Calendario de carreras 2026 en Chile: encuentra social runs, running social, trotes 3K y eventos comunitarios como DOGCIAL RUN 3 en el Parque Juan Pablo II de Las Condes. Conoce el #Desafío50Patitas, la inscripción gratuita y las fechas, ciudades y distancias.",
+    keywords: ["calendario de carreras 2026 Chile", "DOGCIAL RUN 3", "Dogcial Run 3 Santiago", "Desafío50Patitas", "social run Santiago", "running social Chile", "dog social Santiago", "trote 3K Parque Juan Pablo II", "Canil Parque Juan Pablo II", "rescate canino Las Condes", "Fundación APAÑA", "Colmillo Canirun", "Here and Now", "Nómada Race"],
   };
   if (path[0] === "eventos" && path[1] === "2027" && path.length === 2) return {
     ...defaults,
