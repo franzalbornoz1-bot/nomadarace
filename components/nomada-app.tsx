@@ -253,7 +253,7 @@ function ReadyPhotosPopup() {
   </div>;
 }
 
-function PublicShell({ children }: { children: React.ReactNode }) { return <div className="min-h-screen bg-brand-pure"><PublicHeader />{children}<Footer /></div>; }
+function PublicShell({ children }: { children: React.ReactNode }) { const pathname = usePathname(); return <div className="min-h-screen bg-brand-pure"><PublicHeader />{pathname === "/eventos/detalles" && <div className="border-b border-orange-200 bg-orange-50"><div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 lg:px-8"><p className="text-sm font-bold text-orange-950">¿Buscas tus recuerdos de DOGCIAL RUN 3?</p><a href={PHOTO_STORE_URL} target="_blank" rel="noreferrer" onClick={() => trackAction("photo_search_click", { placement: "event_detail_top_cta", event: "DOGCIAL RUN 3" })}><Button className="h-10 px-4 text-sm">Encontrar tus fotos <ArrowRight className="ml-2 h-4 w-4" /></Button></a></div></div>}{children}<Footer /></div>; }
 
 function HomePage() {
   const today = useChileToday();
