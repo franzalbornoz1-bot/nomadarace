@@ -146,5 +146,21 @@ export default async function CatchAllPage({ params }: CatchAllPageProps) {
     location: { "@type": "Place", name: "Canil Parque Juan Pablo II", address: { "@type": "PostalAddress", addressLocality: "Las Condes", addressRegion: "Santiago", addressCountry: "CL" } },
     organizer: { "@type": "Organization", name: "Fundación APAÑA", sameAs: "https://www.instagram.com/fundacionapana/" },
   } : null;
-  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />{eventSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(eventSchema) }} />}<NomadaApp /></>;
+  const profileSchema = path[0] === "sobre-nomada-race" ? {
+    "@context": "https://schema.org",
+    "@type": ["AboutPage", "ProfilePage"],
+    name: "Sobre Nómada Race",
+    url: `${SITE_URL}${pathname}`,
+    inLanguage: "es-CL",
+    mainEntity: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "Nómada Race",
+      alternateName: "Nomada Race",
+      url: SITE_URL,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` },
+      description: "Plataforma chilena de fotografía deportiva e información de carreras para corredores.",
+    },
+  } : null;
+  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />{eventSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(eventSchema) }} />}{profileSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(profileSchema) }} />}<NomadaApp /></>;
 }
