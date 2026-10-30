@@ -53,7 +53,7 @@ function routeMetadata(path: string[]): Metadata {
   if (path[0] === "eventos" && path[1] === "detalles" && path.length === 2) return {
     ...defaults,
     title: "DOGCIAL RUN 3 en Las Condes | Social Run y fotos | Nómada Race",
-    description: "DOGCIAL RUN 3: social run solidario de 3 km en el Parque Juan Pablo II de Las Condes. Inscripción gratuita, aporte voluntario, #Desafío50Patitas, Fundación APAÑA y fotos profesionales de Dogcial Run.",
+    description: "DOGCIAL RUN 3: información de un social run solidario de 3 km en el Parque Juan Pablo II de Las Condes. Inscripción gratuita, aporte voluntario, #Desafío50Patitas y fotos profesionales que Nómada Race estará capturando durante la jornada.",
     keywords: ["DOGCIAL RUN 3", "Dogcial Run 3 Santiago", "fotos de Dogcial Run", "fotos DOGCIAL RUN 3", "social run Las Condes", "dog social Santiago", "running social Chile", "trote 3K Parque Juan Pablo II", "Fundación APAÑA", "Desafío50Patitas", "Colmillo Canirun", "Here and Now", "Nómada Race"],
     openGraph: { url: canonical, title: "DOGCIAL RUN 3 en Las Condes | Nómada Race", description: "Social run solidario de 3 km, inscripción gratuita y fotos profesionales de Dogcial Run." },
   };
@@ -134,7 +134,7 @@ export default async function CatchAllPage({ params }: CatchAllPageProps) {
     "@type": "SportsEvent",
     name: "DOGCIAL RUN 3",
     alternateName: ["Dogcial Run 3 Santiago", "Social Run solidario 3K", "Dog Social Las Condes"],
-    description: "Social run solidario de 3 km junto a Fundación APAÑA para apoyar el rescate canino. Inscripción gratuita, aporte voluntario y desafío #Desafío50Patitas.",
+    description: "Información pública de DOGCIAL RUN 3, un social run solidario de 3 km difundido por Fundación APAÑA para apoyar el rescate canino. Nómada Race estará realizando la cobertura fotográfica de la jornada.",
     startDate: "2026-10-31T10:00:00-03:00",
     endDate: "2026-10-31T12:00:00-03:00",
     url: `${SITE_URL}${pathname}`,
