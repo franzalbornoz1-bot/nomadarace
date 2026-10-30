@@ -52,10 +52,10 @@ function routeMetadata(path: string[]): Metadata {
   };
   if (path[0] === "eventos" && path[1] === "detalles" && path.length === 2) return {
     ...defaults,
-    title: "Santiago 10K 2026 | Fotos y detalles de la carrera | Nómada Race",
-    description: "Santiago 10K 2026: fecha, horarios, ubicación, kit, cuenta regresiva y fotos profesionales de STGO10K by ASICS en Ñuñoa.",
-    keywords: ["Santiago 10K", "Santiago10K 2026", "Santiago 10K ASICS", "STGO10K", "fotos Santiago 10K", "fotos listas Santiago 10K", "fotos de carrera Santiago", "Nómada Race"],
-    openGraph: { url: canonical, title: "Santiago 10K 2026 | Nómada Race", description: "Información y fotos profesionales para vivir STGO10K by ASICS." },
+    title: "DOGCIAL RUN 3 en Las Condes | Social Run y fotos | Nómada Race",
+    description: "DOGCIAL RUN 3: social run solidario de 3 km en el Parque Juan Pablo II de Las Condes. Inscripción gratuita, aporte voluntario, #Desafío50Patitas, Fundación APAÑA y fotos profesionales de Dogcial Run.",
+    keywords: ["DOGCIAL RUN 3", "Dogcial Run 3 Santiago", "fotos de Dogcial Run", "fotos DOGCIAL RUN 3", "social run Las Condes", "dog social Santiago", "running social Chile", "trote 3K Parque Juan Pablo II", "Fundación APAÑA", "Desafío50Patitas", "Colmillo Canirun", "Here and Now", "Nómada Race"],
+    openGraph: { url: canonical, title: "DOGCIAL RUN 3 en Las Condes | Nómada Race", description: "Social run solidario de 3 km, inscripción gratuita y fotos profesionales de Dogcial Run." },
   };
   if (path[0] === "preguntas-frecuentes") return {
     ...defaults,
@@ -132,12 +132,19 @@ export default async function CatchAllPage({ params }: CatchAllPageProps) {
   } : path[0] === "eventos" && path[1] === "detalles" ? {
     "@context": "https://schema.org",
     "@type": "SportsEvent",
-    name: "STGO10K by ASICS 2026",
-    description: "Información y fotografías profesionales para STGO10K by ASICS en Ñuñoa, Santiago.",
-    startDate: "2026-10-18T08:00:00-03:00",
+    name: "DOGCIAL RUN 3",
+    alternateName: ["Dogcial Run 3 Santiago", "Social Run solidario 3K", "Dog Social Las Condes"],
+    description: "Social run solidario de 3 km junto a Fundación APAÑA para apoyar el rescate canino. Inscripción gratuita, aporte voluntario y desafío #Desafío50Patitas.",
+    startDate: "2026-10-31T10:00:00-03:00",
+    endDate: "2026-10-31T12:00:00-03:00",
     url: `${SITE_URL}${pathname}`,
-    location: { "@type": "Place", name: "Ñuñoa, Santiago", address: { "@type": "PostalAddress", addressLocality: "Ñuñoa", addressRegion: "Santiago", addressCountry: "CL" } },
-    organizer: { "@type": "Organization", name: "STGO10K", url: "https://stgo10k.cl/" },
+    image: [`${SITE_URL}/stock/SRC_8053_4306237_333466.jpg`],
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    isAccessibleForFree: true,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "CLP", availability: "https://schema.org/InStock", url: `${SITE_URL}${pathname}` },
+    location: { "@type": "Place", name: "Canil Parque Juan Pablo II", address: { "@type": "PostalAddress", addressLocality: "Las Condes", addressRegion: "Santiago", addressCountry: "CL" } },
+    organizer: { "@type": "Organization", name: "Fundación APAÑA", sameAs: "https://www.instagram.com/fundacionapana/" },
   } : null;
   return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />{eventSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(eventSchema) }} />}<NomadaApp /></>;
 }
