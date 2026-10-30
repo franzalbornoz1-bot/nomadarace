@@ -7,6 +7,24 @@ type CatchAllPageProps = { params: Promise<{ path?: string[] }> };
 
 const SITE_URL = "https://www.nomadarace.cl";
 
+const MONTHS: Record<string, string> = {
+  enero: "01", febrero: "02", marzo: "03", abril: "04", mayo: "05", junio: "06",
+  julio: "07", agosto: "08", septiembre: "09", octubre: "10", noviembre: "11", diciembre: "12",
+};
+
+function eventDateTimes(date: string): { startDate?: string; endDate?: string } {
+  const match = date.match(/^(\d{1,2}) de ([a-záéíóú]+), (\d{4})$/i);
+  if (!match) return { startDate: undefined, endDate: undefined };
+  const [, day, monthName, year] = match;
+  const month = MONTHS[monthName.toLowerCase()];
+  if (!month) return { startDate: undefined, endDate: undefined };
+  const dayValue = day.padStart(2, "0");
+  return {
+    startDate: `${year}-${month}-${dayValue}T08:00:00-03:00`,
+    endDate: `${year}-${month}-${dayValue}T18:00:00-03:00`,
+  };
+}
+
 export function generateStaticParams() {
   const publicRoutes = [
     [],
@@ -121,14 +139,23 @@ export default async function CatchAllPage({ params }: CatchAllPageProps) {
     "@type": "BreadcrumbList",
     itemListElement: [{ "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL }, ...path.map((segment, index) => ({ "@type": "ListItem", position: index + 2, name: index === 0 && segment === "eventos" ? "Eventos" : event && index === 1 ? event.name : segment.replaceAll("-", " "), item: `${SITE_URL}/${path.slice(0, index + 1).join("/")}` }))],
   };
+  const eventTimes = event ? eventDateTimes(event.date) : {};
+  const eventImage = event?.cover?.startsWith("http") ? event.cover : event?.cover ? `${SITE_URL}${event.cover}` : undefined;
   const eventSchema = event ? {
     "@context": "https://schema.org",
     "@type": "SportsEvent",
     name: event.name,
     description: event.description,
+    ...(eventTimes.startDate ? { startDate: eventTimes.startDate } : {}),
+    ...(eventTimes.endDate ? { endDate: eventTimes.endDate } : {}),
     url: `${SITE_URL}${pathname}`,
+    ...(eventImage ? { image: [eventImage] } : {}),
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "CLP", availability: "https://schema.org/InStock", url: `${SITE_URL}${pathname}` },
+    performer: { "@type": "PerformingGroup", name: `Participantes de ${event.name}` },
     location: { "@type": "Place", name: event.place, address: { "@type": "PostalAddress", addressLocality: event.city, addressCountry: "CL" } },
-    organizer: { "@type": "Organization", name: "Nómada Race", url: SITE_URL },
+    organizer: { "@type": "Organization", name: "Organización del evento" },
   } : path[0] === "eventos" && path[1] === "detalles" ? {
     "@context": "https://schema.org",
     "@type": "SportsEvent",
