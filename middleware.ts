@@ -12,6 +12,15 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url, 308);
   }
 
+  // Recover malformed legacy URLs that Search Console may still revisit.
+  // These paths were never real pages and should resolve to a valid canonical URL.
+  if (["/opengraph-image", "/$", "/&"].includes(request.nextUrl.pathname)) {
+    const url = request.nextUrl.clone();
+    url.pathname = request.nextUrl.pathname === "/opengraph-image" ? "/icon.png" : "/";
+    url.search = "";
+    return NextResponse.redirect(url, 308);
+  }
+
   if (INTERNAL_PREFIXES.some(prefix => request.nextUrl.pathname === prefix || request.nextUrl.pathname.startsWith(`${prefix}/`))) {
     return new NextResponse("Not Found", {
       status: 404,
