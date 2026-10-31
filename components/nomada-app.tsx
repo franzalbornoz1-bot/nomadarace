@@ -204,7 +204,6 @@ const PRIMARY_UPCOMING_RACE_NAMES = [SANTANDER_RACE_NAME, SANTIAGO_ASICS_RACE_NA
 const SECONDARY_UPCOMING_RACE_NAMES = ["The North Face Endurance Trail", "Garganta del Diablo Trail Running", "Trail Eco Run Papudo", "Dog Race"] as const;
 const NEXT_RACE_NAMES = [...PRIMARY_UPCOMING_RACE_NAMES, ...SECONDARY_UPCOMING_RACE_NAMES] as const;
 const HIDDEN_HOME_RACE_NAME = "Media Maratón Cuesta Lastarria Loncoche";
-let readyPhotosPopupShownThisSession = false;
 
 function photoUrlForRaceName(name: string) {
   if (name === SANTANDER_RACE_NAME) return SANTANDER_RACE_URL;
@@ -213,44 +212,6 @@ function photoUrlForRaceName(name: string) {
   if (name === IDEAL_GLOBAL_RACE_NAME) return IDEAL_GLOBAL_RACE_URL;
   if (name === FEATURED_RACE_NAME) return CORRAMOS_JUNTAS_RACE_URL;
   return PHOTO_STORE_URL;
-}
-
-function ReadyPhotosPopup() {
-  const pathname = usePathname();
-  const now = useCurrentTime();
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    // Activación: domingo 25 de octubre de 2026, 11:00 en Santiago de Chile.
-    const activationTime = new Date("2026-10-25T11:00:00-03:00").getTime();
-    const shouldShow = pathname === "/" && now !== null && now >= activationTime && !readyPhotosPopupShownThisSession;
-    if (shouldShow) {
-      readyPhotosPopupShownThisSession = true;
-      setOpen(true);
-    } else {
-      setOpen(false);
-    }
-  }, [pathname, now]);
-
-  if (pathname !== "/" || !open) return null;
-
-  return <div className="fixed inset-0 z-[80] flex items-center justify-center bg-zinc-950/80 p-4 backdrop-blur-md sm:p-6" role="dialog" aria-modal="true" aria-labelledby="ready-photos-popup-title">
-    <div className="relative isolate w-full max-w-4xl overflow-hidden rounded-[2rem] border border-white/20 bg-zinc-950 shadow-[0_30px_100px_rgba(0,0,0,.65)] sm:rounded-[2.5rem]">
-      <img src="/stock/SRC_6981_4306237_333466.jpg" alt="" aria-hidden="true" draggable={false} onContextMenu={event => event.preventDefault()} className="pointer-events-none absolute inset-0 -z-20 h-full w-full scale-105 select-none object-cover object-center grayscale blur-[4px] opacity-55" />
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(120deg,rgba(9,9,11,.91)_8%,rgba(9,9,11,.63)_52%,rgba(9,9,11,.82)_100%)]" />
-      <div className="pointer-events-none absolute inset-0 -z-10 opacity-25 mix-blend-screen [background-image:radial-gradient(rgba(255,255,255,.45)_1px,transparent_1px)] [background-size:4px_4px]" />
-      <button type="button" onClick={() => setOpen(false)} className="absolute right-4 top-4 z-10 grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-zinc-950/55 text-white shadow-lg backdrop-blur transition hover:scale-105 hover:bg-white hover:text-zinc-950" aria-label="Cerrar aviso"><X className="h-5 w-5" /></button>
-      <div className="grid min-h-[min(620px,calc(100svh-2rem))] items-end p-7 text-white sm:min-h-[540px] sm:p-12 lg:p-16">
-        <div className="max-w-2xl">
-          <h1 id="ready-photos-popup-title" className="text-5xl font-black leading-[.9] tracking-[-.07em] text-white sm:text-7xl lg:text-8xl">Tus fotos<br /><span className="text-orange-500">están listas.</span></h1>
-          <p className="mt-7 max-w-xl text-lg leading-7 text-zinc-100 sm:text-2xl sm:leading-9">Encuéntralas aquí y vuelve a vivir cada momento de la Corrida por la Vida Yo Mujer.</p>
-          <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row">
-            <a href={PHOTO_STORE_URL} target="_blank" rel="noreferrer" onClick={() => trackAction("photo_purchase_click", { placement: "popup", event: "corrida_por_la_vida_yo_mujer" })} className="flex w-full sm:w-auto"><Button className="h-auto min-h-16 w-full justify-between gap-3 px-6 py-3 text-base sm:min-w-80 sm:text-lg">Corrida por la Vida Yo Mujer <ArrowRight className="h-5 w-5 shrink-0" /></Button></a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>;
 }
 
 function PublicShell({ children }: { children: React.ReactNode }) { const pathname = usePathname(); return <div className="min-h-screen bg-brand-pure"><PublicHeader />{pathname === "/eventos/detalles" && <div className="border-b border-orange-200 bg-orange-50"><div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 lg:px-8"><p className="text-sm font-bold text-orange-950">¿Buscas tus recuerdos de DOGCIAL RUN 3?</p><a href={PHOTO_STORE_URL} target="_blank" rel="noreferrer" onClick={() => trackAction("photo_search_click", { placement: "event_detail_top_cta", event: "DOGCIAL RUN 3" })}><Button className="h-10 px-4 text-sm">Encontrar tus fotos <ArrowRight className="ml-2 h-4 w-4" /></Button></a></div></div>}{children}<Footer /></div>; }
@@ -284,7 +245,7 @@ function HomePage() {
   const reviveRaces = ["Corrida por la Vida Yo Mujer", SANTIAGO_ASICS_RACE_NAME, SANTANDER_RACE_NAME, FEATURED_RACE_NAME, IDEAL_GLOBAL_RACE_NAME, GLORIAS_EVENT_NAME]
     .map(name => calendarRaces.find(race => race.name === name))
     .filter((race): race is (typeof calendarRaces)[number] => Boolean(race));
-  return <><ReadyPhotosPopup /><PublicShell>
+  return <><PublicShell>
     <main>
       <section className="home-hero relative isolate min-h-[35rem] overflow-hidden bg-[#F7F8FC] sm:min-h-[40rem]">
         <div className="home-hero-wash pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,.98)_0%,_rgba(255,255,255,.84)_37%,_rgba(247,248,252,.42)_70%)]" />
