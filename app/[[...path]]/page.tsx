@@ -25,6 +25,29 @@ function eventDateTimes(date: string): { startDate?: string; endDate?: string } 
   };
 }
 
+const EVENT_SEO: Record<string, { title: string; description: string; keywords: string[] }> = {
+  "the-color-run-santiago": {
+    title: "Fotos The Color Run Santiago 2026 | Encuentra tus fotos profesionales",
+    description: "Encuentra tus fotos profesionales de The Color Run Santiago 2026. Información, fecha, ubicación en Ciudad Empresarial y cobertura fotográfica de Nómada Race.",
+    keywords: ["fotos The Color Run Santiago", "fotos Color Run Santiago 2026", "fotos profesionales Color Run", "encuentra tus fotos Color Run", "The Color Run Ciudad Empresarial", "5K Santiago", "Nómada Race"],
+  },
+  "fedachi-marathon": {
+    title: "Fotos FEDACHI Marathon 2026 | Encuentra tus fotos profesionales",
+    description: "Encuentra tus fotos profesionales del FEDACHI Marathon 2026 en el Estadio Nacional. Revisa fecha, distancias 5K, 10K, 21K y 42K y la cobertura de Nómada Race.",
+    keywords: ["fotos FEDACHI Marathon", "fotos Marathon Fedachi 2026", "fotos profesionales FEDACHI", "encuentra tus fotos FEDACHI", "Estadio Nacional Marathon", "maratón Santiago 2026", "5K 10K 21K 42K", "Nómada Race"],
+  },
+  "corrida-techo-chile": {
+    title: "Fotos Corrida TECHO-Chile 2026 | Encuentra tus fotos profesionales",
+    description: "Encuentra tus fotos profesionales de la Corrida TECHO-Chile 2026. Información de Plaza Bulnes, Santiago Centro, entrega de kit y cobertura fotográfica de Nómada Race.",
+    keywords: ["fotos Corrida TECHO-Chile", "fotos TECHO Chile 2026", "fotos profesionales Corrida TECHO", "encuentra tus fotos TECHO", "Plaza Bulnes corrida", "corrida Santiago Centro", "Nómada Race"],
+  },
+  "maraton-de-melipilla": {
+    title: "Fotos Maratón de Melipilla 2026 | Encuentra tus fotos profesionales",
+    description: "Encuentra tus fotos profesionales de la Maratón de Melipilla 2026. Revisa el circuito G-800, las distancias 5K, 10K, 21K y 42K y la cobertura de Nómada Race.",
+    keywords: ["fotos Maratón de Melipilla", "fotos maratón Melipilla 2026", "fotos profesionales Melipilla", "encuentra tus fotos Melipilla", "ruta G-800 Cuncumén", "maratón municipal Melipilla", "Nómada Race"],
+  },
+};
+
 export function generateStaticParams() {
   const publicRoutes = [
     [],
@@ -102,12 +125,22 @@ function routeMetadata(path: string[]): Metadata {
   };
 
   const event = events.find(item => item.slug === path[1]);
-  if (event) return {
-    ...defaults,
-    title: `${event.name} | Fotos y cobertura de carrera`,
-    description: `Información de ${event.name} en ${event.city}: fecha, ubicación y disponibilidad de fotografías profesionales de carrera.`,
-    openGraph: { url: canonical, title: `${event.name} | Nómada Race`, description: `Información y fotografías profesionales de ${event.name} en ${event.city}.` },
-  };
+  if (event) {
+    const seo = EVENT_SEO[event.slug] ?? {
+      title: `${event.name} | Fotos y cobertura de carrera`,
+      description: `Encuentra tus fotos profesionales de ${event.name} en ${event.city}. Revisa la fecha, ubicación y cobertura fotográfica de Nómada Race.`,
+      keywords: [`fotos ${event.name}`, `fotos profesionales ${event.name}`, `encuentra tus fotos ${event.name}`, event.city, "fotografía deportiva", "Nómada Race"],
+    };
+    return {
+      ...defaults,
+      title: seo.title,
+      description: seo.description,
+      keywords: seo.keywords,
+      openGraph: { url: canonical, title: seo.title, description: seo.description, type: "website", images: [{ url: event.cover, width: 1400, height: 900, alt: `Fotos profesionales de ${event.name}` }] },
+      twitter: { card: "summary_large_image", title: seo.title, description: seo.description, images: [event.cover] },
+      other: { "geo.region": "CL-RM", "geo.placename": `${event.city}, Chile`, "content-language": "es-CL" },
+    };
+  }
 
   return defaults;
 }
