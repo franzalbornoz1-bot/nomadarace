@@ -36,7 +36,7 @@ const HOME_GALLERY_IMAGES = ["/home-photo-1.jpg", "/home-photo-2.jpg", "/home-ph
 const CONTACT_EMAIL = "contacto@nomadafilms.cl";
 const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
 const CALENDAR_MONTHS = ["Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"] as const;
-const VISIBLE_CALENDAR_MONTHS = ["Octubre", "Noviembre", "Diciembre"] as const;
+const VISIBLE_CALENDAR_MONTHS = ["Noviembre", "Diciembre"] as const;
 
 function trackAction(name: string, properties: Record<string, string>) {
   void track(name, properties);
@@ -341,7 +341,7 @@ function googleCalendarUrl(race: CalendarRace) {
 
 function CalendarPage() {
   const months = VISIBLE_CALENDAR_MONTHS;
-  const [activeMonth, setActiveMonth] = useState<(typeof months)[number]>("Octubre");
+  const [activeMonth, setActiveMonth] = useState<(typeof months)[number]>("Noviembre");
   const [category, setCategory] = useState("Todas");
   const [city, setCity] = useState("Todas");
   const [distance, setDistance] = useState("Todas");
