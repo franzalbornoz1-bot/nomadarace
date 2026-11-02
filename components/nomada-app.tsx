@@ -45,9 +45,9 @@ const NOMADA_COVERAGE_SLUGS: Record<string, string> = {
   "Maratón de Melipilla": "maraton-de-melipilla",
 };
 const EVENT_LOGOS: Record<string, string> = {
-  "The Color Run Santiago": "https://www.colorrun.cl/LOGOS-2026.png",
-  "FEDACHI Marathon": "https://fedachimarathon.cl/assets/logo/compuesta-blanco.png",
-  "Corrida TECHO-Chile": "https://corridatecho.cl/wp-content/uploads/2026/08/logo.png",
+  "The Color Run Santiago": "/event-logos/color-run-2026.png",
+  "FEDACHI Marathon": "/event-logos/fedachi.png",
+  "Corrida TECHO-Chile": "/event-logos/techo.png",
 };
 const COVERAGE_EVENT_META: Record<string, { mapUrl: string; startIso: string }> = {
   "The Color Run Santiago": { mapUrl: "https://www.google.com/maps/search/?api=1&query=Ciudad+Empresarial+Huechuraba+Santiago", startIso: "2026-11-08T09:00:00-03:00" },
