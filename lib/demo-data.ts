@@ -38,8 +38,8 @@ export const events: RaceEvent[] = [
     description: "Las luces del puerto y miles de zancadas. Una noche que se corre y se recuerda.", cover: "https://images.unsplash.com/photo-1502904550040-7534597429ae?auto=format&fit=crop&w=1400&q=85", color: "from-indigo-700/85 via-blue-600/15 to-transparent",
   },
   {
-    id: "EV-2026-050", slug: "the-color-run-santiago", name: "The Color Run Santiago", city: "Santiago", place: "Huechuraba", date: "8 de noviembre, 2026", shortDate: "08 NOV", status: "Próximamente", photos: 0, assigned: 4,
-    description: "Una carrera llena de color, música y energía colectiva. Nómada Race estará ahí para capturar tus momentos.", cover: "https://images.unsplash.com/photo-1504159506876-f8338247a14a?auto=format&fit=crop&w=1400&q=85", color: "from-fuchsia-600/80 via-orange-500/20 to-transparent",
+    id: "EV-2026-050", slug: "the-color-run-santiago", name: "The Color Run Santiago", city: "Santiago", place: "Ciudad Empresarial, Huechuraba", date: "8 de noviembre, 2026", shortDate: "08 NOV", status: "Próximamente", photos: 0, assigned: 4,
+    description: "The Color Run Santiago llega el domingo 8 de noviembre a Ciudad Empresarial con un recorrido familiar de 5K, sin cronómetro y lleno de música, baile y zonas de color. Puedes correr, trotar, caminar o bailar a tu propio ritmo: la experiencia está pensada para disfrutar en comunidad, con polvos de colores a base de ingredientes naturales, festival de meta y momentos para compartir con amigos, niños y mascotas. Nómada Race estará ahí realizando cobertura fotográfica para que después puedas encontrar tus recuerdos profesionales de The Color Run.", cover: "https://images.unsplash.com/photo-1504159506876-f8338247a14a?auto=format&fit=crop&w=1400&q=85", color: "from-fuchsia-600/80 via-orange-500/20 to-transparent",
   },
   {
     id: "EV-2026-051", slug: "fedachi-marathon", name: "FEDACHI Marathon", city: "Santiago", place: "Ñuñoa", date: "15 de noviembre, 2026", shortDate: "15 NOV", status: "Próximamente", photos: 0, assigned: 4,
