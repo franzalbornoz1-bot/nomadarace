@@ -37,6 +37,22 @@ export const events: RaceEvent[] = [
     id: "EV-2026-018", slug: "corrida-nocturna-valparaiso", name: "Corrida Nocturna Valparaíso", city: "Valparaíso", place: "Plaza Sotomayor", date: "12 de agosto, 2026", shortDate: "12 AGO", status: "Fotos listas", photos: 7760, assigned: 3,
     description: "Las luces del puerto y miles de zancadas. Una noche que se corre y se recuerda.", cover: "https://images.unsplash.com/photo-1502904550040-7534597429ae?auto=format&fit=crop&w=1400&q=85", color: "from-indigo-700/85 via-blue-600/15 to-transparent",
   },
+  {
+    id: "EV-2026-050", slug: "the-color-run-santiago", name: "The Color Run Santiago", city: "Santiago", place: "Huechuraba", date: "8 de noviembre, 2026", shortDate: "08 NOV", status: "Próximamente", photos: 0, assigned: 4,
+    description: "Una carrera llena de color, música y energía colectiva. Nómada Race estará ahí para capturar tus momentos.", cover: "https://images.unsplash.com/photo-1504159506876-f8338247a14a?auto=format&fit=crop&w=1400&q=85", color: "from-fuchsia-600/80 via-orange-500/20 to-transparent",
+  },
+  {
+    id: "EV-2026-051", slug: "fedachi-marathon", name: "FEDACHI Marathon", city: "Santiago", place: "Ñuñoa", date: "15 de noviembre, 2026", shortDate: "15 NOV", status: "Próximamente", photos: 0, assigned: 4,
+    description: "Una fecha de atletismo y fondo en Santiago. Nómada Race estará ahí acompañando la jornada con fotografía deportiva.", cover: "https://images.unsplash.com/photo-1546483875-ad9014c88eba?auto=format&fit=crop&w=1400&q=85", color: "from-sky-700/80 via-cyan-500/20 to-transparent",
+  },
+  {
+    id: "EV-2026-052", slug: "corrida-techo-chile", name: "Corrida TECHO-Chile", city: "Santiago", place: "Santiago Centro", date: "22 de noviembre, 2026", shortDate: "22 NOV", status: "Próximamente", photos: 0, assigned: 4,
+    description: "Una carrera para encontrarse, moverse y apoyar una causa comunitaria. Nómada Race estará ahí registrando la experiencia.", cover: "https://images.unsplash.com/photo-1518600506278-4e8ef466b810?auto=format&fit=crop&w=1400&q=85", color: "from-amber-600/80 via-orange-500/20 to-transparent",
+  },
+  {
+    id: "EV-2026-053", slug: "maraton-de-melipilla", name: "Maratón de Melipilla", city: "Melipilla", place: "Melipilla", date: "29 de noviembre, 2026", shortDate: "29 NOV", status: "Próximamente", photos: 0, assigned: 4,
+    description: "Una jornada de fondo con distancias para distintos desafíos. Nómada Race estará ahí para fotografiar cada kilómetro.", cover: "https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?auto=format&fit=crop&w=1400&q=85", color: "from-emerald-700/80 via-lime-500/20 to-transparent",
+  },
 ];
 
 export const photographers = [
