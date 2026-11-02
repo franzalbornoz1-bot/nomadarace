@@ -103,7 +103,7 @@ function useCurrentTime() {
   useEffect(() => {
     const updateNow = () => setNow(Date.now());
     updateNow();
-    const interval = window.setInterval(updateNow, 30_000);
+    const interval = window.setInterval(updateNow, 1_000);
     return () => window.clearInterval(interval);
   }, []);
 
