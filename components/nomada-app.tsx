@@ -450,7 +450,7 @@ function LegacyEventDetailsPage() {
     <section className="mx-auto max-w-7xl px-5 py-16 text-center lg:px-8 lg:py-20"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-600">NOS VEMOS EN LA META</p><h2 className="mx-auto mt-3 max-w-3xl text-4xl font-black leading-none tracking-[-.07em] text-zinc-950 sm:text-6xl">Haz que esta fecha también cuente.</h2><p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-zinc-500">Revisa todos los detalles y prepárate para vivir STGO10K junto a miles de corredores.</p><a href={detail.officialUrl} target="_blank" rel="noreferrer" className="mt-8 inline-flex"><Button className="h-13 px-7">Ir a STGO10K <ArrowRight className="ml-2 h-4 w-4" /></Button></a></section>
   </main></PublicShell>;
 }
-function EventStat({ icon: Icon, value, label }: { icon: LucideIcon; value: string; label: string }) { return <div className="rounded-2xl bg-white p-5"><Icon className="h-5 w-5 text-orange-500" /><p className="mt-4 text-2xl font-black tracking-[-.05em]">{value}</p><p className="mt-1 text-xs font-bold text-zinc-500">{label}</p></div>; }
+function EventStat({ icon: Icon, value, label }: { icon: LucideIcon; value: string; label: string }) { if (label === "fotos estimadas") return null; return <div className="rounded-2xl bg-white p-5"><Icon className="h-5 w-5 text-orange-500" /><p className="mt-4 text-2xl font-black tracking-[-.05em]">{value}</p><p className="mt-1 text-xs font-bold text-zinc-500">{label}</p></div>; }
 
 function EventPhotosPage({ event }: { event: RaceEvent }) {
   const [dorsal, setDorsal] = useState("");
