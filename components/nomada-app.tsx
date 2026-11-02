@@ -47,6 +47,7 @@ const NOMADA_COVERAGE_SLUGS: Record<string, string> = {
 const EVENT_LOGOS: Record<string, string> = {
   "The Color Run Santiago": "https://www.colorrun.cl/LOGOS-2026.png",
   "FEDACHI Marathon": "https://fedachimarathon.cl/assets/logo/compuesta-blanco.png",
+  "Corrida TECHO-Chile": "https://corridatecho.cl/wp-content/uploads/2026/08/logo.png",
 };
 
 function trackAction(name: string, properties: Record<string, string>) {
