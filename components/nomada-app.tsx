@@ -286,7 +286,7 @@ function HomePage() {
   const reviveRaces = ["Corrida por la Vida Yo Mujer", SANTIAGO_ASICS_RACE_NAME, SANTANDER_RACE_NAME, FEATURED_RACE_NAME, IDEAL_GLOBAL_RACE_NAME, GLORIAS_EVENT_NAME]
     .map(name => calendarRaces.find(race => race.name === name))
     .filter((race): race is (typeof calendarRaces)[number] => Boolean(race));
-  return <><DogcialPhotosPopup /><PublicShell>
+  return <><PublicShell>
     <main>
       <section className="home-hero relative isolate min-h-[35rem] overflow-hidden bg-[#F7F8FC] sm:min-h-[40rem]">
         <div className="home-hero-wash pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,.98)_0%,_rgba(255,255,255,.84)_37%,_rgba(247,248,252,.42)_70%)]" />
