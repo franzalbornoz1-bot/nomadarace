@@ -245,44 +245,41 @@ html, body, .premium-nav, .glass-panel, .theme-toggle, input, textarea {
   color: #252a2e !important;
 }
 
-/* Keep the photo journey controls 16px above the visible viewport bottom
-   while the image AND explanatory text pass beneath them. The controls are
-   the first child of the section track (with a negative flow margin), so
-   sticky positioning applies across the whole track, not just its ending. */
-.photo-journey-sticky {
-  position: sticky;
-  top: calc(100vh - 6rem);
-  top: calc(100dvh - 6rem - env(safe-area-inset-bottom, 0px));
-  z-index: 30;
-  isolation: isolate;
+/* Floating photo journey controls: computed within the image+text section
+   so the pill row follows the viewport, then stops at the section boundary. */
+.photo-journey-floating {
+  will-change: transform;
 }
-
-/* Photo journey: Apple-style pills floating over the image, accessible in both themes. */
 .photo-journey-scroll {
   scrollbar-width: none;
   -ms-overflow-style: none;
   -webkit-overflow-scrolling: touch;
 }
 .photo-journey-scroll::-webkit-scrollbar { display: none; }
+
+/* Apple-inspired frosted glass, not an opaque gray fill. */
 .photo-journey-pill {
-  background: rgba(241, 241, 245, .96);
-  border: 1px solid rgba(23, 28, 32, .12);
+  background-color: rgba(248, 248, 250, .66);
+  border: 1px solid rgba(255, 255, 255, .6);
   color: #171c20;
+  -webkit-backdrop-filter: blur(26px) saturate(160%);
+  backdrop-filter: blur(26px) saturate(160%);
+  box-shadow: 0 8px 30px rgba(15, 20, 25, .13), inset 0 1px 0 rgba(255,255,255,.52);
 }
 .photo-journey-pill[aria-pressed="true"] {
-  background: #ffffff;
-  border-color: #171c20;
+  background-color: rgba(255, 255, 255, .82);
+  border-color: rgba(29, 33, 37, .78);
   color: #171c20;
 }
 .photo-journey-pill-icon { border-color: currentColor; }
 .dark .photo-journey-pill {
-  background: rgba(35, 40, 45, .96);
-  border-color: rgba(255,255,255,.25);
+  background-color: rgba(35, 41, 47, .64);
+  border-color: rgba(255, 255, 255, .28);
   color: #f4f7f8;
 }
 .dark .photo-journey-pill[aria-pressed="true"] {
-  background: #f5f5f7;
-  border-color: #f5f5f7;
+  background-color: rgba(243, 245, 247, .82);
+  border-color: rgba(255, 255, 255, .65);
   color: #171c20;
 }
 
