@@ -245,6 +245,18 @@ html, body, .premium-nav, .glass-panel, .theme-toggle, input, textarea {
   color: #252a2e !important;
 }
 
+/* Keep the photo journey controls 16px above the visible viewport bottom
+   while the image AND explanatory text pass beneath them. The controls are
+   the first child of the section track (with a negative flow margin), so
+   sticky positioning applies across the whole track, not just its ending. */
+.photo-journey-sticky {
+  position: sticky;
+  top: calc(100vh - 6rem);
+  top: calc(100dvh - 6rem - env(safe-area-inset-bottom, 0px));
+  z-index: 30;
+  isolation: isolate;
+}
+
 /* Photo journey: Apple-style pills floating over the image, accessible in both themes. */
 .photo-journey-scroll {
   scrollbar-width: none;
