@@ -370,7 +370,7 @@ function PhotoJourneyExplorer() {
       frame = 0;
       const track = trackRef.current;
       const controls = controlsRef.current;
-      if (!track || !controls) return;
+      if (!track || !controls || !track.getClientRects().length) return;
       const bounds = track.getBoundingClientRect();
       const visibleViewport = window.visualViewport;
       const visibleBottom = visibleViewport
@@ -412,7 +412,7 @@ function PhotoJourneyExplorer() {
           </a>
         </div>
 
-        <div ref={trackRef} className="relative mt-10 sm:mt-12">
+        <div ref={trackRef} className="relative mt-10 sm:mt-12 lg:hidden">
           {/* Elemento 3: controles en una capa flotante, desplazados dentro de esta sección. */}
           <div ref={controlsRef} className="photo-journey-floating pointer-events-none absolute inset-x-0 top-0 z-30 h-20">
             <div className="photo-journey-scroll pointer-events-auto -mx-5 overflow-x-auto px-5 py-2 lg:-mx-8 lg:px-8" aria-label="Explorar los pasos para encontrar tus fotos">
@@ -461,6 +461,67 @@ function PhotoJourneyExplorer() {
           </div>
 
 
+
+        </div>
+        {/* Escritorio: controles a la izquierda y medalla 3D protagonista a la derecha. */}
+        <div className="mt-10 hidden items-center gap-10 lg:grid lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] xl:gap-16">
+          <div className="flex flex-col items-start gap-3" aria-label="Explorar los tres pasos">
+            {PHOTO_JOURNEY_STEPS.map((step, index) => {
+              const selected = activeStep === index;
+              return (
+                <div key={step.title} className="w-full">
+                  <button
+                    type="button"
+                    aria-expanded={selected}
+                    aria-controls={`photo-journey-detail-${index}`}
+                    onClick={() => setActiveStep(index)}
+                    className={cn(
+                      "inline-flex min-h-16 max-w-full items-center gap-4 rounded-full border px-6 py-3 text-left text-lg font-bold transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-500",
+                      selected
+                        ? "border-zinc-300 bg-zinc-100 text-zinc-950 dark:bg-zinc-800"
+                        : "border-transparent bg-zinc-100 text-zinc-950 hover:border-orange-500 dark:bg-zinc-800"
+                    )}
+                  >
+                    <span className={cn(
+                      "grid h-9 w-9 shrink-0 place-items-center rounded-full border-2",
+                      selected ? "border-orange-500 bg-orange-500 text-[#171c20]" : "border-current"
+                    )}>
+                      {selected ? <Check className="h-5 w-5" aria-hidden="true" /> : <Plus className="h-5 w-5" aria-hidden="true" />}
+                    </span>
+                    <span>{step.shortLabel}</span>
+                  </button>
+                  {selected && (
+                    <div
+                      id={`photo-journey-detail-${index}`}
+                      className="mt-3 w-full max-w-md rounded-[1.5rem] bg-zinc-100 px-7 py-6 dark:bg-zinc-800"
+                      role="region"
+                      aria-label={step.title}
+                    >
+                      <h3 className="text-xl font-black tracking-tight text-zinc-950">{step.title}</h3>
+                      <p className="mt-3 text-base leading-7 text-zinc-600">{step.description}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="relative flex h-[440px] items-center justify-center xl:h-[500px]" aria-label="Visualización del paso seleccionado">
+            {PHOTO_JOURNEY_STEPS.map((step, index) => (
+              <img
+                key={step.image}
+                src={step.image}
+                alt={index === activeStep ? step.alt : ""}
+                aria-hidden={index !== activeStep}
+                loading="lazy"
+                draggable={false}
+                className={cn(
+                  "pointer-events-none absolute inset-0 h-full w-full select-none object-contain transition-opacity duration-500 ease-in-out motion-reduce:transition-none",
+                  index === activeStep ? "opacity-100" : "opacity-0"
+                )}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
