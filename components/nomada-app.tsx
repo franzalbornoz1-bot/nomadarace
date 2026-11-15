@@ -485,9 +485,9 @@ function CoverageEventPageV2({ event }: { event: RaceEvent }) {
     <h2 id="fedachi-find-photos" className="mt-3 text-center text-4xl font-black leading-tight tracking-tight sm:text-5xl">Cómo encontrar mis fotos</h2>
     <div className="mx-auto mt-12 grid max-w-5xl gap-12 md:grid-cols-3 md:gap-8">
       {[
-        { number: "1", icon: Camera, bg: "bg-purple-100", color: "text-purple-600", title: "Busca tus fotos", description: "Sube una selfie para buscar con reconocimiento facial o ingresa tu nombre o número de competidor." },
-        { number: "2", icon: Images, bg: "bg-sky-100", color: "text-sky-700", title: "Explora y selecciona", description: "Selecciona tus fotos favoritas. También puedes comprar el álbum para obtener todas tus fotos." },
-        { number: "3", icon: Download, bg: "bg-green-100", color: "text-green-600", title: "Paga y descarga", description: "Agrega al carrito y completa tu compra. Recibirás las instrucciones para descargar tus fotografías." },
+        { number: "1", icon: Camera, bg: "bg-purple-100", color: "text-purple-600", title: "Busca tus fotos", description: "Sube una selfie y encuentra todas las fotos que el equipo tomó para ti." },
+        { number: "2", icon: Images, bg: "bg-sky-100", color: "text-sky-700", title: "Explora y selecciona", description: "Elige tus fotografías favoritas o el álbum completo." },
+        { number: "3", icon: Download, bg: "bg-green-100", color: "text-green-600", title: "Paga y descarga", description: "Completa la selección y una vez pagado podrás descargar tus fotografías." },
       ].map(step => {
         const Icon = step.icon;
         return <div key={step.number} className="flex flex-col items-center text-center">
