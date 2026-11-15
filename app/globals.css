@@ -234,6 +234,17 @@ html, body, .premium-nav, .glass-panel, .theme-toggle, input, textarea {
   outline-color: #fb923c;
 }
 
+/* Spotlight date and attendance badges stay white in both themes. */
+.spotlight-inverse,
+.dark .spotlight-inverse {
+  background-color: #ffffff !important;
+  color: #252a2e !important;
+}
+.spotlight-inverse :is(b, small, span),
+.dark .spotlight-inverse :is(b, small, span) {
+  color: #252a2e !important;
+}
+
 /* The compact all-caps labels made sections feel templated. Headings now carry the hierarchy. */
 p[class*="uppercase"][class*="tracking-[.2em]"][class*="text-orange-600"] { display: none; }
 p[class*="uppercase"][class*="tracking-[.2em]"][class*="text-lime-300"] { display: none; }
