@@ -314,7 +314,7 @@ function HomePage() {
       <section className="bg-[#FFF0E8]"><div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 lg:grid-cols-[.85fr_1.15fr] lg:px-8"><div className="self-center"><h2 className="text-4xl font-black leading-none tracking-[-.06em] text-zinc-950 sm:text-5xl">Tu foto puede<br />estar esperándote.</h2><p className="mt-5 max-w-md leading-7 text-zinc-600">Usa una selfie para encontrar las fotos que cuentan cómo viviste la carrera.</p><Link href={PHOTO_STORE_URL} onClick={() => trackAction("photo_search_click", { placement: "waiting_photo", destination: "photo_store" })}><Button className="mt-7">Buscar mis fotos <ScanFace className="ml-2 h-4 w-4" /></Button></Link></div><div className="grid grid-cols-3 gap-2 sm:grid-cols-3 sm:gap-3"><PhotoMosaic src={HOME_GALLERY_IMAGES[0]} className="mt-4 sm:mt-8" /><PhotoMosaic src={HOME_GALLERY_IMAGES[1]} /><PhotoMosaic src={HOME_GALLERY_IMAGES[2]} className="mt-6 sm:mt-12" /><PhotoMosaic src={HOME_GALLERY_IMAGES[3]} className="hidden sm:block" /><PhotoMosaic src={HOME_GALLERY_IMAGES[4]} className="hidden sm:mt-8 sm:block" /><PhotoMosaic src={HOME_GALLERY_IMAGES[5]} className="hidden sm:block" /></div></div></section>
       <section className="border-y border-zinc-200 bg-white"><div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-20 sm:py-24 lg:grid-cols-[.9fr_1.1fr] lg:gap-20 lg:px-8"><div className="mx-auto w-full max-w-[15rem] sm:max-w-[30rem]"><div className="pointer-events-none aspect-square overflow-hidden rounded-full border-[10px] border-[#dce8ee] shadow-[0_24px_60px_rgba(24,28,31,.14)]"><img src="/home-circle.jpg" alt="Corredora celebrando después de una carrera" loading="lazy" decoding="async" draggable={false} onContextMenu={event => event.preventDefault()} className="pointer-events-none h-full w-full scale-[1.35] select-none object-cover object-[48%_48%]" /></div></div><div className="max-w-2xl text-center lg:text-left"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-600">MOMENTOS QUE QUEDAN</p><h2 className="mt-4 text-4xl font-black leading-[.95] tracking-[-.065em] text-zinc-950 sm:text-5xl">Lo que lograste<br />merece volver a sentirse.</h2><p className="mt-6 text-lg leading-8 text-zinc-600">No fotografiamos solo el paso por la meta. Buscamos esa mirada, ese gesto y esa energía que hacen que cada carrera sea tuya, para convertirlos en recuerdos que puedas revivir una y otra vez.</p><Link href="/sobre-nomada-race" className="mt-7 inline-flex"><Button variant="dark">Conoce Nómada Race <ArrowRight className="ml-2 h-4 w-4" /></Button></Link></div></div></section>
       <section className="bg-[#FFF5EF]"><div className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><SectionHeading title="Próximas carreras" copy="Estas son las próximas fechas del calendario y las carreras donde estaremos haciendo cobertura fotográfica." action={<Link href="/eventos" className="hidden items-center gap-2 text-sm font-black sm:flex">Ver calendario <ArrowRight className="h-4 w-4" /></Link>} /><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{coverageRaces.map(race => <HomeRaceCard key={`${race.month}-${race.day}-${race.name}`} race={race} href={`/eventos/${NOMADA_COVERAGE_SLUGS[race.name]}`} spotlight statusLabel="Estaremos ahí" />)}</div><Link href="/eventos" className="mx-auto mt-10 flex min-h-16 w-full max-w-2xl items-center justify-center gap-3 rounded-2xl bg-zinc-950 px-6 py-5 text-center text-base font-black text-white shadow-lg transition hover:bg-zinc-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-500 sm:text-lg">Ver calendario completo de carreras <ArrowRight className="h-5 w-5 shrink-0" /></Link></div></section>
-      <section className="bg-zinc-950 text-white"><div className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="text-xs font-black uppercase tracking-[.2em] text-lime-300">TUS FOTOS EN 3 PASOS</p><h2 className="mt-3 text-4xl font-black tracking-[-.06em] sm:text-5xl">De la meta a<br />tus recuerdos.</h2></div><Link href={PHOTO_STORE_URL}><Button>Buscar mis fotos <Search className="ml-2 h-4 w-4" /></Button></Link></div><div className="mt-10 grid gap-4 md:grid-cols-3"><PurchaseStep icon={Search} number="01" title="Encuentra tu carrera" copy="Elige tu evento y usa una selfie para encontrar tus momentos." /><PurchaseStep icon={Heart} number="02" title="Elige tus momentos" copy="Marca las fotos que mejor cuentan tu esfuerzo y tu llegada." /><PurchaseStep icon={Download} number="03" title="Compra y disfruta" copy="Escoge tu pack y recibe tus recuerdos en alta resolución." /></div></div></section>
+      <PhotoJourneyExplorer />
       <section className="mx-auto max-w-4xl px-5 py-20"><div className="rounded-[2rem] bg-orange-500 px-7 py-12 text-white sm:px-12"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-100">¿Dudas antes de correr?</p><div className="mt-4 grid gap-8 sm:grid-cols-[1fr_auto] sm:items-end"><div><h2 className="text-3xl font-black tracking-[-.06em] sm:text-4xl">Todo lo que necesitas saber, sin perder el ritmo.</h2><p className="mt-4 max-w-xl text-orange-50">Resolvemos las preguntas más frecuentes sobre fotos, preventas y tus recuerdos de carrera.</p></div><Link href="/preguntas-frecuentes"><Button variant="dark" className="shrink-0">Ir a ayuda <ArrowRight className="ml-2 h-4 w-4" /></Button></Link></div></div></section>
       <section className="relative isolate overflow-hidden bg-zinc-950 text-white"><img src={HOME_GALLERY_IMAGES[4]} alt="Comunidad de corredores compartiendo la energía de una carrera" loading="lazy" decoding="async" draggable={false} onContextMenu={event => event.preventDefault()} className="pointer-events-none absolute inset-0 h-full w-full select-none scale-105 object-cover blur-[3px]" /><div className="absolute inset-0 bg-gradient-to-r from-zinc-950/90 via-zinc-950/70 to-orange-950/45" /><div className="relative mx-auto flex min-h-[25rem] max-w-5xl flex-col items-center justify-center px-5 py-20 text-center sm:min-h-[30rem]"><p className="text-xs font-black uppercase tracking-[.22em] text-lime-300">COMUNIDAD NÓMADA RACE</p><h2 className="mt-5 max-w-4xl text-4xl font-black leading-[.95] tracking-[-.07em] sm:text-6xl">Más de mil personas ya son parte de la comunidad.</h2><p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-100 sm:text-xl">Te damos la bienvenida a Nómada Race.</p><a href="https://www.instagram.com/nomadarace.cl/" target="_blank" rel="noreferrer" className="mt-8 inline-flex"><Button className="min-h-14 px-8 text-base sm:text-lg">Súmate tú también <Instagram className="ml-3 h-5 w-5" /></Button></a></div></section>
   </main>
@@ -327,6 +327,99 @@ function HomeRaceCard({ race, past = false, photoUrl, href, spotlight = false, c
 function HeroBackdropPhoto({ src, className }: { src: string; className: string }) { return <div className={cn("animate-float pointer-events-none absolute overflow-hidden rounded-3xl border border-white/70 bg-brand-pure/50 opacity-40 shadow-[0_22px_52px_rgba(53,58,62,.14)] saturate-[.72]", className)}><img src={src} alt="" loading="lazy" decoding="async" draggable={false} onContextMenu={event => event.preventDefault()} className="pointer-events-none h-full w-full select-none scale-105 object-cover blur-[.45px]" /></div>; }
 function HeroMetric({ value, label }: { value: string; label: string }) { return <div className="px-3 py-6 text-center sm:px-7"><p className="text-2xl font-black tracking-[-.06em] text-lime-300 sm:text-3xl">{value}</p><p className="mt-1 text-[10px] font-bold uppercase tracking-wide text-zinc-400 sm:text-xs">{label}</p></div>; }
 function PhotoMosaic({ src, className }: { src: string; className?: string }) { return <div className={cn("interactive-card pointer-events-none aspect-[4/5] overflow-hidden rounded-2xl bg-zinc-200 shadow-lg", className)}><img className="pointer-events-none h-full w-full select-none object-cover transition duration-500 hover:scale-105" src={src} alt="Corredor en competencia" loading="lazy" decoding="async" draggable={false} onContextMenu={event => event.preventDefault()} /></div>; }
+
+const PHOTO_JOURNEY_STEPS = [
+  {
+    title: "Sube tu selfie",
+    shortLabel: "Busca tus fotos",
+    description: "Sube una selfie para encontrar rápidamente tus momentos en la carrera.",
+    image: HOME_GALLERY_IMAGES[0],
+    alt: "Corredor capturado durante una carrera por el equipo de Nómada Race",
+    icon: Camera,
+  },
+  {
+    title: "Elige tus momentos",
+    shortLabel: "Elige tus fotos",
+    description: "Recorre las fotografías y selecciona las que mejor cuentan tu esfuerzo y tu llegada.",
+    image: HOME_GALLERY_IMAGES[1],
+    alt: "Fotografía profesional de un momento de carrera",
+    icon: Heart,
+  },
+  {
+    title: "Compra y disfruta",
+    shortLabel: "Descarga tus fotos",
+    description: "Elige tus fotos favoritas o el álbum completo. Finaliza tu compra y descarga tus recuerdos.",
+    image: HOME_GALLERY_IMAGES[2],
+    alt: "Fotografía deportiva para conservar como recuerdo de una carrera",
+    icon: Download,
+  },
+] as const;
+
+function PhotoJourneyExplorer() {
+  const [activeStep, setActiveStep] = useState(0);
+  const current = PHOTO_JOURNEY_STEPS[activeStep];
+  return (
+    <section className="bg-zinc-50 px-0 py-16 text-zinc-950 sm:py-20" aria-labelledby="photo-journey-heading">
+      <div className="mx-auto max-w-7xl px-5 lg:px-8">
+        <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[.18em] text-orange-600">TUS FOTOS EN 3 PASOS</p>
+            <h2 id="photo-journey-heading" className="mt-3 text-4xl font-black leading-tight tracking-[-.055em] sm:text-6xl">De la meta a<br />tus recuerdos.</h2>
+          </div>
+          <a href={PHOTO_STORE_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackAction("photo_search_click", { placement: "photo_journey", destination: "photo_store" })} className="inline-flex min-h-12 items-center justify-center gap-2 self-start rounded-full bg-orange-500 px-6 py-3 text-sm font-black text-[#171c20] transition hover:bg-orange-400 sm:self-auto">
+            Buscar mis fotos <ArrowRight className="h-5 w-5" />
+          </a>
+        </div>
+        <div className="mt-10 overflow-hidden rounded-[1.5rem] bg-white shadow-[0_20px_70px_rgba(15,20,25,.08)] sm:mt-12 sm:rounded-[2rem] dark:bg-zinc-900">
+          <div className="relative flex aspect-[4/5] items-center justify-center overflow-hidden bg-[#ececed] sm:aspect-[16/9] lg:aspect-[21/9]">
+            {PHOTO_JOURNEY_STEPS.map((step, index) => (
+              <img
+                key={step.image}
+                src={step.image}
+                alt={index === activeStep ? step.alt : ""}
+                aria-hidden={index !== activeStep}
+                loading="lazy"
+                draggable={false}
+                className={cn("pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ease-in-out motion-reduce:transition-none", index === activeStep ? "opacity-100" : "opacity-0")}
+              />
+            ))}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-zinc-950/50 to-transparent" />
+            <span className="absolute bottom-5 left-5 rounded-full border border-white/30 bg-black/40 px-4 py-2 text-xs font-bold tracking-wider text-white backdrop-blur-md sm:bottom-8 sm:left-8">
+              {String(activeStep + 1).padStart(2, "0")} / 03
+            </span>
+          </div>
+          <div className="px-5 pb-8 pt-7 sm:px-10 sm:pb-10 sm:pt-9">
+            <div aria-live="polite" aria-atomic="true" className="min-h-32">
+              <h3 className="text-2xl font-black tracking-tight text-zinc-950 sm:text-4xl">{current.title}</h3>
+              <p className="mt-3 max-w-2xl text-base leading-7 text-zinc-600 sm:text-lg">{current.description}</p>
+            </div>
+            <div className="-mx-5 mt-8 overflow-x-auto px-5 pb-2 sm:-mx-10 sm:px-10" aria-label="Explorar los pasos para encontrar tus fotos">
+              <div className="flex w-max min-w-full gap-3">
+                {PHOTO_JOURNEY_STEPS.map((step, index) => {
+                  const Icon = step.icon;
+                  return (
+                    <button
+                      key={step.title}
+                      type="button"
+                      aria-pressed={activeStep === index}
+                      onClick={() => setActiveStep(index)}
+                      className={cn("inline-flex min-h-14 shrink-0 items-center justify-center gap-3 rounded-full border px-5 py-3 text-sm font-bold transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 sm:px-7 sm:text-base", activeStep === index ? "border-zinc-950 bg-zinc-950 text-white" : "border-zinc-200 bg-zinc-100 text-zinc-950 hover:border-orange-500")}
+                    >
+                      <Icon className="h-5 w-5 shrink-0" aria-hidden="true" />
+                      <span>{step.shortLabel}</span>
+                      {activeStep === index ? <Check className="h-4 w-4 shrink-0" aria-hidden="true" /> : <Plus className="h-4 w-4 shrink-0" aria-hidden="true" />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function PurchaseStep({ icon: Icon, number, title, copy }: { icon: LucideIcon; number: string; title: string; copy: string }) {
   const content = { "01": { title: "Sube tu selfie", copy: "Sube una selfie para encontrar rápidamente tus momentos en la carrera.", image: "/steps/nomada-medal-search.png" }, "02": { title: "Elige tus momentos", copy: "Recorre las fotos y guarda las que mejor cuentan tu esfuerzo y tu llegada.", image: "/steps/nomada-medal-heart.png" }, "03": { title: "Compra y disfruta", copy: "Elige tu pack y recibe tus recuerdos en alta resolución, listos para volver a sentirlos.", image: "/steps/nomada-medal-download.png" } }[number as "01" | "02" | "03"] ?? { title, copy, image: "" };
   return <div className="rounded-3xl border border-zinc-800 bg-zinc-900 p-7"><div className="flex items-start justify-between"><span className="grid h-20 w-20 place-items-center overflow-hidden rounded-2xl bg-lime-300"><img src={content.image} alt="" aria-hidden="true" draggable={false} onContextMenu={event => event.preventDefault()} className="pointer-events-none h-full w-full select-none object-contain" />{!content.image && <Icon className="h-5 w-5 text-zinc-950" />}</span><span className="text-sm font-black text-zinc-600">{number}</span></div><h3 className="mt-8 text-2xl font-black tracking-[-.05em]">{content.title}</h3><p className="mt-3 text-sm leading-6 text-zinc-400">{content.copy}</p></div>;
