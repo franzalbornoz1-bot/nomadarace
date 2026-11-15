@@ -259,7 +259,7 @@ html, body, .premium-nav, .glass-panel, .theme-toggle, input, textarea {
 
 /* Apple-inspired frosted glass, not an opaque gray fill. */
 .photo-journey-pill {
-  background-color: rgba(248, 248, 250, .66);
+  background-color: rgba(255, 255, 255, .58);
   border: 1px solid rgba(255, 255, 255, .6);
   color: #171c20;
   -webkit-backdrop-filter: blur(26px) saturate(160%);
