@@ -245,6 +245,35 @@ html, body, .premium-nav, .glass-panel, .theme-toggle, input, textarea {
   color: #252a2e !important;
 }
 
+/* Photo journey: Apple-style pills floating over the image, accessible in both themes. */
+.photo-journey-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+.photo-journey-scroll::-webkit-scrollbar { display: none; }
+.photo-journey-pill {
+  background: rgba(241, 241, 245, .96);
+  border: 1px solid rgba(23, 28, 32, .12);
+  color: #171c20;
+}
+.photo-journey-pill[aria-pressed="true"] {
+  background: #ffffff;
+  border-color: #171c20;
+  color: #171c20;
+}
+.photo-journey-pill-icon { border-color: currentColor; }
+.dark .photo-journey-pill {
+  background: rgba(35, 40, 45, .96);
+  border-color: rgba(255,255,255,.25);
+  color: #f4f7f8;
+}
+.dark .photo-journey-pill[aria-pressed="true"] {
+  background: #f5f5f7;
+  border-color: #f5f5f7;
+  color: #171c20;
+}
+
 /* The compact all-caps labels made sections feel templated. Headings now carry the hierarchy. */
 p[class*="uppercase"][class*="tracking-[.2em]"][class*="text-orange-600"] { display: none; }
 p[class*="uppercase"][class*="tracking-[.2em]"][class*="text-lime-300"] { display: none; }
