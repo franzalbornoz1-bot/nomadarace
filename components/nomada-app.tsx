@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { track } from "@vercel/analytics";
 import type { LucideIcon } from "lucide-react";
 import {
@@ -358,6 +358,46 @@ const PHOTO_JOURNEY_STEPS = [
 function PhotoJourneyExplorer() {
   const [activeStep, setActiveStep] = useState(0);
   const current = PHOTO_JOURNEY_STEPS[activeStep];
+  const trackRef = useRef<HTMLDivElement>(null);
+  const controlsRef = useRef<HTMLDivElement>(null);
+
+  // An absolute overlay avoids the site's overflow-x:hidden ancestors
+  // preventing position:sticky from following mobile scrolling.
+  // Clamp the overlay between the start and end of this visual section.
+  useEffect(() => {
+    let frame = 0;
+    const reposition = () => {
+      frame = 0;
+      const track = trackRef.current;
+      const controls = controlsRef.current;
+      if (!track || !controls) return;
+      const bounds = track.getBoundingClientRect();
+      const visibleViewport = window.visualViewport;
+      const visibleBottom = visibleViewport
+        ? visibleViewport.offsetTop + visibleViewport.height
+        : window.innerHeight;
+      const gap = 16;
+      const maxOffset = Math.max(0, bounds.height - controls.offsetHeight);
+      const offset = Math.max(0, Math.min(maxOffset, visibleBottom - bounds.top - controls.offsetHeight - gap));
+      controls.style.transform = `translate3d(0, ${Math.round(offset)}px, 0)`;
+    };
+    const schedule = () => {
+      if (!frame) frame = window.requestAnimationFrame(reposition);
+    };
+    reposition();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    window.visualViewport?.addEventListener("resize", schedule);
+    window.visualViewport?.addEventListener("scroll", schedule);
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      window.visualViewport?.removeEventListener("resize", schedule);
+      window.visualViewport?.removeEventListener("scroll", schedule);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, []);
+
 
   return (
     <section className="bg-zinc-50 py-16 text-zinc-950 sm:py-20" aria-labelledby="photo-journey-heading">
@@ -372,10 +412,10 @@ function PhotoJourneyExplorer() {
           </a>
         </div>
 
-        <div className="relative mt-10 sm:mt-12">
-          {/* Elemento 3: capa superpuesta; su posición sticky abarca fotos y textos. */}
-          <div className="photo-journey-sticky sticky z-30 -mb-20 h-20">
-            <div className="photo-journey-scroll -mx-5 overflow-x-auto px-5 py-2 lg:-mx-8 lg:px-8" aria-label="Explorar los pasos para encontrar tus fotos">
+        <div ref={trackRef} className="relative mt-10 sm:mt-12">
+          {/* Elemento 3: controles en una capa flotante, desplazados dentro de esta sección. */}
+          <div ref={controlsRef} className="photo-journey-floating pointer-events-none absolute inset-x-0 top-0 z-30 h-20">
+            <div className="photo-journey-scroll pointer-events-auto -mx-5 overflow-x-auto px-5 py-2 lg:-mx-8 lg:px-8" aria-label="Explorar los pasos para encontrar tus fotos">
               <div className="mx-auto flex w-max min-w-full items-center gap-3 sm:justify-center sm:gap-4">
                 {PHOTO_JOURNEY_STEPS.map((step, index) => (
                   <button
