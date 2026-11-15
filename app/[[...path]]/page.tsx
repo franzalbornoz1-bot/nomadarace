@@ -32,8 +32,8 @@ const EVENT_SEO: Record<string, { title: string; description: string; keywords: 
     keywords: ["fotos The Color Run Santiago", "fotos Color Run Santiago 2026", "fotos profesionales Color Run", "encuentra tus fotos Color Run", "The Color Run Ciudad Empresarial", "5K Santiago", "Nómada Race"],
   },
   "fedachi-marathon": {
-    title: "Fotos FEDACHI Marathon 2026 | Encuentra tus fotos profesionales",
-    description: "Encuentra tus fotos profesionales del FEDACHI Marathon 2026 en el Estadio Nacional. Revisa fecha, distancias 5K, 10K, 21K y 42K y la cobertura de Nómada Race.",
+    title: "Fotos FEDACHI 2026 | Encuentra tus fotos del Marathon",
+    description: "Fotos FEDACHI Marathon 2026: busca tus fotografías del 5K, 10K, 21K y 42K en Santiago. Encuentra tus recuerdos con una selfie en Nómada Race.",
     keywords: ["fotos FEDACHI Marathon", "fotos Marathon Fedachi 2026", "fotos profesionales FEDACHI", "encuentra tus fotos FEDACHI", "Estadio Nacional Marathon", "maratón Santiago 2026", "5K 10K 21K 42K", "Nómada Race"],
   },
   "corrida-techo-chile": {
