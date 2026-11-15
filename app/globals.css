@@ -138,6 +138,9 @@ html, body, .premium-nav, .glass-panel, .theme-toggle, input, textarea {
 .dark [class~="bg-zinc-50"],
 .dark [class~="bg-zinc-100"],
 .dark [class~="bg-[#F7F8FC]"],
+.dark [class~="bg-[#FFF5EF]"],
+.dark [class~="bg-[#f7f8fa]"],
+.dark [class~="bg-[#eef6d4]"],
 .dark [class~="bg-[#FFF0E8]"],
 .dark [class~="bg-[#f2f6e7]"],
 .dark [class~="bg-[#f7f7f5]"],
@@ -182,6 +185,42 @@ html, body, .premium-nav, .glass-panel, .theme-toggle, input, textarea {
 .dark input::placeholder, .dark textarea::placeholder { color: #849199; }
 .dark section[class*="bg-[#FFF0E8]"] { background: radial-gradient(38rem 25rem at 85% 20%, rgba(254,92,19,.13), transparent 62%), #171412 !important; }
 .dark section[class*="bg-[#f4f6ee]"] { background: #151a1e !important; }
+
+/* Contrast corrections shared by every route.
+   WCAG AA: normal text 4.5:1, large text and essential icons 3:1.
+   Keep saturated brand orange for elements with dark ink; use a deeper
+   orange for cards and CTAs that explicitly carry white lettering. */
+[class~="bg-orange-500"][class~="text-white"] {
+  background-color: #b94308 !important;
+}
+[class~="bg-orange-500"][class~="text-white"]:hover {
+  background-color: #9e3505 !important;
+}
+/* Orange used as text/icons on light surfaces must be darker than the
+   decorative orange used for surfaces and large display treatments. */
+[class~="text-orange-600"],
+[class~="text-orange-500"] { color: #b94308; }
+.dark [class~="text-orange-600"],
+.dark [class~="text-orange-500"],
+.dark [class~="text-orange-700"],
+.dark [class~="text-orange-800"],
+.dark [class~="text-orange-950"] { color: #fb923c !important; }
+/* Light-toned custom section backgrounds need the same dark-surface
+   treatment as bg-white/bg-zinc-50; otherwise dark theme shows white
+   headings on near-white backgrounds. */
+.dark [class~="bg-[#FFF5EF]"],
+.dark [class~="bg-[#f7f8fa]"],
+.dark [class~="bg-[#eef6d4]"] { background-color: #151a1e !important; }
+.dark [class~="bg-[#FFF5EF]"] [class~="text-zinc-950"],
+.dark [class~="bg-[#f7f8fa]"] [class~="text-zinc-950"] { color: #f4f7f8 !important; }
+/* Focus must be visible for keyboard visitors in either color scheme. */
+:where(a, button, input, textarea, select):focus-visible {
+  outline: 3px solid #b94308;
+  outline-offset: 3px;
+}
+.dark :where(a, button, input, textarea, select):focus-visible {
+  outline-color: #fb923c;
+}
 
 /* The compact all-caps labels made sections feel templated. Headings now carry the hierarchy. */
 p[class*="uppercase"][class*="tracking-[.2em]"][class*="text-orange-600"] { display: none; }
