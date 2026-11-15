@@ -373,6 +373,28 @@ function PhotoJourneyExplorer() {
         </div>
 
         <div className="relative mt-10 sm:mt-12">
+          {/* Elemento 3: capa superpuesta; su posición sticky abarca fotos y textos. */}
+          <div className="photo-journey-sticky sticky z-30 -mb-20 h-20">
+            <div className="photo-journey-scroll -mx-5 overflow-x-auto px-5 py-2 lg:-mx-8 lg:px-8" aria-label="Explorar los pasos para encontrar tus fotos">
+              <div className="mx-auto flex w-max min-w-full items-center gap-3 sm:justify-center sm:gap-4">
+                {PHOTO_JOURNEY_STEPS.map((step, index) => (
+                  <button
+                    key={step.title}
+                    type="button"
+                    aria-pressed={activeStep === index}
+                    onClick={() => setActiveStep(index)}
+                    className="photo-journey-pill inline-flex min-h-16 shrink-0 items-center gap-3 rounded-full px-5 py-3 text-sm font-semibold shadow-[0_10px_30px_rgba(0,0,0,.14)] backdrop-blur-md transition-[background-color,border-color,transform] duration-200 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 sm:px-7 sm:text-base"
+                  >
+                    <span className="photo-journey-pill-icon grid h-9 w-9 shrink-0 place-items-center rounded-full border-2">
+                      {activeStep === index ? <Check className="h-5 w-5" aria-hidden="true" /> : <Plus className="h-5 w-5" aria-hidden="true" />}
+                    </span>
+                    <span className="whitespace-nowrap">{step.shortLabel}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
           {/* Elemento 1: fotografía, con un margen interior adicional de 4 unidades. */}
           <div className="relative mx-4 aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-zinc-200 shadow-[0_18px_64px_rgba(15,20,25,.14)] sm:mx-6 sm:aspect-[16/9] sm:rounded-[2rem] lg:mx-8 lg:aspect-[21/9]">
             {PHOTO_JOURNEY_STEPS.map((step, index) => (
@@ -399,27 +421,7 @@ function PhotoJourneyExplorer() {
             <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-zinc-600 sm:text-lg">{current.description}</p>
           </div>
 
-          {/* Elemento 3: controles propios de la sección, flotantes y sticky al pie del viewport. */}
-            <div className="photo-journey-sticky sticky z-30 -mt-16 pb-1 sm:-mt-12" style={{ bottom: "max(1rem, env(safe-area-inset-bottom, 0px))" }}>
-              <div className="photo-journey-scroll -mx-5 overflow-x-auto px-5 py-2 lg:-mx-8 lg:px-8" aria-label="Explorar los pasos para encontrar tus fotos">
-                <div className="mx-auto flex w-max min-w-full items-center gap-3 sm:justify-center sm:gap-4">
-                  {PHOTO_JOURNEY_STEPS.map((step, index) => (
-                    <button
-                      key={step.title}
-                      type="button"
-                      aria-pressed={activeStep === index}
-                      onClick={() => setActiveStep(index)}
-                      className="photo-journey-pill inline-flex min-h-16 shrink-0 items-center gap-3 rounded-full px-5 py-3 text-sm font-semibold shadow-[0_10px_30px_rgba(0,0,0,.14)] backdrop-blur-md transition-[background-color,border-color,transform] duration-200 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 sm:px-7 sm:text-base"
-                    >
-                      <span className="photo-journey-pill-icon grid h-9 w-9 shrink-0 place-items-center rounded-full border-2">
-                        {activeStep === index ? <Check className="h-5 w-5" aria-hidden="true" /> : <Plus className="h-5 w-5" aria-hidden="true" />}
-                      </span>
-                      <span className="whitespace-nowrap">{step.shortLabel}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
+
         </div>
       </div>
     </section>
