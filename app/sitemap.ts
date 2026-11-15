@@ -26,7 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return paths.map(path => {
     const slug = path.startsWith("/blog/") ? path.slice(6) : null;
     const isEventLanding = events.some(event => path === `/eventos/${event.slug}`);
-    const lastModified = slug ? new Date(getBlogPublicationDate(slug).iso) : updatedAt;
+    const lastModified = slug ? new Date(getBlogPublicationDate(slug).iso) : path === "/eventos/fedachi-marathon" ? new Date("2026-11-15T10:05:00-03:00") : updatedAt;
     return {
       url: `${base}${path}`,
       lastModified,
