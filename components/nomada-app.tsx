@@ -400,7 +400,7 @@ function PhotoJourneyExplorer() {
 
 
   return (
-    <section className="bg-zinc-50 py-16 text-zinc-950 sm:py-20" aria-labelledby="photo-journey-heading">
+    <section className="bg-white py-16 text-zinc-950 sm:py-20" aria-labelledby="photo-journey-heading">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
           <div>
