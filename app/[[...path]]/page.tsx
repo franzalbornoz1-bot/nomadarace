@@ -185,10 +185,12 @@ export default async function CatchAllPage({ params }: CatchAllPageProps) {
     ...(eventImage ? { image: [eventImage] } : {}),
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-    offers: { "@type": "Offer", price: "0", priceCurrency: "CLP", availability: "https://schema.org/InStock", url: `${SITE_URL}${pathname}` },
-    performer: { "@type": "PerformingGroup", name: `Participantes de ${event.name}` },
+    ...(event.slug === "fedachi-marathon" ? {} : {
+      offers: { "@type": "Offer", price: "0", priceCurrency: "CLP", availability: "https://schema.org/InStock", url: `${SITE_URL}${pathname}` },
+      performer: { "@type": "PerformingGroup", name: `Participantes de ${event.name}` },
+    }),
     location: { "@type": "Place", name: event.place, address: { "@type": "PostalAddress", addressLocality: event.city, addressCountry: "CL" } },
-    organizer: { "@type": "Organization", name: "Organización del evento" },
+    ...(event.slug === "fedachi-marathon" ? {} : { organizer: { "@type": "Organization", name: "Organización del evento" } }),
   } : path[0] === "eventos" && path[1] === "detalles" ? {
     "@context": "https://schema.org",
     "@type": "SportsEvent",
