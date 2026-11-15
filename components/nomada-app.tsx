@@ -111,7 +111,7 @@ function useCurrentTime() {
 }
 
 const PUBLIC_LINKS = [
-  ["Inicio", "/"], ["Eventos", "/eventos"], ["DOGCIAL RUN 3", "/eventos/detalles"], ["Blog", "/blog"], ["Comprar fotos", PHOTO_STORE_URL], ["Ayuda", "/preguntas-frecuentes"],
+  ["Inicio", "/"], ["Eventos", "/eventos"], ["FEDACHI Marathon", "/eventos/fedachi-marathon"], ["Blog", "/blog"], ["Comprar fotos", PHOTO_STORE_URL], ["Ayuda", "/preguntas-frecuentes"],
 ] as const;
 
 function Logo({ inverse = false, small = false }: { inverse?: boolean; small?: boolean }) {
