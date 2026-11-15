@@ -304,8 +304,8 @@ function HomePage() {
           <div className="animate-reveal w-full">
             <p className="mb-5 text-xs font-black uppercase tracking-[.2em] text-orange-600">NÓMADA RACE · FOTOS PROFESIONALES DE CARRERAS EN CHILE</p>
             <h1 className="text-[2.65rem] font-black leading-[.9] tracking-[-.08em] text-brand-carbon sm:text-7xl lg:text-8xl">TU FOTO YA<br />ESTÁ LISTA.<br /><span className="text-brand-neon">BÚSCALA AQUÍ.</span></h1>
-            <p className="mx-auto mt-6 max-w-xl text-base leading-7 text-zinc-600 sm:mt-7 sm:text-lg">Nómada Race conecta a los corredores con fotos profesionales de sus carreras en Chile.</p>
-            <Link href={PHOTO_STORE_URL} onClick={() => trackAction("photo_search_click", { placement: "hero", destination: "photo_store" })} className="mt-7 inline-flex sm:mt-8"><Button className="h-12 px-6 text-sm">Buscar y comprar <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
+            <p className="mx-auto mt-6 max-w-xl text-base leading-7 text-zinc-600 sm:mt-7 sm:text-lg">Ya puedes encontrar las fotos de tu última carrera. Capturamos tus mejores momentos para que revivas cada kilómetro y descargues tus fotografías favoritas.</p>
+            <Link href={PHOTO_STORE_URL} onClick={() => trackAction("photo_search_click", { placement: "hero", destination: "photo_store" })} className="mt-7 inline-flex sm:mt-8"><Button className="h-12 px-6 text-sm">Buscar mi álbum <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
           </div>
         </div>
       </section>
