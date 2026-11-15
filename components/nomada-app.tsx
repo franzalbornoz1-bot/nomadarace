@@ -333,24 +333,24 @@ const PHOTO_JOURNEY_STEPS = [
     title: "Sube tu selfie",
     shortLabel: "Busca tus fotos",
     description: "Sube una selfie para encontrar rápidamente tus momentos en la carrera.",
-    image: HOME_GALLERY_IMAGES[0],
-    alt: "Corredor capturado durante una carrera por el equipo de Nómada Race",
+    image: "/steps/nomada-3d-search.png",
+    alt: "Medalla dorada en 3D con lupa y cintas violetas",
     icon: Camera,
   },
   {
     title: "Elige tus momentos",
     shortLabel: "Elige tus fotos",
     description: "Recorre las fotografías y selecciona las que mejor cuentan tu esfuerzo y tu llegada.",
-    image: HOME_GALLERY_IMAGES[1],
-    alt: "Fotografía profesional de un momento de carrera",
+    image: "/steps/nomada-3d-heart.png",
+    alt: "Medalla dorada en 3D con corazón y cintas violetas",
     icon: Heart,
   },
   {
     title: "Compra y disfruta",
     shortLabel: "Descarga tus fotos",
     description: "Elige tus fotos favoritas o el álbum completo. Finaliza tu compra y descarga tus recuerdos.",
-    image: HOME_GALLERY_IMAGES[2],
-    alt: "Fotografía deportiva para conservar como recuerdo de una carrera",
+    image: "/steps/nomada-3d-download.png",
+    alt: "Medalla dorada en 3D de descarga con cintas violetas",
     icon: Download,
   },
 ] as const;
@@ -435,8 +435,8 @@ function PhotoJourneyExplorer() {
             </div>
           </div>
 
-          {/* Elemento 1: fotografía, con un margen interior adicional de 4 unidades. */}
-          <div className="relative mx-4 aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-zinc-200 shadow-[0_18px_64px_rgba(15,20,25,.14)] sm:mx-6 sm:aspect-[16/9] sm:rounded-[2rem] lg:mx-8 lg:aspect-[21/9]">
+          {/* Elemento 1: medalla 3D protagonista, sobre un escenario limpio. */}
+          <div className="relative mx-4 aspect-[4/5] overflow-hidden rounded-[1.5rem] border border-zinc-200/60 bg-white shadow-[0_18px_64px_rgba(15,20,25,.08)] sm:mx-6 sm:aspect-[16/9] sm:rounded-[2rem] lg:mx-8 lg:aspect-[21/9] dark:bg-zinc-900">
             {PHOTO_JOURNEY_STEPS.map((step, index) => (
               <img
                 key={step.image}
@@ -445,11 +445,10 @@ function PhotoJourneyExplorer() {
                 aria-hidden={index !== activeStep}
                 loading="lazy"
                 draggable={false}
-                className={cn("pointer-events-none absolute inset-0 h-full w-full select-none object-cover transition-opacity duration-500 ease-in-out motion-reduce:transition-none", index === activeStep ? "opacity-100" : "opacity-0")}
+                className={cn("pointer-events-none absolute left-1/2 top-1/2 h-auto w-[78%] max-w-[25rem] -translate-x-1/2 -translate-y-1/2 select-none rounded-[1.75rem] object-contain transition-[opacity,transform] duration-500 ease-in-out motion-reduce:transition-none sm:w-[48%] lg:w-[38%]", index === activeStep ? "opacity-100" : "opacity-0")}
               />
             ))}
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-zinc-950/30 to-transparent" />
-            <span className="absolute left-5 top-5 rounded-full border border-white/40 bg-black/50 px-4 py-2 text-xs font-bold tracking-wider text-white backdrop-blur-md sm:left-8 sm:top-8">
+            <span className="absolute left-5 top-5 rounded-full border border-zinc-200 bg-white/80 px-4 py-2 text-xs font-bold tracking-wider text-zinc-800 backdrop-blur-md sm:left-8 sm:top-8">
               {String(activeStep + 1).padStart(2, "0")} / 03
             </span>
           </div>
