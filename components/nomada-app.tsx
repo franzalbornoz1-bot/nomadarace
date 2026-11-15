@@ -230,31 +230,50 @@ function photoUrlForRaceName(name: string) {
 }
 
 const DOGCIAL_RUN_PHOTOS_URL = "https://nomadarace.fotop.com/events/3ra-edicion-dogcial-run-2026/e/355186";
-let dogcialPopupShownThisSession = false;
+const PHOTO_STORE_POPUP_DISMISSED = "nomada-photo-store-popup-dismissed";
 
-function DogcialPhotosPopup() {
+function PhotoStorePopup() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (!dogcialPopupShownThisSession) {
-      dogcialPopupShownThisSession = true;
+    try {
+      if (window.sessionStorage.getItem(PHOTO_STORE_POPUP_DISMISSED) !== "1") setOpen(true);
+    } catch {
       setOpen(true);
     }
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") dismiss();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
+
+  const dismiss = () => {
+    try {
+      window.sessionStorage.setItem(PHOTO_STORE_POPUP_DISMISSED, "1");
+    } catch {
+      // Keep the close action usable when storage is disabled.
+    }
+    setOpen(false);
+  };
+
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[80] flex items-center justify-center bg-zinc-950/80 p-4 backdrop-blur-md sm:p-6" role="dialog" aria-modal="true" aria-labelledby="dogcial-popup-title" onClick={() => setOpen(false)}>
-      <div className="relative w-full max-w-xl overflow-hidden rounded-[2rem] border border-white/20 bg-zinc-950 p-8 text-white shadow-[0_30px_100px_rgba(0,0,0,.65)] sm:p-12" onClick={event => event.stopPropagation()}>
+    <div className="fixed inset-0 z-[80] flex items-center justify-center bg-zinc-950/70 p-4 backdrop-blur-sm sm:p-6" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) dismiss(); }}>
+      <div role="dialog" aria-modal="true" aria-labelledby="photo-store-popup-title" aria-describedby="photo-store-popup-description" className="relative w-full max-w-lg overflow-hidden rounded-[2rem] border border-white/15 bg-[#171c20] p-7 text-white shadow-[0_30px_100px_rgba(0,0,0,.55)] sm:p-11">
         <div className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-orange-500/20 blur-3xl" />
-        <button type="button" onClick={() => setOpen(false)} className="absolute right-4 top-4 z-10 grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white hover:text-zinc-950" aria-label="Cerrar aviso"><X className="h-5 w-5" /></button>
-        <div className="relative">
-          <p className="mb-5 text-sm font-bold uppercase tracking-[.2em] text-orange-400">DOGCIAL RUN · 3ª EDICIÓN</p>
-          <h2 id="dogcial-popup-title" className="text-5xl font-black leading-[.95] tracking-[-.06em] sm:text-6xl">¡Tus fotos<br /><span className="text-orange-500">están listas!</span></h2>
-          <p className="mt-6 max-w-md text-lg leading-relaxed text-zinc-200">Revive los mejores momentos de DOGCIAL RUN y encuentra tus fotos de la carrera.</p>
-          <a href={DOGCIAL_RUN_PHOTOS_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackAction("photo_purchase_click", { placement: "popup", event: "dogcial_run_3" })} className="mt-8 block">
-            <Button className="h-14 w-full justify-between gap-3 px-6 text-base">Ver mis fotos <ArrowRight className="h-5 w-5" /></Button>
+        <button type="button" onClick={dismiss} className="absolute right-4 top-4 z-10 grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white hover:text-zinc-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400" aria-label="Cerrar aviso"><X className="h-5 w-5" /></button>
+        <div className="relative pt-5">
+          <p className="mb-5 text-xs font-black uppercase tracking-[.2em] text-orange-300">NÓMADA RACE · FOTOGRAFÍAS</p>
+          <h2 id="photo-store-popup-title" className="text-4xl font-black leading-[1.02] tracking-[-.055em] sm:text-5xl">¡Tus fotos <span className="text-[#ff8b4b]">están listas!</span></h2>
+          <p id="photo-store-popup-description" className="mt-6 max-w-md text-base leading-7 text-zinc-200 sm:text-lg">Revive tu última carrera. Encuentra tus fotografías, selecciona tus favoritas y compra tu álbum en nuestra tienda Fotop.</p>
+          <a href={PHOTO_STORE_URL} target="_blank" rel="noopener noreferrer" onClick={() => { trackAction("photo_search_click", { placement: "home_popup", destination: "photo_store" }); dismiss(); }} className="mt-8 flex min-h-14 w-full items-center justify-between gap-3 rounded-2xl bg-orange-500 px-6 py-4 text-base font-black text-[#171c20] transition hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400">
+            Buscar mis fotos <ArrowRight className="h-5 w-5" />
           </a>
         </div>
       </div>
@@ -318,7 +337,7 @@ function HomePage() {
       <section className="mx-auto max-w-4xl px-5 py-20"><div className="rounded-[2rem] bg-orange-500 px-7 py-12 text-white sm:px-12"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-100">¿Dudas antes de correr?</p><div className="mt-4 grid gap-8 sm:grid-cols-[1fr_auto] sm:items-end"><div><h2 className="text-3xl font-black tracking-[-.06em] sm:text-4xl">Todo lo que necesitas saber, sin perder el ritmo.</h2><p className="mt-4 max-w-xl text-orange-50">Resolvemos las preguntas más frecuentes sobre fotos, preventas y tus recuerdos de carrera.</p></div><Link href="/preguntas-frecuentes"><Button variant="dark" className="shrink-0">Ir a ayuda <ArrowRight className="ml-2 h-4 w-4" /></Button></Link></div></div></section>
       <section className="relative isolate overflow-hidden bg-zinc-950 text-white"><img src={HOME_GALLERY_IMAGES[4]} alt="Comunidad de corredores compartiendo la energía de una carrera" loading="lazy" decoding="async" draggable={false} onContextMenu={event => event.preventDefault()} className="pointer-events-none absolute inset-0 h-full w-full select-none scale-105 object-cover blur-[3px]" /><div className="absolute inset-0 bg-gradient-to-r from-zinc-950/90 via-zinc-950/70 to-orange-950/45" /><div className="relative mx-auto flex min-h-[25rem] max-w-5xl flex-col items-center justify-center px-5 py-20 text-center sm:min-h-[30rem]"><p className="text-xs font-black uppercase tracking-[.22em] text-lime-300">COMUNIDAD NÓMADA RACE</p><h2 className="mt-5 max-w-4xl text-4xl font-black leading-[.95] tracking-[-.07em] sm:text-6xl">Más de mil personas ya son parte de la comunidad.</h2><p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-100 sm:text-xl">Te damos la bienvenida a Nómada Race.</p><a href="https://www.instagram.com/nomadarace.cl/" target="_blank" rel="noreferrer" className="mt-8 inline-flex"><Button className="min-h-14 px-8 text-base sm:text-lg">Súmate tú también <Instagram className="ml-3 h-5 w-5" /></Button></a></div></section>
   </main>
-  </PublicShell></>;
+  </PublicShell><PhotoStorePopup /></>;
 }
 
 function RaceDateBadge({ day, weekday, spotlight = false, compact = false }: { day: number; weekday: string; spotlight?: boolean; compact?: boolean }) { return <span className={cn("flex shrink-0 flex-col items-center justify-center rounded-2xl text-center leading-none", compact ? "h-10 w-10 rounded-xl sm:h-14 sm:w-14 sm:rounded-2xl" : "h-14 w-14", spotlight ? "spotlight-inverse border border-white bg-white" : "bg-zinc-950 text-white")}><b className={cn("leading-none", compact ? "text-sm sm:text-xl" : "text-xl")}>{String(day).padStart(2, "0")}</b><small className={cn("mt-1 text-[9px] font-bold uppercase tracking-wide", compact && "text-[8px] sm:text-[9px]", spotlight ? "text-[#252a2e]" : "text-zinc-400")}>{weekday.slice(0, 3)}</small></span>; }
