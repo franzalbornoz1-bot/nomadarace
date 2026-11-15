@@ -230,7 +230,8 @@ function photoUrlForRaceName(name: string) {
 }
 
 const DOGCIAL_RUN_PHOTOS_URL = "https://nomadarace.fotop.com/events/3ra-edicion-dogcial-run-2026/e/355186";
-const PHOTO_STORE_POPUP_DISMISSED = "nomada-photo-store-popup-dismissed";
+const FEDACHI_PHOTOS_URL = "https://nomadarace.fotop.com/events/fedachi-marathon-2026-sudamericano/e/362294";
+const PHOTO_STORE_POPUP_DISMISSED = "nomada-fedachi-photos-popup-2026-dismissed";
 
 function PhotoStorePopup() {
   const [open, setOpen] = useState(false);
@@ -269,11 +270,12 @@ function PhotoStorePopup() {
         <div className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-orange-500/20 blur-3xl" />
         <button type="button" onClick={dismiss} className="absolute right-4 top-4 z-10 grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white hover:text-zinc-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400" aria-label="Cerrar aviso"><X className="h-5 w-5" /></button>
         <div className="relative pt-5">
-          <p className="mb-5 text-xs font-black uppercase tracking-[.2em] text-orange-300">NÓMADA RACE · FOTOGRAFÍAS</p>
-          <h2 id="photo-store-popup-title" className="text-4xl font-black leading-[1.02] tracking-[-.055em] sm:text-5xl">¡Tus fotos <span className="text-[#ff8b4b]">están listas!</span></h2>
-          <p id="photo-store-popup-description" className="mt-6 max-w-md text-base leading-7 text-zinc-200 sm:text-lg">Revive tu última carrera. Encuentra tus fotografías, selecciona tus favoritas y compra tu álbum en nuestra tienda Fotop.</p>
-          <a href={PHOTO_STORE_URL} target="_blank" rel="noopener noreferrer" onClick={() => { trackAction("photo_search_click", { placement: "home_popup", destination: "photo_store" }); dismiss(); }} className="mt-8 flex min-h-14 w-full items-center justify-between gap-3 rounded-2xl bg-orange-500 px-6 py-4 text-base font-black text-[#171c20] transition hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400">
-            Buscar mis fotos <ArrowRight className="h-5 w-5" />
+          <div className="mb-6 flex min-h-20 w-fit max-w-[15rem] items-center justify-center rounded-2xl bg-white px-5 py-3 shadow-lg"><img src="/event-logos/fedachi.png" alt="Logo FEDACHI Marathon" className="h-14 w-auto max-w-full object-contain" /></div>
+          <p className="mb-4 text-xs font-black uppercase tracking-[.2em] text-orange-300">FEDACHI MARATHON 2026 · FOTOS DISPONIBLES</p>
+          <h2 id="photo-store-popup-title" className="text-4xl font-black leading-[1.02] tracking-[-.055em] sm:text-5xl">¡Las fotos de tu carrera en FEDACHI <span className="text-[#ff8b4b]">ya están listas!</span></h2>
+          <p id="photo-store-popup-description" className="mt-6 max-w-md text-base leading-7 text-zinc-200 sm:text-lg">Revive los mejores momentos del FEDACHI Marathon 2026. Encuentra tus fotografías y elige tus favoritas o el álbum completo en Fotop.</p>
+          <a href={FEDACHI_PHOTOS_URL} target="_blank" rel="noopener noreferrer" onClick={() => { trackAction("photo_search_click", { placement: "home_popup", destination: "fedachi_marathon_2026" }); dismiss(); }} className="mt-8 flex min-h-14 w-full items-center justify-between gap-3 rounded-2xl bg-orange-500 px-6 py-4 text-base font-black text-[#171c20] transition hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400">
+            Ver mis fotos de FEDACHI <ArrowRight className="h-5 w-5" />
           </a>
         </div>
       </div>
