@@ -186,15 +186,27 @@ html, body, .premium-nav, .glass-panel, .theme-toggle, input, textarea {
 .dark section[class*="bg-[#FFF0E8]"] { background: radial-gradient(38rem 25rem at 85% 20%, rgba(254,92,19,.13), transparent 62%), #171412 !important; }
 .dark section[class*="bg-[#f4f6ee]"] { background: #151a1e !important; }
 
-/* Contrast corrections shared by every route.
-   WCAG AA: normal text 4.5:1, large text and essential icons 3:1.
-   Keep saturated brand orange for elements with dark ink; use a deeper
-   orange for cards and CTAs that explicitly carry white lettering. */
+/* Preserve the vivid brand orange. The accessible combination is
+   vibrant orange + dark ink, rather than muted orange + white text. */
 [class~="bg-orange-500"][class~="text-white"] {
-  background-color: #b94308 !important;
+  background-color: #fe5c13 !important;
+  color: #171c20 !important;
 }
 [class~="bg-orange-500"][class~="text-white"]:hover {
-  background-color: #9e3505 !important;
+  background-color: #ff712d !important;
+  color: #171c20 !important;
+}
+[class~="bg-orange-500"][class~="text-white"] [class~="text-white"],
+[class~="bg-orange-500"][class~="text-white"] [class~="text-orange-50"],
+[class~="bg-orange-500"][class~="text-white"] [class~="text-orange-100"],
+[class~="bg-orange-500"][class~="text-white"] [class~="text-orange-600"],
+[class~="bg-orange-500"][class~="text-white"] [class~="text-orange-500"],
+.dark [class~="bg-orange-500"][class~="text-white"] [class~="text-white"],
+.dark [class~="bg-orange-500"][class~="text-white"] [class~="text-orange-50"],
+.dark [class~="bg-orange-500"][class~="text-white"] [class~="text-orange-100"],
+.dark [class~="bg-orange-500"][class~="text-white"] [class~="text-orange-600"],
+.dark [class~="bg-orange-500"][class~="text-white"] [class~="text-orange-500"] {
+  color: #171c20 !important;
 }
 /* Orange used as text/icons on light surfaces must be darker than the
    decorative orange used for surfaces and large display treatments. */
