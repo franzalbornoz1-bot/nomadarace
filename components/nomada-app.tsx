@@ -358,8 +358,9 @@ const PHOTO_JOURNEY_STEPS = [
 function PhotoJourneyExplorer() {
   const [activeStep, setActiveStep] = useState(0);
   const current = PHOTO_JOURNEY_STEPS[activeStep];
+
   return (
-    <section className="bg-zinc-50 px-0 py-16 text-zinc-950 sm:py-20" aria-labelledby="photo-journey-heading">
+    <section className="bg-zinc-50 py-16 text-zinc-950 sm:py-20" aria-labelledby="photo-journey-heading">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
           <div>
@@ -370,8 +371,9 @@ function PhotoJourneyExplorer() {
             Buscar mis fotos <ArrowRight className="h-5 w-5" />
           </a>
         </div>
-        <div className="mt-10 overflow-hidden rounded-[1.5rem] bg-white shadow-[0_20px_70px_rgba(15,20,25,.08)] sm:mt-12 sm:rounded-[2rem] dark:bg-zinc-900">
-          <div className="relative flex aspect-[4/5] items-center justify-center overflow-hidden bg-[#ececed] sm:aspect-[16/9] lg:aspect-[21/9]">
+
+        <div className="relative mt-10 sm:mt-12">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-zinc-200 shadow-[0_18px_64px_rgba(15,20,25,.14)] sm:aspect-[16/9] sm:rounded-[2rem] lg:aspect-[21/9]">
             {PHOTO_JOURNEY_STEPS.map((step, index) => (
               <img
                 key={step.image}
@@ -380,40 +382,40 @@ function PhotoJourneyExplorer() {
                 aria-hidden={index !== activeStep}
                 loading="lazy"
                 draggable={false}
-                className={cn("pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ease-in-out motion-reduce:transition-none", index === activeStep ? "opacity-100" : "opacity-0")}
+                className={cn("pointer-events-none absolute inset-0 h-full w-full select-none object-cover transition-opacity duration-500 ease-in-out motion-reduce:transition-none", index === activeStep ? "opacity-100" : "opacity-0")}
               />
             ))}
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-zinc-950/50 to-transparent" />
-            <span className="absolute bottom-5 left-5 rounded-full border border-white/30 bg-black/40 px-4 py-2 text-xs font-bold tracking-wider text-white backdrop-blur-md sm:bottom-8 sm:left-8">
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-zinc-950/30 to-transparent" />
+            <span className="absolute left-5 top-5 rounded-full border border-white/40 bg-black/50 px-4 py-2 text-xs font-bold tracking-wider text-white backdrop-blur-md sm:left-8 sm:top-8">
               {String(activeStep + 1).padStart(2, "0")} / 03
             </span>
           </div>
-          <div className="px-5 pb-8 pt-7 sm:px-10 sm:pb-10 sm:pt-9">
-            <div aria-live="polite" aria-atomic="true" className="min-h-32">
-              <h3 className="text-2xl font-black tracking-tight text-zinc-950 sm:text-4xl">{current.title}</h3>
-              <p className="mt-3 max-w-2xl text-base leading-7 text-zinc-600 sm:text-lg">{current.description}</p>
-            </div>
-            <div className="-mx-5 mt-8 overflow-x-auto px-5 pb-2 sm:-mx-10 sm:px-10" aria-label="Explorar los pasos para encontrar tus fotos">
-              <div className="flex w-max min-w-full gap-3">
-                {PHOTO_JOURNEY_STEPS.map((step, index) => {
-                  const Icon = step.icon;
-                  return (
-                    <button
-                      key={step.title}
-                      type="button"
-                      aria-pressed={activeStep === index}
-                      onClick={() => setActiveStep(index)}
-                      className={cn("inline-flex min-h-14 shrink-0 items-center justify-center gap-3 rounded-full border px-5 py-3 text-sm font-bold transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 sm:px-7 sm:text-base", activeStep === index ? "border-zinc-950 bg-zinc-950 text-white" : "border-zinc-200 bg-zinc-100 text-zinc-950 hover:border-orange-500")}
-                    >
-                      <Icon className="h-5 w-5 shrink-0" aria-hidden="true" />
-                      <span>{step.shortLabel}</span>
-                      {activeStep === index ? <Check className="h-4 w-4 shrink-0" aria-hidden="true" /> : <Plus className="h-4 w-4 shrink-0" aria-hidden="true" />}
-                    </button>
-                  );
-                })}
+
+          <div className="absolute inset-x-0 bottom-5 z-20 sm:-bottom-7">
+            <div className="photo-journey-scroll overflow-x-auto px-3 py-2 sm:px-5" aria-label="Explorar los pasos para encontrar tus fotos">
+              <div className="mx-auto flex w-max min-w-full items-center gap-3 sm:justify-center sm:gap-4">
+                {PHOTO_JOURNEY_STEPS.map((step, index) => (
+                  <button
+                    key={step.title}
+                    type="button"
+                    aria-pressed={activeStep === index}
+                    onClick={() => setActiveStep(index)}
+                    className="photo-journey-pill inline-flex min-h-16 shrink-0 items-center gap-3 rounded-full px-5 py-3 text-sm font-semibold shadow-[0_10px_30px_rgba(0,0,0,.14)] backdrop-blur-md transition-[background-color,border-color,transform] duration-200 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 sm:px-7 sm:text-base"
+                  >
+                    <span className="photo-journey-pill-icon grid h-9 w-9 shrink-0 place-items-center rounded-full border-2">
+                      {activeStep === index ? <Check className="h-5 w-5" aria-hidden="true" /> : <Plus className="h-5 w-5" aria-hidden="true" />}
+                    </span>
+                    <span className="whitespace-nowrap">{step.shortLabel}</span>
+                  </button>
+                ))}
               </div>
             </div>
           </div>
+        </div>
+
+        <div aria-live="polite" aria-atomic="true" className="mx-auto mt-10 max-w-3xl text-center sm:mt-16">
+          <h3 className="text-2xl font-black tracking-tight text-zinc-950 sm:text-4xl">{current.title}</h3>
+          <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-zinc-600 sm:text-lg">{current.description}</p>
         </div>
       </div>
     </section>
