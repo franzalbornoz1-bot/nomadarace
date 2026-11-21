@@ -634,6 +634,8 @@ function CalendarPage() {
     return race.month === activeMonth && (race.year ?? 2026) === activeYear && cityMatches && distanceMatches && queryMatches;
   });
   const plural = monthRaces.length === 1 ? "carrera" : "carreras";
+  const racesPerMonth = (tab: (typeof CALENDAR_MONTH_TABS)[number]) =>
+    UNIFIED_CALENDAR_RACES.filter(race => race.month === tab.month && (race.year ?? 2026) === tab.year).length;
 
   return <PublicShell><main className="mx-auto max-w-7xl px-5 py-14 lg:px-8">
     <div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-600">CALENDARIO 2026–2027</p><h1 className="mt-3 text-5xl font-black tracking-[-.07em] text-zinc-950 sm:text-6xl">Calendario de carreras<br />para seguir corriendo.</h1><p className="mt-5 text-base leading-7 text-zinc-500">Encuentra cada carrera con su fecha, ciudad y distancias. Confirma siempre los detalles con la organización antes de inscribirte.</p></div>
@@ -670,10 +672,40 @@ function CalendarPage() {
       </div>
     </section>
     <nav aria-label="Seleccionar mes y año" className="mt-10">
-      <div className="flex items-center justify-between gap-3"><p className="text-xs font-black uppercase tracking-[.18em] text-zinc-600">Mes y año</p><span className="text-xs font-semibold text-zinc-500">Desliza para ver los próximos meses</span></div>
-      <div className="mt-3 -mx-5 flex gap-2 overflow-x-auto border-y border-zinc-200 px-5 py-4 lg:mx-0 lg:px-0">
-        {months.map((month, index) => <button key={month.key} type="button" onClick={() => setActiveMonthKey(month.key)} aria-pressed={activeMonthKey===month.key}
-          className={cn("shrink-0 whitespace-nowrap rounded-full border px-4 py-2.5 text-sm font-bold transition",activeMonthKey===month.key?"border-zinc-950 bg-zinc-950 text-white shadow-sm":"border-zinc-200 bg-white text-zinc-600 hover:border-orange-400 hover:text-orange-700",index===2&&"ml-3")}>{month.month} <span className={cn("ml-1 text-xs",activeMonthKey===month.key?"text-orange-300":"text-zinc-500")}>{month.year}</span></button>)}
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-xs font-black uppercase tracking-[.18em] text-zinc-600">Mes y año</p>
+        <span className="text-xs font-semibold text-zinc-500">Desliza para ver los próximos meses</span>
+      </div>
+      <div className="mt-3 -mx-5 flex gap-3 overflow-x-auto px-5 py-3 lg:mx-0 lg:px-0">
+        {months.map((month, index) => {
+          const selected = activeMonthKey === month.key;
+          const total = racesPerMonth(month);
+          return (
+            <button
+              key={month.key}
+              type="button"
+              onClick={() => setActiveMonthKey(month.key)}
+              aria-pressed={selected}
+              aria-label={`${month.month} de ${month.year}: ${total} ${total === 1 ? "carrera" : "carreras"}`}
+              className={cn(
+                "inline-flex min-h-14 shrink-0 items-center justify-between gap-4 rounded-full border px-5 py-2.5 text-base font-bold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 sm:min-h-16 sm:gap-6 sm:px-7 sm:text-lg",
+                selected
+                  ? "border-[#362720] bg-[#362720] text-white shadow-sm"
+                  : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-400 hover:bg-zinc-50",
+                index === 2 && "ml-2"
+              )}
+            >
+              <span className="flex items-baseline gap-1.5">
+                <span>{month.month}</span>
+                <span className={cn("text-xs font-semibold", selected ? "text-white/75" : "text-zinc-500")}>{month.year}</span>
+              </span>
+              <span className={cn(
+                "inline-flex min-h-9 min-w-9 items-center justify-center rounded-full px-3 text-sm font-extrabold tabular-nums sm:min-h-10 sm:min-w-10 sm:text-base",
+                selected ? "bg-white/20 text-white" : "bg-zinc-100 text-zinc-600"
+              )} aria-hidden="true">{total}</span>
+            </button>
+          );
+        })}
       </div>
     </nav>
     <section className="mt-8"><div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end"><div><h2 className="text-3xl font-black tracking-[-.055em] text-zinc-950">{activeMonth} {activeYear}</h2><p className="mt-2 text-sm font-medium text-zinc-500">{monthRaces.length} {plural} en el calendario.</p></div><span className="w-fit rounded-full bg-orange-50 px-3 py-1.5 text-xs font-bold text-orange-700">Agenda referencial</span></div>
