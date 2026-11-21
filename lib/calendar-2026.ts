@@ -144,7 +144,6 @@ export const calendarRaces: CalendarRace[] = [
   race("Octubre", 25, "Domingo", "Corrida Chicureo", "Colina", "3, 6 y 12 km"),
   race("Octubre", 25, "Domingo", "Medio Maratón Lago Ranco", "Lago Ranco", "3, 5, 10 y 21 km"),
   race("Octubre", 25, "Domingo", "Kankura Trail Run", "Palmilla", "7, 14 y 21 km"),
-  race("Octubre", 25, "Domingo", "Media Maratón del Bío Bío", "Concepción", "2, 5, 10 y 21 km"),
   race("Octubre", 25, "Domingo", "Maule Corre", "Linares", "800 m; 3, 5 y 10 km"),
   race("Octubre", 25, "Domingo", "Curicó Corre por los Bomberos", "Curicó", "3, 5 y 10 km"),
   race("Octubre", 25, "Domingo", "Corrida Familiar Sopralval - El Melón", "Nogales", "2, 5 y 10 km"),
