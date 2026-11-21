@@ -15,8 +15,8 @@ export const metadata: Metadata = {
   category: "Fotografía deportiva y carreras",
   creator: "Nómada Race",
   publisher: "Nómada Race",
-  openGraph: { type: "website", locale: "es_CL", url: "https://www.nomadarace.cl", siteName: "Nómada Race", title: "Nómada Race | Fotos profesionales de carreras en Chile", description: "Encuentra y compra fotos profesionales de carreras en Chile.", images: [{ url: "/home-photo-1.jpg", width: 1200, height: 630, alt: "Fotografía deportiva de Nómada Race" }] },
-  twitter: { card: "summary_large_image", title: "Nómada Race | Fotos profesionales de carreras en Chile", description: "Encuentra fotos profesionales de carreras en Chile." },
+  openGraph: { type: "website", locale: "es_CL", url: "https://www.nomadarace.cl", siteName: "Nómada Race", title: "Nómada Race | Fotos profesionales de carreras en Chile", description: "Encuentra y compra fotos profesionales de carreras en Chile.", images: [{ url: "/home-photo-1.jpg", alt: "Fotografía deportiva de Nómada Race" }] },
+  twitter: { card: "summary_large_image", title: "Nómada Race | Fotos profesionales de carreras en Chile", description: "Encuentra fotos profesionales de carreras en Chile.", images: ["/home-photo-1.jpg"] },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
   icons: {
     icon: [{ url: "/favicon.ico", type: "image/x-icon", sizes: "48x48" }, { url: "/icon.png", type: "image/png", sizes: "144x144" }],
