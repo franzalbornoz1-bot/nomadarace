@@ -54,7 +54,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const article = articles[slug as ArticleSlug];
   if (!article) return {};
   const url = `https://www.nomadarace.cl/blog/${slug}`;
-  return { title: article.title, description: article.description, keywords: [article.title, "running Chile", "carreras en Chile", "entrenamiento running", "fotos de carreras", "Nómada Race"], alternates: { canonical: `/blog/${slug}` }, openGraph: { type: "article", locale: "es_CL", title: article.title, description: article.description, url, siteName: "Nómada Race", images: [{ url: article.image, width: 2000, height: 1125, alt: article.alt }] }, twitter: { card: "summary_large_image", title: article.title, description: article.description, images: [article.image] }, other: { "geo.region": "CL-RM", "geo.placename": "Santiago, Chile", "content-language": "es-CL" } };
+  const publicationDate = getBlogPublicationDate(slug).iso;
+  return { title: article.title, description: article.description, keywords: [article.title, "running Chile", "carreras en Chile", "entrenamiento running", "fotos de carreras", "Nómada Race"], alternates: { canonical: `/blog/${slug}` }, openGraph: { type: "article", locale: "es_CL", title: article.title, description: article.description, url, siteName: "Nómada Race", publishedTime: publicationDate, modifiedTime: publicationDate, authors: ["Nómada Race"], images: [{ url: article.image, alt: article.alt }] }, twitter: { card: "summary_large_image", title: article.title, description: article.description, images: [article.image] }, other: { "geo.region": "CL-RM", "geo.placename": "Santiago, Chile", "content-language": "es-CL" } };
 }
 
 export default async function BlogArticlePage({ params }: PageProps) {
@@ -63,6 +64,6 @@ export default async function BlogArticlePage({ params }: PageProps) {
   if (!article) notFound();
   const url = `https://www.nomadarace.cl/blog/${slug}`;
   const publicationDate = getBlogPublicationDate(slug);
-  const schema = { "@context": "https://schema.org", "@type": "Article", headline: article.title, description: article.description, image: article.image, datePublished: publicationDate.iso, dateModified: publicationDate.iso, inLanguage: "es-CL", author: { "@type": "Organization", name: "Nómada Race", url: "https://www.nomadarace.cl" }, publisher: { "@type": "Organization", name: "Nómada Race", logo: { "@type": "ImageObject", url: "https://www.nomadarace.cl/icon.png" } }, mainEntityOfPage: { "@type": "WebPage", "@id": url } };
+  const schema = { "@context": "https://schema.org", "@type": "BlogPosting", "@id": `${url}#article`, headline: article.title, description: article.description, image: article.image, datePublished: publicationDate.iso, dateModified: publicationDate.iso, inLanguage: "es-CL", author: { "@type": "Organization", "@id": "https://www.nomadarace.cl/#organization", name: "Nómada Race", url: "https://www.nomadarace.cl" }, publisher: { "@id": "https://www.nomadarace.cl/#organization" }, mainEntityOfPage: { "@type": "WebPage", "@id": url }, isPartOf: { "@id": "https://www.nomadarace.cl/blog" } };
   return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} /><NomadaApp /></>;
 }
