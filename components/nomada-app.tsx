@@ -607,27 +607,31 @@ function googleCalendarUrl(race: CalendarRace) {
 }
 
 function CalendarPage() {
-  const months = CALENDAR_MONTH_TABS;
+  const today = useChileToday();
+  // Fallback matches the last published update. Client-side Chile time takes over on hydration
+  // and refreshes automatically after midnight, without asking visitors to set a date filter.
+  const cutoff = today ?? "2026-11-21";
+  const upcomingRaces = UNIFIED_CALENDAR_RACES.filter(race => calendarRaceDateKey(race) >= cutoff);
+  const months = CALENDAR_MONTH_TABS.filter(tab =>
+    upcomingRaces.some(race => (race.year ?? 2026) === tab.year && race.month === tab.month)
+  );
   const [activeMonthKey, setActiveMonthKey] = useState("2026-11");
   const activeTab = months.find(month => month.key === activeMonthKey) ?? months[0];
-  const activeMonth = activeTab.month;
-  const activeYear = activeTab.year;
+  const activeMonth = activeTab?.month;
+  const activeYear = activeTab?.year;
   const [searchTerm, setSearchTerm] = useState("");
   const [city, setCity] = useState("Todas");
   const [distance, setDistance] = useState("Todas");
-  const today = useChileToday();
-  const didInitializeMonth = useRef(false);
+
   useEffect(() => {
-    if (!today || didInitializeMonth.current) return;
-    didInitializeMonth.current = true;
-    // Start in the current or nearest upcoming month, without a separate year page.
-    const currentKey = today.slice(0, 7);
-    const nearest = months.find(tab => tab.key >= currentKey &&
-      UNIFIED_CALENDAR_RACES.some(race => (race.year ?? 2026) === tab.year && race.month === tab.month));
-    if (nearest) setActiveMonthKey(nearest.key);
-  }, [today, months]);
-  const cities = ["Todas", ...Array.from(new Set(UNIFIED_CALENDAR_RACES.map(race => race.city.split(",")[0]))).sort((a,b)=>a.localeCompare(b,"es-CL"))] as const;
-  const monthRaces = UNIFIED_CALENDAR_RACES.filter(race => {
+    // If the visitor keeps this tab open across a month boundary, advance to
+    // the next month that still has upcoming races.
+    if (!today || months.length === 0 || months.some(month => month.key === activeMonthKey)) return;
+    setActiveMonthKey(months[0].key);
+  }, [today, activeMonthKey, months]);
+
+  const cities = ["Todas", ...Array.from(new Set(upcomingRaces.map(race => race.city.split(",")[0]))).sort((a,b)=>a.localeCompare(b,"es-CL"))] as const;
+  const monthRaces = upcomingRaces.filter(race => {
     const queryMatches = !searchTerm.trim() || `${race.name} ${race.city} ${race.distances}`.toLocaleLowerCase("es-CL").includes(searchTerm.trim().toLocaleLowerCase("es-CL"));
     const cityMatches = city === "Todas" || race.city.startsWith(city);
     const distanceMatches = distance === "Todas" || new RegExp(`(^|[\\s,;])${distance.replace(" km", "")}(?=\\s|[,;]|$)`).test(race.distances);
@@ -635,7 +639,7 @@ function CalendarPage() {
   });
   const plural = monthRaces.length === 1 ? "carrera" : "carreras";
   const racesPerMonth = (tab: (typeof CALENDAR_MONTH_TABS)[number]) =>
-    UNIFIED_CALENDAR_RACES.filter(race => race.month === tab.month && (race.year ?? 2026) === tab.year).length;
+    upcomingRaces.filter(race => race.month === tab.month && (race.year ?? 2026) === tab.year).length;
 
   return <PublicShell><main className="mx-auto max-w-7xl px-5 py-14 lg:px-8">
     <div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-600">CALENDARIO 2026–2027</p><h1 className="mt-3 text-5xl font-black tracking-[-.07em] text-zinc-950 sm:text-6xl">Calendario de carreras<br />para seguir corriendo.</h1><p className="mt-5 text-base leading-7 text-zinc-500">Encuentra cada carrera con su fecha, ciudad y distancias. Confirma siempre los detalles con la organización antes de inscribirte.</p></div>
