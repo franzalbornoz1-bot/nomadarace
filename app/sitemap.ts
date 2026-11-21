@@ -6,12 +6,12 @@ export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = "https://www.nomadarace.cl";
-  const updatedAt = new Date("2026-11-02T12:00:00-03:00");
+  const updatedAt = new Date("2026-11-21T09:15:00-03:00");
   const paths = [
     "",
     "/eventos",
-    "/eventos/detalles",
-    ...events.map(event => `/eventos/${event.slug}`),
+    "/eventos/2027",
+    ...events.filter(event => ["the-color-run-santiago", "fedachi-marathon", "corrida-techo-chile", "maraton-de-melipilla"].includes(event.slug)).map(event => `/eventos/${event.slug}`),
     "/blog",
     ...Object.keys(blogPublicationDates).map(slug => `/blog/${slug}`),
     "/preguntas-frecuentes",
@@ -26,12 +26,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return paths.map(path => {
     const slug = path.startsWith("/blog/") ? path.slice(6) : null;
     const isEventLanding = events.some(event => path === `/eventos/${event.slug}`);
-    const lastModified = slug ? new Date(getBlogPublicationDate(slug).iso) : path === "/eventos/fedachi-marathon" ? new Date("2026-11-15T10:05:00-03:00") : updatedAt;
+    const lastModified = slug ? new Date(getBlogPublicationDate(slug).iso) : updatedAt;
     return {
       url: `${base}${path}`,
       lastModified,
-      changeFrequency: path === "/eventos" || path === "/eventos/detalles" || isEventLanding ? "weekly" : path.startsWith("/blog") ? "monthly" : "monthly",
-      priority: path === "" ? 1 : path === "/eventos/detalles" ? 0.9 : isEventLanding ? 0.85 : path.startsWith("/blog/") ? 0.8 : 0.7,
+      changeFrequency: path === "/eventos" || path === "/eventos/2027" || isEventLanding ? "weekly" : "monthly",
+      priority: path === "" ? 1 : path === "/eventos" ? 0.9 : isEventLanding ? 0.85 : path.startsWith("/blog/") ? 0.8 : 0.7,
     };
   });
 }
