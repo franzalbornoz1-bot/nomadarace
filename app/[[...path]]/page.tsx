@@ -35,21 +35,20 @@ const EVENT_SEO: Record<string, { title: string; description: string; keywords: 
     keywords: ["fotos FEDACHI Marathon", "fotos Marathon Fedachi 2026", "fotos profesionales FEDACHI", "encuentra tus fotos FEDACHI", "Estadio Nacional Marathon", "maratón Santiago 2026", "5K 10K 21K 42K", "Nómada Race"],
   },
   "corrida-techo-chile": {
-    title: "Fotos Corrida TECHO-Chile 2026 | Encuentra tus fotos profesionales",
-    description: "Encuentra tus fotos profesionales de la Corrida TECHO-Chile 2026. Información de Plaza Bulnes, Santiago Centro, entrega de kit y cobertura fotográfica de Nómada Race.",
-    keywords: ["fotos Corrida TECHO-Chile", "fotos TECHO Chile 2026", "fotos profesionales Corrida TECHO", "encuentra tus fotos TECHO", "Plaza Bulnes corrida", "corrida Santiago Centro", "Nómada Race"],
+    title: "Corrida TECHO-Chile 2026 | Fecha y detalles de la carrera",
+    description: "Corrida TECHO-Chile 2026: conoce su fecha del 22 de noviembre, lugar en Plaza Bulnes, distancias y datos de la jornada. Las fotos de Nómada Race se anunciarán cuando estén publicadas.",
+    keywords: ["Corrida TECHO-Chile 2026", "fecha Corrida TECHO", "Plaza Bulnes corrida", "corrida Santiago Centro", "distancias Corrida TECHO", "fotografía deportiva Nómada Race"],
   },
   "maraton-de-melipilla": {
-    title: "Fotos Maratón de Melipilla 2026 | Encuentra tus fotos profesionales",
-    description: "Encuentra tus fotos profesionales de la Maratón de Melipilla 2026. Revisa el circuito G-800, las distancias 5K, 10K, 21K y 42K y la cobertura de Nómada Race.",
-    keywords: ["fotos Maratón de Melipilla", "fotos maratón Melipilla 2026", "fotos profesionales Melipilla", "encuentra tus fotos Melipilla", "ruta G-800 Cuncumén", "maratón municipal Melipilla", "Nómada Race"],
+    title: "Maratón de Melipilla 2026 | Fecha, recorrido y distancias",
+    description: "Maratón de Melipilla 2026: revisa la fecha del 29 de noviembre, el circuito G-800 y las distancias 5K, 10K, 21K y 42K. La disponibilidad de fotos se confirmará cuando se publiquen.",
+    keywords: ["Maratón de Melipilla 2026", "fecha Maratón Melipilla", "ruta G-800 Cuncumén", "maratón municipal Melipilla", "distancias maratón Melipilla", "Nómada Race"],
   },
 };
 
 export function generateStaticParams() {
   const publicRoutes = [
     [],
-    ["eventos"],
     ["eventos", "2027"],
     ["eventos", "detalles"],
     ["preguntas-frecuentes"],
@@ -179,7 +178,7 @@ export default async function CatchAllPage({ params }: CatchAllPageProps) {
   if (path[0] === "eventos" && path.length === 3 && path[2] === "fotos") {
     const event = events.find(item => item.slug === path[1]);
     if (!event) notFound();
-    redirect(event.slug === "fedachi-marathon" ? FEDACHI_ALBUM : `/eventos/${event.slug}`);
+    redirect(event.slug === "fedachi-marathon" ? FEDACHI_ALBUM : "https://nomadarace.fotop.com/");
   }
 
   if (!isPublicRoute(path)) notFound();
