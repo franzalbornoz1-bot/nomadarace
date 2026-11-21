@@ -11,11 +11,11 @@ export const metadata: Metadata = {
   description: "Nómada Race es una plataforma chilena de fotos profesionales de carreras. Encuentra, compra y descarga tus imágenes por evento.",
   applicationName: "Nómada Race",
   alternates: { canonical: "/" },
-  keywords: ["fotos de carreras", "fotos running Chile", "fotos con selfie", "fotografía deportiva", "fotógrafos de carreras", "fotos running Santiago", "calendario de carreras Chile", "fotos Santiago 10K", "fotos Rock n Roll Santiago", "DOGCIAL RUN 3", "Dogcial Run 3 Santiago", "Desafío50Patitas", "social run Santiago", "running social Chile", "dog social Santiago", "trote 3K Parque Juan Pablo II", "Canil Parque Juan Pablo II", "rescate canino Las Condes", "Fundación APAÑA", "Colmillo Canirun", "Here and Now", "Nómada Race"],
+  keywords: ["fotos de carreras Chile", "buscar fotos de carrera", "fotografías running", "fotos por selfie", "fotos FEDACHI 2026", "fotografía deportiva Chile", "fotos maratón", "calendario de carreras Chile", "fotógrafos de carreras", "fotos running Santiago", "Nómada Race"],
   category: "Fotografía deportiva y carreras",
   creator: "Nómada Race",
   publisher: "Nómada Race",
-  openGraph: { type: "website", locale: "es_CL", url: "https://www.nomadarace.cl", siteName: "Nómada Race", title: "Nómada Race | Fotos profesionales de carreras en Chile", description: "Encuentra y compra fotos profesionales de carreras en Chile.", images: [{ url: "/icon.png", width: 144, height: 144, alt: "Nómada Race" }] },
+  openGraph: { type: "website", locale: "es_CL", url: "https://www.nomadarace.cl", siteName: "Nómada Race", title: "Nómada Race | Fotos profesionales de carreras en Chile", description: "Encuentra y compra fotos profesionales de carreras en Chile.", images: [{ url: "/home-photo-1.jpg", width: 1200, height: 630, alt: "Fotografía deportiva de Nómada Race" }] },
   twitter: { card: "summary_large_image", title: "Nómada Race | Fotos profesionales de carreras en Chile", description: "Encuentra fotos profesionales de carreras en Chile." },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
   icons: {
