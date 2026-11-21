@@ -560,19 +560,19 @@ function googleCalendarUrl(race: CalendarRace) {
   return `https://calendar.google.com/calendar/render?${query.toString()}`;
 }
 
-function CalendarPage() {
+function CalendarPage({ serverToday }: { serverToday: string }) {
   const today = useChileToday();
-  // Fallback matches the last published update. Client-side Chile time takes over on hydration
-  // and refreshes automatically after midnight, without asking visitors to set a date filter.
-  const cutoff = today ?? "2026-11-21";
+  // Use Chile's current date rendered on the server, then update after midnight on the client.
+  const cutoff = today ?? serverToday;
   const upcomingRaces = UNIFIED_CALENDAR_RACES.filter(race => calendarRaceDateKey(race) >= cutoff);
   const months = CALENDAR_MONTH_TABS.filter(tab =>
     upcomingRaces.some(race => (race.year ?? 2026) === tab.year && race.month === tab.month)
   );
-  const [activeMonthKey, setActiveMonthKey] = useState("2026-11");
+  const [activeMonthKey, setActiveMonthKey] = useState(serverToday.slice(0, 7));
   const activeTab = months.find(month => month.key === activeMonthKey) ?? months[0];
   const activeMonth = activeTab?.month;
   const activeYear = activeTab?.year;
+  const selectedMonthKey = activeTab?.key ?? activeMonthKey;
   const [searchTerm, setSearchTerm] = useState("");
   const [city, setCity] = useState("Todas");
   const [distance, setDistance] = useState("Todas");
@@ -636,7 +636,7 @@ function CalendarPage() {
       </div>
       <div className="mt-3 -mx-5 flex gap-3 overflow-x-auto px-5 py-3 lg:mx-0 lg:px-0">
         {months.map((month, index) => {
-          const selected = activeMonthKey === month.key;
+          const selected = selectedMonthKey === month.key;
           const total = racesPerMonth(month);
           return (
             <button
@@ -1328,7 +1328,7 @@ function BlogHub() { return <RunnerContentHub />; }
 
 function GuideArticle({ guide }: { guide: Guide }) { const current = guides.findIndex(item => item.slug === guide.slug); const recommendations = [guides[(current + 1) % guides.length], guides[(current + 2) % guides.length]]; return <PublicShell><article><header className="relative isolate overflow-hidden bg-zinc-950 text-white"><img src={guide.image} alt={guide.imageAlt} className="absolute inset-0 h-full w-full object-cover opacity-35" /><div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/85 to-zinc-950/30" /><div className="relative mx-auto max-w-5xl px-5 py-16 sm:py-28 lg:px-8"><Link href="/blog" className="text-sm font-bold text-zinc-300 hover:text-white">← Volver al blog</Link><p className="mt-10 text-xs font-black uppercase tracking-[.2em] text-orange-300">{guide.category} · {guide.readTime}</p><h1 className="mt-5 max-w-4xl text-5xl font-black leading-[.9] tracking-[-.08em] sm:text-7xl">{guide.title}</h1><p className="mt-7 max-w-2xl text-lg leading-8 text-zinc-200">{guide.description}</p><p className="mt-8 text-sm font-semibold text-zinc-400">Autor: <a href="https://nomadarace.cl" className="text-zinc-200 underline decoration-orange-400/70 underline-offset-4 transition hover:text-white">Nómada Race · nomadarace.cl</a> · {getBlogPublicationDate(guide.slug).label}</p></div></header><div className="mx-auto max-w-5xl px-5 py-14 sm:py-16 lg:px-8"><div className="max-w-3xl text-[1.0625rem] leading-8 text-zinc-700"><p className="text-xl leading-8 text-zinc-600">Esta guía entrega orientación general para corredores recreativos. Ajusta la carga según tu experiencia y pide apoyo profesional si tienes dolor persistente, una lesión o una condición de salud.</p>{guide.sections.map((section, index) => <section key={section.title} className="mt-12"><h2 className="text-3xl font-black tracking-[-.055em] text-zinc-950">{index + 1}. {section.title}</h2><p className="mt-4">{section.copy}</p>{section.tip && <div className="mt-7 rounded-3xl border border-orange-100 bg-orange-50 p-6"><h3 className="text-lg font-black text-zinc-950">{section.tipTitle}</h3><p className="mt-2 text-base leading-7 text-zinc-600">{section.tip}</p></div>}</section>)}<section className="mt-12 rounded-[1.75rem] bg-zinc-950 p-7 text-white"><h2 className="text-2xl font-black tracking-[-.05em]">La constancia gana a la perfección.</h2><p className="mt-3 leading-7 text-zinc-300">El mejor plan es el que puedes sostener. Avanza de forma gradual y consulta a un profesional de salud, nutrición o movimiento cuando necesites una recomendación personal.</p></section><section className="mt-12 border-t border-zinc-200 pt-10"><h2 className="text-2xl font-black tracking-[-.05em] text-zinc-950">Fuentes para seguir aprendiendo</h2><ul className="mt-5 grid gap-3 text-sm leading-6 text-zinc-600">{guide.sources.map(([label, href]) => <li key={href}><a className="font-bold text-orange-600 hover:underline" href={href} target="_blank" rel="noreferrer">{label}</a></li>)}</ul></section></div></div><section className="border-t border-zinc-200 bg-white"><div className="mx-auto max-w-5xl px-5 py-14 lg:px-8"><p className="text-xs font-black uppercase tracking-[.18em] text-orange-600">SIGUE LEYENDO</p><h2 className="mt-3 text-3xl font-black tracking-[-.06em] text-zinc-950">Artículos que te pueden servir después.</h2><div className="mt-7 grid gap-5 md:grid-cols-2">{recommendations.map(item => <Link key={item.slug} href={`/blog/${item.slug}`} className="group rounded-[1.75rem] border border-zinc-200 bg-[#f7f8fa] p-6 transition hover:-translate-y-1 hover:border-orange-200"><p className="text-xs font-black uppercase tracking-[.15em] text-orange-600">{item.category}</p><h3 className="mt-3 text-2xl font-black leading-tight text-zinc-950">{item.title}</h3><p className="mt-3 text-sm leading-6 text-zinc-600">{item.description}</p><span className="mt-5 flex items-center gap-2 text-sm font-black text-zinc-950 group-hover:text-orange-600">Leer siguiente <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></Link>)}</div></div></section></article></PublicShell>; }
 
-export function NomadaApp() {
+export function NomadaApp({ initialCalendarDate }: { initialCalendarDate?: string } = {}) {
   const path = usePathname();
   useEffect(() => {
     const protectStockImages = (event: MouseEvent) => {
@@ -1365,8 +1365,8 @@ export function NomadaApp() {
   if (path === "/admin/clientes") return <AdminClients />;
   if (path === "/admin/configuracion") return <AdminSettings />;
   if (path === "/eventos/detalles") return <EventDetailsPage />;
-  if (path === "/eventos") return <CalendarPage />;
-  if (path === "/eventos/2027") return <CalendarPage />;
+  if (path === "/eventos") return <CalendarPage serverToday={initialCalendarDate ?? chileTodayKey()} />;
+  if (path === "/eventos/2027") return <CalendarPage serverToday={initialCalendarDate ?? chileTodayKey()} />;
   if (path.endsWith("/fotos") && path.startsWith("/eventos/")) { const slug = path.split("/")[2]; return <EventPhotosPage event={events.find(item => item.slug === slug) ?? events[1]} />; }
   if (path.startsWith("/eventos/")) { const event = events.find(item => item.slug === path.split("/")[2]) ?? events[0]; return <CoverageEventPageV2 event={event} />; }
   if (path === "/organizadores") return <PublicInfoPage kind="organizadores" />;
