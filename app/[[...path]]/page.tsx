@@ -1,28 +1,26 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { NomadaApp } from "@/components/nomada-app";
 import { events } from "@/lib/demo-data";
 
 type CatchAllPageProps = { params: Promise<{ path?: string[] }> };
 
 const SITE_URL = "https://www.nomadarace.cl";
+const FEDACHI_ALBUM = "https://nomadarace.fotop.com/events/fedachi-marathon-2026-sudamericano/e/362294";
 
 const MONTHS: Record<string, string> = {
   enero: "01", febrero: "02", marzo: "03", abril: "04", mayo: "05", junio: "06",
   julio: "07", agosto: "08", septiembre: "09", octubre: "10", noviembre: "11", diciembre: "12",
 };
 
-function eventDateTimes(date: string): { startDate?: string; endDate?: string } {
+function eventDateTimes(date: string): { startDate?: string } {
   const match = date.match(/^(\d{1,2}) de ([a-záéíóú]+), (\d{4})$/i);
-  if (!match) return { startDate: undefined, endDate: undefined };
+  if (!match) return { startDate: undefined };
   const [, day, monthName, year] = match;
   const month = MONTHS[monthName.toLowerCase()];
-  if (!month) return { startDate: undefined, endDate: undefined };
+  if (!month) return { startDate: undefined };
   const dayValue = day.padStart(2, "0");
-  return {
-    startDate: `${year}-${month}-${dayValue}T08:00:00-03:00`,
-    endDate: `${year}-${month}-${dayValue}T18:00:00-03:00`,
-  };
+  return { startDate: `${year}-${month}-${dayValue}` };
 }
 
 const EVENT_SEO: Record<string, { title: string; description: string; keywords: string[] }> = {
@@ -82,9 +80,9 @@ function routeMetadata(path: string[]): Metadata {
   if (path.length === 0) return defaults;
   if (path[0] === "eventos" && path.length === 1) return {
     ...defaults,
-    title: "Calendario de carreras 2026 en Chile",
-    description: "Calendario de carreras 2026 en Chile: encuentra social runs, running social, trotes 3K y eventos comunitarios como DOGCIAL RUN 3 en el Parque Juan Pablo II de Las Condes. Conoce el #Desafío50Patitas, la inscripción gratuita y las fechas, ciudades y distancias.",
-    keywords: ["calendario de carreras 2026 Chile", "DOGCIAL RUN 3", "Dogcial Run 3 Santiago", "Desafío50Patitas", "social run Santiago", "running social Chile", "dog social Santiago", "trote 3K Parque Juan Pablo II", "Canil Parque Juan Pablo II", "rescate canino Las Condes", "Fundación APAÑA", "Colmillo Canirun", "Here and Now", "Nómada Race"],
+    title: "Calendario de carreras 2026 en Chile | Fechas y distancias",
+    description: "Descubre el calendario de carreras en Chile 2026: fechas, ciudades y distancias para 5K, 10K, 21K, maratones, trails y corridas familiares. Encuentra eventos en Santiago y otras regiones.",
+    keywords: ["calendario de carreras Chile 2026", "corridas Santiago", "carreras running Chile", "fechas 5K 10K 21K 42K", "maratones Chile", "trail running", "Nómada Race"],
   };
   if (path[0] === "eventos" && path[1] === "2027" && path.length === 2) return {
     ...defaults,
@@ -93,12 +91,12 @@ function routeMetadata(path: string[]): Metadata {
   };
   if (path[0] === "eventos" && path[1] === "detalles" && path.length === 2) return {
     ...defaults,
-    title: "DOGCIAL RUN 3 en Las Condes | Social Run y fotos | Nómada Race",
-    description: "DOGCIAL RUN 3: información de un social run solidario de 3 km en el Parque Juan Pablo II de Las Condes. Inscripción gratuita, aporte voluntario, #Desafío50Patitas y fotos profesionales que Nómada Race estará capturando durante la jornada.",
-    keywords: ["DOGCIAL RUN 3", "Dogcial Run 3 Santiago", "fotos de Dogcial Run", "fotos DOGCIAL RUN 3", "social run Las Condes", "dog social Santiago", "running social Chile", "trote 3K Parque Juan Pablo II", "Fundación APAÑA", "Desafío50Patitas", "Colmillo Canirun", "Here and Now", "Nómada Race"],
-    openGraph: { url: canonical, title: "DOGCIAL RUN 3 en Las Condes | Nómada Race", description: "Social run solidario de 3 km, inscripción gratuita y fotos profesionales de Dogcial Run." },
+    alternates: { canonical: new URL("/eventos", SITE_URL).toString() },
+    title: "Calendario de carreras | Nómada Race",
+    description: "Consulta el calendario vigente de carreras, eventos y coberturas de Nómada Race.",
+    robots: { index: false, follow: true },
   };
-  if (path[0] === "preguntas-frecuentes") return {
+    if (path[0] === "preguntas-frecuentes") return {
     ...defaults,
     title: "Preguntas frecuentes sobre fotos de carrera",
     description: "Resuelve dudas sobre cómo encontrar, comprar y descargar tus fotos de carrera en Nómada Race.",
@@ -131,14 +129,18 @@ function routeMetadata(path: string[]): Metadata {
       description: `Encuentra tus fotos profesionales de ${event.name} en ${event.city}. Revisa la fecha, ubicación y cobertura fotográfica de Nómada Race.`,
       keywords: [`fotos ${event.name}`, `fotos profesionales ${event.name}`, `encuentra tus fotos ${event.name}`, event.city, "fotografía deportiva", "Nómada Race"],
     };
+    const photoDemoRoute = path.length === 3 && path[2] === "fotos";
+    const eventCanonical = new URL(`/eventos/${event.slug}`, SITE_URL).toString();
     return {
       ...defaults,
+      alternates: { canonical: eventCanonical },
+      ...(photoDemoRoute ? { robots: { index: false, follow: true } } : {}),
       title: seo.title,
       description: seo.description,
       keywords: seo.keywords,
-      openGraph: { url: canonical, title: seo.title, description: seo.description, type: "website", images: [{ url: event.cover, width: 1400, height: 900, alt: `Fotos profesionales de ${event.name}` }] },
+      openGraph: { url: eventCanonical, title: seo.title, description: seo.description, type: "website", images: [{ url: event.cover, width: 1400, height: 900, alt: `Imagen referencial de ${event.name}` }] },
       twitter: { card: "summary_large_image", title: seo.title, description: seo.description, images: [event.cover] },
-      other: { "geo.region": "CL-RM", "geo.placename": `${event.city}, Chile`, "content-language": "es-CL" },
+      other: { "geo.placename": `${event.city}, Chile`, "content-language": "es-CL" },
     };
   }
 
@@ -164,6 +166,14 @@ function isPublicRoute(path: string[]) {
 
 export default async function CatchAllPage({ params }: CatchAllPageProps) {
   const { path = [] } = await params;
+  // Do not expose the old simulated photo checkout as an indexable purchase page.
+  // FEDACHI has a verified direct album; other demo photo routes return to their event landing.
+  if (path[0] === "eventos" && path.length === 3 && path[2] === "fotos") {
+    const event = events.find(item => item.slug === path[1]);
+    if (!event) notFound();
+    redirect(event.slug === "fedachi-marathon" ? FEDACHI_ALBUM : `/eventos/${event.slug}`);
+  }
+
   if (!isPublicRoute(path)) notFound();
   const event = path[0] === "eventos" ? events.find(item => item.slug === path[1]) : undefined;
   const pathname = path.length ? `/${path.join("/")}` : "/";
@@ -174,39 +184,19 @@ export default async function CatchAllPage({ params }: CatchAllPageProps) {
   };
   const eventTimes = event ? eventDateTimes(event.date) : {};
   const eventImage = event?.cover?.startsWith("http") ? event.cover : event?.cover ? `${SITE_URL}${event.cover}` : undefined;
-  const eventSchema = event ? {
+  // One factual SportsEvent block per published event landing.
+  // Do not invent free ticket offers, performers, organizers or start times.
+  const eventSchema = event && path.length === 2 ? {
     "@context": "https://schema.org",
     "@type": "SportsEvent",
     name: event.name,
     description: event.description,
     ...(eventTimes.startDate ? { startDate: eventTimes.startDate } : {}),
-    ...(eventTimes.endDate ? { endDate: eventTimes.endDate } : {}),
-    url: `${SITE_URL}${pathname}`,
+    url: `${SITE_URL}/eventos/${event.slug}`,
     ...(eventImage ? { image: [eventImage] } : {}),
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-    ...(event.slug === "fedachi-marathon" ? {} : {
-      offers: { "@type": "Offer", price: "0", priceCurrency: "CLP", availability: "https://schema.org/InStock", url: `${SITE_URL}${pathname}` },
-      performer: { "@type": "PerformingGroup", name: `Participantes de ${event.name}` },
-    }),
     location: { "@type": "Place", name: event.place, address: { "@type": "PostalAddress", addressLocality: event.city, addressCountry: "CL" } },
-    ...(event.slug === "fedachi-marathon" ? {} : { organizer: { "@type": "Organization", name: "Organización del evento" } }),
-  } : path[0] === "eventos" && path[1] === "detalles" ? {
-    "@context": "https://schema.org",
-    "@type": "SportsEvent",
-    name: "DOGCIAL RUN 3",
-    alternateName: ["Dogcial Run 3 Santiago", "Social Run solidario 3K", "Dog Social Las Condes"],
-    description: "Información pública de DOGCIAL RUN 3, un social run solidario de 3 km difundido por Fundación APAÑA para apoyar el rescate canino. Nómada Race estará realizando la cobertura fotográfica de la jornada.",
-    startDate: "2026-10-31T10:00:00-03:00",
-    endDate: "2026-10-31T12:00:00-03:00",
-    url: `${SITE_URL}${pathname}`,
-    image: [`${SITE_URL}/stock/SRC_8053_4306237_333466.jpg`],
-    eventStatus: "https://schema.org/EventScheduled",
-    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-    isAccessibleForFree: true,
-    offers: { "@type": "Offer", price: "0", priceCurrency: "CLP", availability: "https://schema.org/InStock", url: `${SITE_URL}${pathname}` },
-    location: { "@type": "Place", name: "Canil Parque Juan Pablo II", address: { "@type": "PostalAddress", addressLocality: "Las Condes", addressRegion: "Santiago", addressCountry: "CL" } },
-    organizer: { "@type": "Organization", name: "Fundación APAÑA", sameAs: "https://www.instagram.com/fundacionapana/" },
   } : null;
   const profileSchema = path[0] === "sobre-nomada-race" ? {
     "@context": "https://schema.org",
