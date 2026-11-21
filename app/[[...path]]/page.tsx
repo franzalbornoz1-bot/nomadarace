@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect, redirect } from "next/navigation";
 import { NomadaApp } from "@/components/nomada-app";
 import { events } from "@/lib/demo-data";
 
@@ -80,9 +80,9 @@ function routeMetadata(path: string[]): Metadata {
   if (path.length === 0) return defaults;
   if (path[0] === "eventos" && path.length === 1) return {
     ...defaults,
-    title: "Calendario de carreras 2026 en Chile | Fechas y distancias",
-    description: "Descubre el calendario de carreras en Chile 2026: fechas, ciudades y distancias para 5K, 10K, 21K, maratones, trails y corridas familiares. Encuentra eventos en Santiago y otras regiones.",
-    keywords: ["calendario de carreras Chile 2026", "corridas Santiago", "carreras running Chile", "fechas 5K 10K 21K 42K", "maratones Chile", "trail running", "Nómada Race"],
+    title: "Calendario de carreras 2026 y 2027 en Chile | Fechas y distancias",
+    description: "Consulta el calendario de carreras 2026 y 2027 en Chile en una sola página. Running, trail, 5K, 10K, 21K y maratones por mes, ciudad y distancia; incluye 78 eventos de 2027.",
+    keywords: ["calendario carreras 2027 Chile", "calendario carreras Chile 2026", "corridas Santiago 2027", "carreras running Chile", "maratones Chile 2027", "fechas 5K 10K 21K 42K", "trail running Chile", "Nómada Race"],
   };
   if (path[0] === "eventos" && path[1] === "2027" && path.length === 2) return {
     ...defaults,
@@ -169,6 +169,8 @@ function isPublicRoute(path: string[]) {
 
 export default async function CatchAllPage({ params }: CatchAllPageProps) {
   const { path = [] } = await params;
+  // Existing 2027 links lead to the unified calendar instead of a second page.
+  if (path.length === 2 && path[0] === "eventos" && path[1] === "2027") permanentRedirect("/eventos");
   // Do not expose the old simulated photo checkout as an indexable purchase page.
   // FEDACHI has a verified direct album; other demo photo routes return to their event landing.
   if (path[0] === "eventos" && path[1] === "detalles" && path.length === 2) {
