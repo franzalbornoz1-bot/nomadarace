@@ -62,7 +62,7 @@ export function calendarRaceDescription(race: CalendarRace) {
 
 const race = (month: CalendarRace["month"], day: number, weekday: string, name: string, city: string, distances: string, note?: string): CalendarRace => ({ month, day, weekday, name, city, distances, note });
 
-// Datos proporcionados por Nómada Race a partir del calendario 2026 de Corre.cl.
+// Agenda informativa de carreras de Chile 2026; fechas y detalles sujetos a cambios.
 export const calendarRaces: CalendarRace[] = [
   race("Agosto", 30, "Domingo", "Media Maratón de Mujeres de Santiago", "Estadio Nacional Julio Martínez Prádanos, Ñuñoa, Chile", "7 y 21 km"),
   race("Septiembre", 11, "Viernes", "Pachamanka Ultra Trail", "Doñihue", "10, 25, 50 y 80 km"),
