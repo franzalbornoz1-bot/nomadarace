@@ -110,12 +110,15 @@ function raceEventDateKey(date: string) {
 }
 
 function chileTodayKey() {
-  return new Intl.DateTimeFormat("en-CA", {
+  // Compose ISO YYYY-MM-DD explicitly; locale string output differs between browsers.
+  const parts = new Intl.DateTimeFormat("en-US", {
     timeZone: "America/Santiago",
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-  }).format(new Date());
+  }).formatToParts(new Date());
+  const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
 }
 
 function useChileToday() {
