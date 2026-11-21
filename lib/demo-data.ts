@@ -1,4 +1,4 @@
-export type EventStatus = "Próximamente" | "Preventa" | "Fotos listas";
+export type EventStatus = "Próximamente" | "Preventa" | "Fotos listas" | "Carrera realizada";
 
 export type RaceEvent = {
   id: string;
@@ -30,20 +30,20 @@ export const events: RaceEvent[] = [
     description: "Diez kilómetros para romper tus límites. Revive el pulso de las calles de Santiago.", cover: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1400&q=85", color: "from-violet-600/80 via-fuchsia-500/10 to-transparent",
   },
   {
-    id: "EV-2026-041", slug: "trail-andes", name: "Trail Andes 30K", city: "San José de Maipo", place: "Cajón del Maipo", date: "8 de noviembre, 2026", shortDate: "08 NOV", status: "Próximamente", photos: 0, assigned: 5,
-    description: "Altura, piedra y cordillera. Una aventura para corredores que buscan lo indomable.", cover: "https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1400&q=85", color: "from-emerald-700/80 via-lime-500/10 to-transparent",
+    id: "EV-2026-041", slug: "trail-andes", name: "Trail Andes 30K", city: "San José de Maipo", place: "Cajón del Maipo", date: "8 de noviembre, 2026", shortDate: "08 NOV", status: "Carrera realizada", photos: 0, assigned: 5,
+    description: "Trail Andes 30K tenía como fecha el 8 de noviembre de 2026 en el Cajón del Maipo. La fecha de este evento ya pasó; por ahora no contamos con un álbum específico confirmado en Nómada Race.", cover: "https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1400&q=85", color: "from-emerald-700/80 via-lime-500/10 to-transparent",
   },
   {
     id: "EV-2026-018", slug: "corrida-nocturna-valparaiso", name: "Corrida Nocturna Valparaíso", city: "Valparaíso", place: "Plaza Sotomayor", date: "12 de agosto, 2026", shortDate: "12 AGO", status: "Fotos listas", photos: 7760, assigned: 3,
     description: "Las luces del puerto y miles de zancadas. Una noche que se corre y se recuerda.", cover: "https://images.unsplash.com/photo-1502904550040-7534597429ae?auto=format&fit=crop&w=1400&q=85", color: "from-indigo-700/85 via-blue-600/15 to-transparent",
   },
   {
-    id: "EV-2026-050", slug: "the-color-run-santiago", name: "The Color Run Santiago", city: "Santiago", place: "Ciudad Empresarial, Huechuraba", date: "8 de noviembre, 2026", shortDate: "08 NOV", status: "Próximamente", photos: 0, assigned: 4,
-    description: "The Color Run Santiago llega el domingo 8 de noviembre a Ciudad Empresarial con un recorrido familiar de 5K, sin cronómetro y lleno de música, baile y zonas de color. Puedes correr, trotar, caminar o bailar a tu propio ritmo: la experiencia está pensada para disfrutar en comunidad, con polvos de colores a base de ingredientes naturales, festival de meta y momentos para compartir con amigos, niños y mascotas. Nómada Race estará ahí realizando cobertura fotográfica para que después puedas encontrar tus fotos profesionales de The Color Run Santiago.", cover: "https://images.unsplash.com/photo-1504159506876-f8338247a14a?auto=format&fit=crop&w=1400&q=85", color: "from-fuchsia-600/80 via-orange-500/20 to-transparent",
+    id: "EV-2026-050", slug: "the-color-run-santiago", name: "The Color Run Santiago", city: "Santiago", place: "Ciudad Empresarial, Huechuraba", date: "8 de noviembre, 2026", shortDate: "08 NOV", status: "Carrera realizada", photos: 0, assigned: 4,
+    description: "The Color Run Santiago tenía fecha programada para el domingo 8 de noviembre de 2026 en Ciudad Empresarial, Huechuraba, con un recorrido recreativo de 5K sin cronómetro, música y zonas de color. La fecha ya pasó; por ahora no tenemos un álbum de Nómada Race confirmado para esta carrera. Consulta el calendario y nuestras galerías disponibles para conocer las próximas publicaciones.", cover: "https://images.unsplash.com/photo-1504159506876-f8338247a14a?auto=format&fit=crop&w=1400&q=85", color: "from-fuchsia-600/80 via-orange-500/20 to-transparent",
   },
   {
-    id: "EV-2026-051", slug: "fedachi-marathon", name: "FEDACHI Marathon", city: "Santiago", place: "Estadio Nacional", date: "15 de noviembre, 2026", shortDate: "15 NOV", status: "Próximamente", photos: 0, assigned: 4,
-    description: "El FEDACHI Marathon 2026 se celebra el domingo 15 de noviembre en el Estadio Nacional de Santiago como una fecha sudamericana del atletismo chileno. La jornada reúne cuatro distancias —5K, 10K, 21K y 42K— para familias, corredores populares y atletas que buscan mejorar sus marcas. La inscripción contempla polera técnica by ASICS, morral, dorsal con chip, medalla finisher, hidratación, fruta, seguridad y servicio médico. Nómada Race estará ahí realizando cobertura fotográfica para que después puedas encontrar tus fotos profesionales del FEDACHI Marathon.", cover: "https://images.unsplash.com/photo-1546483875-ad9014c88eba?auto=format&fit=crop&w=1400&q=85", color: "from-sky-700/80 via-cyan-500/20 to-transparent",
+    id: "EV-2026-051", slug: "fedachi-marathon", name: "FEDACHI Marathon", city: "Santiago", place: "Estadio Nacional", date: "15 de noviembre, 2026", shortDate: "15 NOV", status: "Fotos listas", photos: 0, assigned: 4,
+    description: "El FEDACHI Marathon 2026 se realizó el domingo 15 de noviembre en Santiago, con el Estadio Nacional como escenario principal. La jornada reunió a corredores y atletas en distancias de 5K, 10K, 21K y 42K. Nómada Race registró momentos de la carrera y sus fotografías ya están disponibles para buscar, seleccionar y descargar en el álbum oficial de nuestra tienda Fotop.", cover: "https://images.unsplash.com/photo-1546483875-ad9014c88eba?auto=format&fit=crop&w=1400&q=85", color: "from-sky-700/80 via-cyan-500/20 to-transparent",
   },
   {
     id: "EV-2026-052", slug: "corrida-techo-chile", name: "Corrida TECHO-Chile", city: "Santiago", place: "Plaza Bulnes, Santiago Centro", date: "22 de noviembre, 2026", shortDate: "22 NOV", status: "Próximamente", photos: 0, assigned: 4,
