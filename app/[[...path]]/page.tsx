@@ -87,9 +87,9 @@ function routeMetadata(path: string[]): Metadata {
   if (path[0] === "eventos" && path[1] === "2027" && path.length === 2) return {
     ...defaults,
     title: "Calendario de carreras 2027 en Chile | Fechas y distancias",
-    description: "Explora 78 carreras de running y trail en Chile 2027, organizadas por mes, ciudad y distancia: 5K, 10K, 21K, maratones y ultratrails. Agenda referencial de Corre.cl.",
+    description: "Explora 78 carreras de running y trail en Chile 2027, organizadas por mes, ciudad y distancia: 5K, 10K, 21K, maratones y ultratrails. Planifica tu temporada con Nómada Race.",
     keywords: ["calendario carreras Chile 2027", "corridas 2027 Chile", "maratones Chile 2027", "trail running Chile 2027", "carreras 5K 10K 21K 42K 2027", "carreras Santiago 2027", "Nómada Race"],
-    openGraph: { url: canonical, title: "Calendario de carreras 2027 en Chile | Nómada Race", description: "Consulta 78 carreras por mes, ciudad y distancia con fechas publicadas en Corre.cl." },
+    openGraph: { url: canonical, title: "Calendario de carreras 2027 en Chile | Nómada Race", description: "Consulta el calendario de carreras de Chile por mes, ciudad y distancia en Nómada Race." },
   };
   if (path[0] === "eventos" && path[1] === "detalles" && path.length === 2) return {
     ...defaults,
