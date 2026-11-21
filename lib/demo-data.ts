@@ -19,7 +19,7 @@ export type RaceEvent = {
 export const events: RaceEvent[] = [
   {
     id: "EV-2027-001", slug: "maraton-santiago-2027", name: "Maratón Santiago 2027", city: "Santiago", place: "Santiago Centro", date: "16 de mayo, 2027", shortDate: "16 MAY", status: "Próximamente", photos: 0, assigned: 4,
-    description: "La Maratón de Santiago figura en el calendario 2027 de Corre.cl para el domingo 16 de mayo en Santiago Centro, con distancias de 10, 21 y 42 km. Revisa las bases y el recorrido oficial antes de inscribirte. Nómada Race aún no ha anunciado cobertura fotográfica para este evento.", cover: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1400&q=85", color: "from-rose-500/80 via-orange-500/20 to-transparent",
+    description: "La Maratón de Santiago 2027 está programada para el domingo 16 de mayo en Santiago Centro, con distancias de 10, 21 y 42 km. Revisa las bases y el recorrido oficial antes de inscribirte. Nómada Race aún no ha anunciado cobertura fotográfica para este evento.", cover: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1400&q=85", color: "from-rose-500/80 via-orange-500/20 to-transparent",
   },
   {
     id: "EV-2026-034", slug: "media-maraton-vina", name: "Media Maratón de Viña", city: "Viña del Mar", place: "Avenida Perú", date: "24 de octubre, 2026", shortDate: "24 OCT", status: "Fotos listas", photos: 12840, assigned: 3,
