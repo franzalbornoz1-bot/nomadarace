@@ -637,7 +637,7 @@ function Events2027Page() {
     return searchMatches && cityMatches && distanceMatches;
   });
   const weekday = (date: string) => new Intl.DateTimeFormat("es-CL", { weekday: "long", timeZone: "UTC" }).format(new Date(`${date}T12:00:00Z`));
-  const monthCount = (month: string) => calendarRaces2027.filter(race => Number(race.date.slice(5, 7)) === CALENDAR_2027_MONTHS.indexOf(month) + 1).length;
+  const monthCount = (month: (typeof CALENDAR_2027_MONTHS)[number]) => calendarRaces2027.filter(race => Number(race.date.slice(5, 7)) === CALENDAR_2027_MONTHS.indexOf(month) + 1).length;
 
   return <PublicShell><main className="mx-auto max-w-7xl px-5 py-14 lg:px-8 lg:py-20">
     <div className="flex flex-col gap-6 border-b border-zinc-200 pb-10 lg:flex-row lg:items-end lg:justify-between">
