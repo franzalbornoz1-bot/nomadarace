@@ -25,13 +25,13 @@ function eventDateTimes(date: string): { startDate?: string } {
 
 const EVENT_SEO: Record<string, { title: string; description: string; keywords: string[] }> = {
   "the-color-run-santiago": {
-    title: "The Color Run Santiago 2026 | Fecha y fotografías",
+    title: "The Color Run Santiago 2026 | Fecha y detalles",
     description: "The Color Run Santiago 2026 tuvo fecha el 8 de noviembre en Ciudad Empresarial, Huechuraba. Revisa los detalles de la carrera y el estado de las galerías de Nómada Race.",
-    keywords: ["fotos The Color Run Santiago", "fotos Color Run Santiago 2026", "fotos profesionales Color Run", "encuentra tus fotos Color Run", "The Color Run Ciudad Empresarial", "5K Santiago", "Nómada Race"],
+    keywords: ["The Color Run Santiago 2026", "The Color Run fecha Chile", "The Color Run Ciudad Empresarial", "corrida de colores 5K Santiago", "calendario running Chile", "Nómada Race"],
   },
   "fedachi-marathon": {
-    title: "Fotos FEDACHI 2026 | Encuentra tus fotos del Marathon",
-    description: "Fotos FEDACHI Marathon 2026: busca tus fotografías del 5K, 10K, 21K y 42K en Santiago. Encuentra tus recuerdos con una selfie en Nómada Race.",
+    title: "Fotos FEDACHI Marathon 2026 | Álbum disponible",
+    description: "Fotos FEDACHI Marathon 2026 de 5K, 10K, 21K y 42K en Santiago. Accede desde Nómada Race al álbum específico en Fotop y busca tus fotos con una selfie.",
     keywords: ["fotos FEDACHI Marathon", "fotos Marathon Fedachi 2026", "fotos profesionales FEDACHI", "encuentra tus fotos FEDACHI", "Estadio Nacional Marathon", "maratón Santiago 2026", "5K 10K 21K 42K", "Nómada Race"],
   },
   "corrida-techo-chile": {
@@ -137,11 +137,11 @@ function routeMetadata(path: string[]): Metadata {
       ...defaults,
       alternates: { canonical: eventCanonical },
       ...(!verifiedEventPage || photoDemoRoute ? { robots: { index: false, follow: true } } : {}),
-      title: seo.title,
+      title: { absolute: `${seo.title} | Nómada Race` },
       description: seo.description,
       keywords: seo.keywords,
-      openGraph: { url: eventCanonical, title: seo.title, description: seo.description, type: "website", images: [{ url: event.cover, width: 1400, height: 900, alt: `Imagen referencial de ${event.name}` }] },
-      twitter: { card: "summary_large_image", title: seo.title, description: seo.description, images: [event.cover] },
+      openGraph: { url: eventCanonical, title: `${seo.title} | Nómada Race`, description: seo.description, type: "website", locale: "es_CL", siteName: "Nómada Race", images: [{ url: event.cover, alt: `Imagen referencial de ${event.name}` }] },
+      twitter: { card: "summary_large_image", title: `${seo.title} | Nómada Race`, description: seo.description, images: [event.cover] },
       other: { "geo.placename": `${event.city}, Chile`, "content-language": "es-CL" },
     };
   }
@@ -190,17 +190,16 @@ export default async function CatchAllPage({ params }: CatchAllPageProps) {
     itemListElement: [{ "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL }, ...path.map((segment, index) => ({ "@type": "ListItem", position: index + 2, name: index === 0 && segment === "eventos" ? "Eventos" : event && index === 1 ? event.name : segment.replaceAll("-", " "), item: `${SITE_URL}/${path.slice(0, index + 1).join("/")}` }))],
   };
   const eventTimes = event ? eventDateTimes(event.date) : {};
-  const eventImage = event?.cover?.startsWith("http") ? event.cover : event?.cover ? `${SITE_URL}${event.cover}` : undefined;
   // One factual SportsEvent block per published event landing.
   // Do not invent free ticket offers, performers, organizers or start times.
-  const eventSchema = event && path.length === 2 ? {
+  const eventSchema = event && path.length === 2 && ["the-color-run-santiago", "fedachi-marathon", "corrida-techo-chile", "maraton-de-melipilla"].includes(event.slug) ? {
     "@context": "https://schema.org",
     "@type": "SportsEvent",
     name: event.name,
     description: event.description,
     ...(eventTimes.startDate ? { startDate: eventTimes.startDate } : {}),
     url: `${SITE_URL}/eventos/${event.slug}`,
-    ...(eventImage ? { image: [eventImage] } : {}),
+    // No generic stock images in event schema; wait for verified photos of each event.
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     location: { "@type": "Place", name: event.place, address: { "@type": "PostalAddress", addressLocality: event.city, addressCountry: "CL" } },
