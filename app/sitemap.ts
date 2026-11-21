@@ -10,7 +10,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const paths = [
     "",
     "/eventos",
-    "/eventos/2027",
     ...events.filter(event => ["the-color-run-santiago", "fedachi-marathon", "corrida-techo-chile", "maraton-de-melipilla"].includes(event.slug)).map(event => `/eventos/${event.slug}`),
     "/blog",
     ...Object.keys(blogPublicationDates).map(slug => `/blog/${slug}`),
@@ -30,7 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     return {
       url: `${base}${path}`,
       lastModified,
-      changeFrequency: path === "/eventos" || path === "/eventos/2027" || isEventLanding ? "weekly" : "monthly",
+      changeFrequency: path === "/eventos" || isEventLanding ? "weekly" : "monthly",
       priority: path === "" ? 1 : path === "/eventos" ? 0.9 : isEventLanding ? 0.85 : path.startsWith("/blog/") ? 0.8 : 0.7,
     };
   });
