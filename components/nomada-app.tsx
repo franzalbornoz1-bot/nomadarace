@@ -261,6 +261,7 @@ function photoUrlForRaceName(name: string) {
   if (name === "FEDACHI Marathon") return FEDACHI_PHOTOS_URL;
   if (name === "DOGCIAL RUN 3") return DOGCIAL_RUN_PHOTOS_URL;
   if (name === "Corrida por la Vida Yo Mujer") return VIDA_RACE_PHOTOS_URL;
+  if (name === "Media Maratón de Mujeres de Santiago") return MEDIA_MARATON_SANTIAGO_PHOTOS_URL;
   if (name === SANTANDER_RACE_NAME) return SANTANDER_RACE_URL;
   if (name === SANTIAGO_ASICS_RACE_NAME) return SANTIAGO_10K_PHOTO_URL;
   if (name === GLORIAS_EVENT_NAME) return GLORIAS_RACE_URL;
@@ -272,6 +273,8 @@ function photoUrlForRaceName(name: string) {
 const DOGCIAL_RUN_PHOTOS_URL = "https://nomadarace.fotop.com/events/3ra-edicion-dogcial-run-2026/e/355186";
 const FEDACHI_PHOTOS_URL = "https://nomadarace.fotop.com/events/fedachi-marathon-2026-sudamericano/e/362294";
 const VIDA_RACE_PHOTOS_URL = "https://nomadarace.fotop.com/events/corrida-por-la-vida-yo-mujer/e/352492";
+// Official Fotop listing for the August 30 Santiago half-marathon (the verified link uses the original store hostname).
+const MEDIA_MARATON_SANTIAGO_PHOTOS_URL = "https://misfotos.nomadarace.cl/events/medio-maraton-de-santiago/e/330033";
 function PublicShell({ children }: { children: React.ReactNode }) { const pathname = usePathname(); return <div className="min-h-screen bg-brand-pure"><PublicHeader />{pathname === "/eventos/detalles" && <div className="border-b border-orange-200 bg-orange-50"><div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 lg:px-8"><p className="text-sm font-bold text-orange-950">¿Buscas tus recuerdos de DOGCIAL RUN 3?</p><a href={DOGCIAL_RUN_PHOTOS_URL} target="_blank" rel="noreferrer" onClick={() => trackAction("photo_search_click", { placement: "event_detail_top_cta", event: "DOGCIAL RUN 3" })}><Button className="h-10 px-4 text-sm">Encontrar tus fotos <ArrowRight className="ml-2 h-4 w-4" /></Button></a></div></div>}{children}<Footer /></div>; }
 
 function HomePage() {
@@ -288,7 +291,7 @@ function HomePage() {
     "DOGCIAL RUN 3": DOGCIAL_RUN_PHOTOS_URL,
     "Corrida por la Vida Yo Mujer": VIDA_RACE_PHOTOS_URL,
     [IDEAL_GLOBAL_RACE_NAME]: IDEAL_GLOBAL_RACE_URL,
-    "Media Maratón de Mujeres de Santiago": PHOTO_STORE_URL,
+    "Media Maratón de Mujeres de Santiago": MEDIA_MARATON_SANTIAGO_PHOTOS_URL,
     [GLORIAS_EVENT_NAME]: GLORIAS_RACE_URL,
     [FEATURED_RACE_NAME]: CORRAMOS_JUNTAS_RACE_URL,
     [SANTANDER_RACE_NAME]: SANTANDER_RACE_URL,
