@@ -74,9 +74,25 @@ export const dynamicParams = false;
 function routeMetadata(path: string[]): Metadata {
   const pathname = path.length ? `/${path.join("/")}` : "/";
   const canonical = new URL(pathname, SITE_URL).toString();
-  const defaults = { alternates: { canonical }, openGraph: { url: canonical } };
+  const defaults = {
+    alternates: { canonical },
+    openGraph: {
+      url: canonical,
+      siteName: "Nómada Race",
+      locale: "es_CL",
+      type: "website" as const,
+      images: [{ url: "/home-photo-1.jpg", alt: "Nómada Race: fotografías profesionales de running en Chile" }],
+    },
+    twitter: { card: "summary_large_image" as const, images: ["/home-photo-1.jpg"] },
+  };
 
-  if (path.length === 0) return defaults;
+  if (path.length === 0) return {
+    ...defaults,
+    title: { absolute: "Nómada Race | Fotos profesionales de carreras en Chile" },
+    description: "Encuentra tus fotografías de carreras en Chile y descubre el calendario de running y trail de 2026 y 2027 en Nómada Race.",
+    openGraph: { ...defaults.openGraph, title: "Nómada Race | Fotos profesionales de carreras en Chile", description: "Busca tus fotos de carrera y descubre próximas fechas de running y trail en Chile." },
+    twitter: { ...defaults.twitter, title: "Nómada Race | Fotos profesionales de carreras en Chile", description: "Tus fotos de carrera y un calendario de running para seguir sumando kilómetros." },
+  };
   if (path[0] === "eventos" && path.length === 1) return {
     ...defaults,
     title: "Calendario de carreras 2026 y 2027 en Chile | Fechas y distancias",
@@ -97,31 +113,26 @@ function routeMetadata(path: string[]): Metadata {
     description: "Consulta el calendario vigente de carreras, eventos y coberturas de Nómada Race.",
     robots: { index: false, follow: true },
   };
-    if (path[0] === "preguntas-frecuentes") return {
-    ...defaults,
-    title: "Preguntas frecuentes sobre fotos de carrera",
-    description: "Resuelve dudas sobre cómo encontrar, comprar y descargar tus fotos de carrera en Nómada Race.",
+  const staticPages: Record<string, { title: string; description: string }> = {
+    "preguntas-frecuentes": { title: "Preguntas frecuentes sobre fotos de carreras", description: "Cómo buscar, comprar y descargar tus fotos deportivas de running en Nómada Race. Resuelve tus dudas sobre álbumes y pedidos." },
+    contacto: { title: "Contacto", description: "Contacta a Nómada Race para consultas sobre álbumes de fotografías, eventos y cobertura deportiva en Chile." },
+    organizadores: { title: "Fotografía profesional para organizadores de carreras", description: "Conoce cómo Nómada Race acompaña corridas y eventos deportivos con fotografía profesional para corredores en Chile." },
+    "sobre-nomada-race": { title: "Quiénes somos", description: "Conoce Nómada Race, nuestra pasión por el running, la fotografía deportiva y los recuerdos de cada meta." },
+    "packs-y-precios": { title: "Packs y precios de fotografías de carrera", description: "Consulta las opciones de fotografías, selección y descarga de Nómada Race. Los precios concretos dependen de cada álbum en Fotop." },
+    privacidad: { title: "Política de privacidad", description: "Lee la política de privacidad de Nómada Race para conocer cómo se trata la información compartida con nuestro sitio." },
+    terminos: { title: "Términos y condiciones", description: "Consulta los términos y condiciones de uso de Nómada Race y su plataforma de fotografía deportiva." },
   };
-  if (path[0] === "contacto") return {
-    ...defaults,
-    title: "Contacto",
-    description: "Contacta a Nómada Race para consultas sobre fotografías profesionales, eventos y cobertura deportiva en Chile.",
-  };
-  if (path[0] === "organizadores") return {
-    ...defaults,
-    title: "Fotografía deportiva para organizadores",
-    description: "Conoce cómo Nómada Race puede acompañar carreras y eventos deportivos con fotografía para corredores en Chile.",
-  };
-  if (path[0] === "sobre-nomada-race") return {
-    ...defaults,
-    title: "Sobre Nómada Race | Fotografías para corredores",
-    description: "Conoce Nómada Race: fotografías profesionales, calendario de carreras y recuerdos para volver a vivir cada ruta.",
-  };
-  if (path[0] === "packs-y-precios") return {
-    ...defaults,
-    title: "Packs y precios de fotos de carrera | Nómada Race",
-    description: "Consulta cómo funcionan los packs y precios de fotografías de carrera disponibles en cada galería.",
-  };
+  if (path.length === 1 && staticPages[path[0]]) {
+    const page = staticPages[path[0]];
+    const title = `${page.title} | Nómada Race`;
+    return {
+      ...defaults,
+      title: { absolute: title },
+      description: page.description,
+      openGraph: { ...defaults.openGraph, title, description: page.description },
+      twitter: { ...defaults.twitter, title, description: page.description },
+    };
+  }
 
   const event = events.find(item => item.slug === path[1]);
   if (event) {
