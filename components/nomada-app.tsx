@@ -304,6 +304,7 @@ function HomePage() {
   // Esta lista se habilita manualmente cuando el álbum de un evento está listo.
   // Así, el bloque “Revive la carrera” no se llena solo con carreras que ya pasaron.
   const racePhotoLinks: Record<string, string> = {
+    "FEDACHI Marathon": FEDACHI_PHOTOS_URL,
     "DOGCIAL RUN 3": DOGCIAL_RUN_PHOTOS_URL,
     "Corrida por la Vida Yo Mujer": PHOTO_STORE_URL,
     [IDEAL_GLOBAL_RACE_NAME]: IDEAL_GLOBAL_RACE_URL,
