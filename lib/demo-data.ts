@@ -22,11 +22,11 @@ export const events: RaceEvent[] = [
     description: "La Maratón de Santiago 2027 está programada para el domingo 16 de mayo en Santiago Centro, con distancias de 10, 21 y 42 km. Revisa las bases y el recorrido oficial antes de inscribirte. Nómada Race aún no ha anunciado cobertura fotográfica para este evento.", cover: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1400&q=85", color: "from-rose-500/80 via-orange-500/20 to-transparent",
   },
   {
-    id: "EV-2026-034", slug: "media-maraton-vina", name: "Media Maratón de Viña", city: "Viña del Mar", place: "Avenida Perú", date: "24 de octubre, 2026", shortDate: "24 OCT", status: "Fotos listas", photos: 12840, assigned: 3,
-    description: "El mar como testigo, tu esfuerzo como historia. Encuentra todos tus momentos junto a la costa.", cover: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1400&q=85", color: "from-sky-600/80 via-cyan-500/15 to-transparent",
+    id: "EV-2026-034", slug: "media-maraton-vina", name: "Media Maratón de Viña", city: "Viña del Mar", place: "Avenida Perú", date: "24 de octubre, 2026", shortDate: "24 OCT", status: "Carrera realizada", photos: 0, assigned: 0,
+    description: "La fecha de esta carrera ya pasó. No tenemos un álbum propio confirmado en la tienda de Nómada Race; consulta las galerías disponibles en Fotop.", cover: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1400&q=85", color: "from-sky-600/80 via-cyan-500/15 to-transparent",
   },
   {
-    id: "EV-2026-029", slug: "10k-santiago", name: "10K Santiago", city: "Santiago", place: "Parque O'Higgins", date: "17 de septiembre, 2026", shortDate: "17 SEP", status: "Fotos listas", photos: 9420, assigned: 2,
+    id: "EV-2026-029", slug: "10k-santiago", name: "10K Santiago", city: "Santiago", place: "Parque O'Higgins", date: "17 de septiembre, 2026", shortDate: "17 SEP", status: "Carrera realizada", photos: 0, assigned: 0,
     description: "Diez kilómetros para romper tus límites. Revive el pulso de las calles de Santiago.", cover: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1400&q=85", color: "from-violet-600/80 via-fuchsia-500/10 to-transparent",
   },
   {
@@ -34,7 +34,7 @@ export const events: RaceEvent[] = [
     description: "Trail Andes 30K tenía como fecha el 8 de noviembre de 2026 en el Cajón del Maipo. La fecha de este evento ya pasó; por ahora no contamos con un álbum específico confirmado en Nómada Race.", cover: "https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1400&q=85", color: "from-emerald-700/80 via-lime-500/10 to-transparent",
   },
   {
-    id: "EV-2026-018", slug: "corrida-nocturna-valparaiso", name: "Corrida Nocturna Valparaíso", city: "Valparaíso", place: "Plaza Sotomayor", date: "12 de agosto, 2026", shortDate: "12 AGO", status: "Fotos listas", photos: 7760, assigned: 3,
+    id: "EV-2026-018", slug: "corrida-nocturna-valparaiso", name: "Corrida Nocturna Valparaíso", city: "Valparaíso", place: "Plaza Sotomayor", date: "12 de agosto, 2026", shortDate: "12 AGO", status: "Carrera realizada", photos: 0, assigned: 0,
     description: "Las luces del puerto y miles de zancadas. Una noche que se corre y se recuerda.", cover: "https://images.unsplash.com/photo-1502904550040-7534597429ae?auto=format&fit=crop&w=1400&q=85", color: "from-indigo-700/85 via-blue-600/15 to-transparent",
   },
   {
