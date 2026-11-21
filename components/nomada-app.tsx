@@ -599,15 +599,26 @@ function CalendarPage({ serverToday }: { serverToday: string }) {
   }, [today, activeMonthKey, months]);
 
   const cities = ["Todas", ...Array.from(new Set(upcomingRaces.map(race => race.city.split(",")[0]))).sort((a,b)=>a.localeCompare(b,"es-CL"))] as const;
-  const monthRaces = upcomingRaces.filter(race => {
-    const queryMatches = !searchTerm.trim() || `${race.name} ${race.city} ${race.distances}`.toLocaleLowerCase("es-CL").includes(searchTerm.trim().toLocaleLowerCase("es-CL"));
+  const hasActiveFilters = Boolean(searchTerm.trim() || city !== "Todas" || distance !== "Todas");
+  const normalizeSearch = (value: string) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("es-CL");
+  const queryWords = normalizeSearch(searchTerm.trim()).split(/\s+/).filter(Boolean);
+  // Search the complete upcoming agenda, never only the currently open month.
+  const matchingRaces = upcomingRaces.filter(race => {
+    const searchableText = normalizeSearch(`${race.name} ${race.city} ${race.distances} ${race.month} ${race.year ?? 2026}`);
+    const queryMatches = queryWords.every(word => searchableText.includes(word));
     const cityMatches = city === "Todas" || race.city.startsWith(city);
     const distanceMatches = distance === "Todas" || new RegExp(`(^|[\\s,;])${distance.replace(" km", "")}(?=\\s|[,;]|$)`).test(race.distances);
-    return race.month === activeMonth && (race.year ?? 2026) === activeYear && cityMatches && distanceMatches && queryMatches;
+    return queryMatches && cityMatches && distanceMatches;
   });
+  const monthRaces = hasActiveFilters ? matchingRaces : matchingRaces.filter(race => race.month === activeMonth && (race.year ?? 2026) === activeYear);
+  const resultGroups = months.map(tab => ({
+    tab,
+    races: monthRaces.filter(race => race.month === tab.month && (race.year ?? 2026) === tab.year),
+  })).filter(group => group.races.length > 0);
   const plural = monthRaces.length === 1 ? "carrera" : "carreras";
   const racesPerMonth = (tab: (typeof CALENDAR_MONTH_TABS)[number]) =>
     upcomingRaces.filter(race => race.month === tab.month && (race.year ?? 2026) === tab.year).length;
+  const clearFilters = () => { setSearchTerm(""); setCity("Todas"); setDistance("Todas"); };
 
   return <PublicShell><main className="mx-auto max-w-7xl px-5 py-14 lg:px-8">
     <div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-600">CALENDARIO 2026–2027</p><h1 className="mt-3 text-5xl font-black tracking-[-.07em] text-zinc-950 sm:text-6xl">Calendario de carreras<br />para seguir corriendo.</h1><p className="mt-5 text-base leading-7 text-zinc-500">Encuentra cada carrera con su fecha, ciudad y distancias. Confirma siempre los detalles con la organización antes de inscribirte.</p></div>
@@ -643,6 +654,7 @@ function CalendarPage({ serverToday }: { serverToday: string }) {
         </label>
       </div>
     </section>
+    {!hasActiveFilters ? <>
     <nav aria-label="Seleccionar mes y año" className="mt-10">
       <div className="flex items-center justify-between gap-3">
         <p className="text-xs font-black uppercase tracking-[.18em] text-zinc-600">Mes y año</p>
@@ -680,8 +692,26 @@ function CalendarPage({ serverToday }: { serverToday: string }) {
         })}
       </div>
     </nav>
-    <section className="mt-8"><div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end"><div><h2 className="text-3xl font-black tracking-[-.055em] text-zinc-950">{activeMonth} {activeYear}</h2><p className="mt-2 text-sm font-medium text-zinc-500">{monthRaces.length} {plural} en el calendario.</p></div><span className="w-fit rounded-full bg-orange-50 px-3 py-1.5 text-xs font-bold text-orange-700">Agenda referencial</span></div>
-      <div className="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">{monthRaces.map(race => <article key={`${race.year ?? 2026}-${race.month}-${race.day}-${race.name}`} className={cn("group relative overflow-hidden rounded-[1.75rem] border bg-white p-5 shadow-[0_12px_36px_rgba(24,28,31,.06)] transition duration-300 hover:-translate-y-1 sm:p-6", NOMADA_COVERAGE_NAMES.has(race.name) ? "border-orange-400 shadow-[0_18px_42px_rgba(249,115,22,.16)]" : "border-zinc-200 hover:border-orange-200 hover:shadow-[0_20px_48px_rgba(254,92,19,.12)]")}><div className={cn("absolute inset-x-0 top-0 h-1", NOMADA_COVERAGE_NAMES.has(race.name) ? "bg-orange-500" : "bg-gradient-to-r from-orange-500 via-orange-400 to-amber-300 opacity-0 transition-opacity duration-300 group-hover:opacity-100")} /><div className="flex items-start gap-4"><div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-zinc-950 text-center text-white"><span className="text-xl font-black leading-none">{String(race.day).padStart(2, "0")}</span><span className="mt-0.5 text-[9px] font-bold uppercase tracking-wide text-zinc-400">{race.weekday.slice(0, 3)}</span></div><div className="min-w-0 flex-1">{NOMADA_COVERAGE_NAMES.has(race.name) && <span className="inline-flex rounded-full bg-orange-500 px-2 py-1 text-[10px] font-black uppercase tracking-wide text-white">{calendarRaceDateKey(race)<=(today ?? chileTodayKey()) ? "Carrera realizada" : "Estaremos ahí"}</span>}{race.note && <span className="ml-2 inline-flex rounded-full bg-orange-50 px-2 py-1 text-[10px] font-black uppercase tracking-wide text-orange-700">{race.note}</span>}<h3 className="mt-1.5 text-xl font-black leading-tight tracking-[-.035em] text-zinc-950">{race.name}</h3></div></div><p className="mt-5 border-t border-zinc-100 pt-4 text-sm leading-6 text-zinc-500">{calendarRaceDescription(race)}</p><dl className="mt-5 grid gap-3 text-sm"><div className="flex items-center gap-2 text-zinc-600"><MapPin className="h-4 w-4 shrink-0 text-orange-500" /><dd className="font-semibold">{race.city}</dd></div><div className="flex items-center gap-2 text-zinc-600"><CalendarDays className="h-4 w-4 shrink-0 text-orange-500" /><dd>{race.weekday}, {race.day} de {activeMonth.toLowerCase()} de {activeYear}</dd></div><div className="flex items-start gap-2 text-zinc-600"><span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-orange-100 text-[9px] font-black text-orange-700">KM</span><dd className="font-semibold">{race.distances}</dd></div></dl>{NOMADA_COVERAGE_NAMES.has(race.name) && <Link href={`/eventos/${NOMADA_COVERAGE_SLUGS[race.name]}`} className="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-black text-white transition hover:bg-orange-600">Ver detalles <ArrowRight className="h-4 w-4" /></Link>}<a href={googleCalendarUrl(race)} target="_blank" rel="noreferrer" className="mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-2.5 text-sm font-black text-zinc-800 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700" aria-label={`Agregar ${race.name} a mi calendario`}><CalendarPlus className="h-4 w-4" />Agregar a mi calendario</a></article>)}</div>
+    </> : <div className="mt-10 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-orange-200 bg-orange-50 px-5 py-4" role="status"><p className="text-sm font-bold text-zinc-800">Búsqueda en todas las carreras futuras de 2026 y 2027. Los resultados se muestran en su mes real.</p><button type="button" onClick={clearFilters} className="inline-flex min-h-11 items-center justify-center rounded-full border border-orange-300 bg-white px-5 py-2 text-sm font-black text-orange-800 transition hover:bg-orange-100">Limpiar filtros</button></div>}
+    <section className="mt-8" aria-label={hasActiveFilters ? "Resultados de búsqueda de carreras" : "Carreras del mes"}>
+      <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+        <div>
+          <h2 className="text-3xl font-black tracking-[-.055em] text-zinc-950">{hasActiveFilters ? "Carreras encontradas" : `${activeMonth} ${activeYear}`}</h2>
+          <p className="mt-2 text-sm font-medium text-zinc-500" aria-live="polite">{monthRaces.length} {plural} {hasActiveFilters ? "en todo el calendario." : "en el calendario."}</p>
+        </div>
+        <span className="w-fit rounded-full bg-orange-50 px-3 py-1.5 text-xs font-bold text-orange-700">Agenda referencial</span>
+      </div>
+      {monthRaces.length === 0 ? <div className="mt-7 rounded-[1.75rem] border border-dashed border-orange-200 bg-orange-50/60 px-6 py-12 text-center" role="status">
+        <Search className="mx-auto h-9 w-9 text-orange-500" aria-hidden="true" />
+        <h3 className="mt-5 text-2xl font-black tracking-tight text-zinc-950">Todavía no tenemos información de esa carrera.</h3>
+        <p className="mx-auto mt-3 max-w-xl text-base leading-7 text-zinc-700">Seguimos atentos a las novedades del circuito. Cuando haya una fecha confirmada, la incorporaremos a nuestro calendario para que puedas planificar tu próximo desafío.</p>
+        <button type="button" onClick={clearFilters} className="mt-6 inline-flex min-h-12 items-center justify-center rounded-full bg-zinc-950 px-6 py-3 text-sm font-black text-white transition hover:bg-zinc-800">Ver todas las carreras</button>
+      </div> : <div className="mt-7 space-y-9">
+        {resultGroups.map(group => <div key={group.tab.key}>
+          {hasActiveFilters && <h3 className="mb-4 text-xl font-black tracking-tight text-zinc-950">{group.tab.month} {group.tab.year} <span className="ml-2 text-sm font-semibold text-zinc-500">({group.races.length})</span></h3>}
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{group.races.map(race => <article key={`${race.year ?? 2026}-${race.month}-${race.day}-${race.name}`} className={cn("group relative overflow-hidden rounded-[1.75rem] border bg-white p-5 shadow-[0_12px_36px_rgba(24,28,31,.06)] transition duration-300 hover:-translate-y-1 sm:p-6", NOMADA_COVERAGE_NAMES.has(race.name) ? "border-orange-400 shadow-[0_18px_42px_rgba(249,115,22,.16)]" : "border-zinc-200 hover:border-orange-200 hover:shadow-[0_20px_48px_rgba(254,92,19,.12)]")}><div className={cn("absolute inset-x-0 top-0 h-1", NOMADA_COVERAGE_NAMES.has(race.name) ? "bg-orange-500" : "bg-gradient-to-r from-orange-500 via-orange-400 to-amber-300 opacity-0 transition-opacity duration-300 group-hover:opacity-100")} /><div className="flex items-start gap-4"><div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-zinc-950 text-center text-white"><span className="text-xl font-black leading-none">{String(race.day).padStart(2, "0")}</span><span className="mt-0.5 text-[9px] font-bold uppercase tracking-wide text-zinc-400">{race.weekday.slice(0, 3)}</span></div><div className="min-w-0 flex-1">{NOMADA_COVERAGE_NAMES.has(race.name) && <span className="inline-flex rounded-full bg-orange-500 px-2 py-1 text-[10px] font-black uppercase tracking-wide text-white">{calendarRaceDateKey(race)<=(today ?? chileTodayKey()) ? "Carrera realizada" : "Estaremos ahí"}</span>}{race.note && <span className="ml-2 inline-flex rounded-full bg-orange-50 px-2 py-1 text-[10px] font-black uppercase tracking-wide text-orange-700">{race.note}</span>}<h3 className="mt-1.5 text-xl font-black leading-tight tracking-[-.035em] text-zinc-950">{race.name}</h3></div></div><p className="mt-5 border-t border-zinc-100 pt-4 text-sm leading-6 text-zinc-500">{calendarRaceDescription(race)}</p><dl className="mt-5 grid gap-3 text-sm"><div className="flex items-center gap-2 text-zinc-600"><MapPin className="h-4 w-4 shrink-0 text-orange-500" /><dd className="font-semibold">{race.city}</dd></div><div className="flex items-center gap-2 text-zinc-600"><CalendarDays className="h-4 w-4 shrink-0 text-orange-500" /><dd>{race.weekday}, {race.day} de {race.month.toLowerCase()} de {race.year ?? 2026}</dd></div><div className="flex items-start gap-2 text-zinc-600"><span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-orange-100 text-[9px] font-black text-orange-700">KM</span><dd className="font-semibold">{race.distances}</dd></div></dl>{NOMADA_COVERAGE_NAMES.has(race.name) && <Link href={`/eventos/${NOMADA_COVERAGE_SLUGS[race.name]}`} className="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-black text-white transition hover:bg-orange-600">Ver detalles <ArrowRight className="h-4 w-4" /></Link>}<a href={googleCalendarUrl(race)} target="_blank" rel="noreferrer" className="mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-2.5 text-sm font-black text-zinc-800 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700" aria-label={`Agregar ${race.name} a mi calendario`}><CalendarPlus className="h-4 w-4" />Agregar a mi calendario</a></article>)}</div>
+        </div>)}
+      </div>}
     </section>
     <footer className="mt-12 border-t border-zinc-200 pt-9 pb-3" aria-label="Planifica tu temporada">
       <p className="mx-auto max-w-4xl text-center text-xl font-semibold leading-relaxed tracking-tight text-zinc-700 sm:text-2xl">Planifica tu temporada: descubre carreras de running, trail, medias maratones y maratones por fecha, ciudad y distancia.</p>
