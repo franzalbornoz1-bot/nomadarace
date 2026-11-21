@@ -613,10 +613,8 @@ function CalendarPage() {
   const activeMonth = activeTab.month;
   const activeYear = activeTab.year;
   const [searchTerm, setSearchTerm] = useState("");
-  const [category, setCategory] = useState("Todas");
   const [city, setCity] = useState("Todas");
   const [distance, setDistance] = useState("Todas");
-  const [dateFilter, setDateFilter] = useState("Próximas");
   const today = useChileToday();
   const didInitializeMonth = useRef(false);
   useEffect(() => {
@@ -629,27 +627,48 @@ function CalendarPage() {
     if (nearest) setActiveMonthKey(nearest.key);
   }, [today, months]);
   const cities = ["Todas", ...Array.from(new Set(UNIFIED_CALENDAR_RACES.map(race => race.city.split(",")[0]))).sort((a,b)=>a.localeCompare(b,"es-CL"))] as const;
-  const categories = ["Todas", "5K", "10K", "Trail", "Maratón", "Familiar"] as const;
   const monthRaces = UNIFIED_CALENDAR_RACES.filter(race => {
-    const dateKey = calendarRaceDateKey(race);
-    const categoryMatches = category === "Todas" || calendarRaceCategory(race) === category;
     const queryMatches = !searchTerm.trim() || `${race.name} ${race.city} ${race.distances}`.toLocaleLowerCase("es-CL").includes(searchTerm.trim().toLocaleLowerCase("es-CL"));
     const cityMatches = city === "Todas" || race.city.startsWith(city);
-    const distanceMatches = distance === "Todas" || race.distances.toLowerCase().includes(distance.toLowerCase());
-    const dateMatches = dateFilter === "Todas" || !today || dateKey > today;
-    return race.month === activeMonth && (race.year ?? 2026) === activeYear && categoryMatches && cityMatches && distanceMatches && dateMatches && queryMatches;
+    const distanceMatches = distance === "Todas" || new RegExp(`(^|[\\s,;])${distance.replace(" km", "")}(?=\\s|[,;]|$)`).test(race.distances);
+    return race.month === activeMonth && (race.year ?? 2026) === activeYear && cityMatches && distanceMatches && queryMatches;
   });
   const plural = monthRaces.length === 1 ? "carrera" : "carreras";
 
   return <PublicShell><main className="mx-auto max-w-7xl px-5 py-14 lg:px-8">
     <div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-600">CALENDARIO 2026–2027</p><h1 className="mt-3 text-5xl font-black tracking-[-.07em] text-zinc-950 sm:text-6xl">Calendario de carreras<br />para seguir corriendo.</h1><p className="mt-5 text-base leading-7 text-zinc-500">Encuentra cada carrera con su fecha, ciudad y distancias. Confirma siempre los detalles con la organización antes de inscribirte.</p></div>
     <p className="mt-6 rounded-2xl border border-orange-200 bg-orange-50 px-5 py-4 text-sm leading-6 text-zinc-700"><strong>Calendario único 2026 y 2027.</strong> Ya puedes consultar las 78 carreras de 2027 en esta misma página, junto con las fechas de 2026. Agenda referencial de <a href={CALENDAR_2027_SOURCE} target="_blank" rel="noopener noreferrer" className="font-bold text-orange-700 underline underline-offset-2">Corre.cl</a>; las carreras están sujetas a cambios y su inclusión no implica cobertura confirmada de Nómada Race.</p>
-    <section className="mt-8 rounded-[1.75rem] border border-zinc-200 bg-white p-5 shadow-[0_12px_36px_rgba(24,28,31,.06)] sm:p-6"><div className="flex items-center gap-3"><SlidersHorizontal className="h-5 w-5 text-orange-500" /><div><p className="text-xs font-black uppercase tracking-[.18em] text-orange-600">CALENDARIO VIVO</p><h2 className="mt-1 text-xl font-black tracking-tight text-zinc-950">Encuentra una carrera para ti.</h2></div></div><label className="mt-5 block text-xs font-black uppercase tracking-wide text-zinc-500">Buscar por nombre, ciudad o distancia
-      <span className="mt-2 flex h-12 items-center gap-3 rounded-xl border border-zinc-200 bg-zinc-50 px-4">
-        <Search className="h-4 w-4 shrink-0 text-orange-500" />
-        <input value={searchTerm} onChange={event => setSearchTerm(event.target.value)} type="search" placeholder="Ej. Maratón de Santiago, 10K, Pucón..." className="h-full w-full min-w-0 bg-transparent text-sm font-semibold normal-case tracking-normal text-zinc-800 outline-none placeholder:font-normal placeholder:text-zinc-500" />
-      </span>
-    </label><div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4"><label className="text-xs font-black uppercase tracking-wide text-zinc-500">Tipo<select value={category} onChange={event => setCategory(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-sm font-bold normal-case tracking-normal text-zinc-800 outline-none focus:border-orange-400">{categories.map(item => <option key={item}>{item}</option>)}</select></label><label className="text-xs font-black uppercase tracking-wide text-zinc-500">Ciudad<select value={city} onChange={event => setCity(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-sm font-bold normal-case tracking-normal text-zinc-800 outline-none focus:border-orange-400">{cities.map(item => <option key={item}>{item}</option>)}</select></label><label className="text-xs font-black uppercase tracking-wide text-zinc-500">Distancia<select value={distance} onChange={event => setDistance(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-sm font-bold normal-case tracking-normal text-zinc-800 outline-none focus:border-orange-400"><option>Todas</option><option>5 km</option><option>10 km</option><option>21 km</option><option>42 km</option></select></label><label className="text-xs font-black uppercase tracking-wide text-zinc-500">Fecha<select value={dateFilter} onChange={event => setDateFilter(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-sm font-bold normal-case tracking-normal text-zinc-800 outline-none focus:border-orange-400"><option>Próximas</option><option>Todas</option></select></label></div><div className="mt-5 flex gap-2 overflow-x-auto pb-1">{categories.map(item => <button key={item} type="button" onClick={() => setCategory(item)} className={cn("whitespace-nowrap rounded-full px-4 py-2 text-sm font-black transition", category === item ? "bg-orange-500 text-white" : "bg-zinc-100 text-zinc-600 hover:bg-orange-50 hover:text-orange-700")}>{item}</button>)}</div></section>
+    <section className="mt-8 rounded-[2rem] border border-zinc-200 bg-white p-5 shadow-[0_10px_32px_rgba(24,28,31,.045)] sm:p-8" aria-label="Buscar carreras">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1fr)] lg:items-end lg:gap-5">
+        <label className="block min-w-0">
+          <span className="text-xs font-black uppercase tracking-[.18em] text-zinc-600">Buscar carrera</span>
+          <span className="mt-3 flex h-14 items-center gap-3 rounded-full border border-zinc-200 bg-zinc-50 px-5 transition focus-within:border-orange-500 focus-within:ring-2 focus-within:ring-orange-500/15">
+            <Search className="h-5 w-5 shrink-0 text-zinc-500" aria-hidden="true" />
+            <input
+              value={searchTerm}
+              onChange={event => setSearchTerm(event.target.value)}
+              type="search"
+              placeholder="Nombre, ciudad o distancia"
+              className="h-full min-w-0 w-full bg-transparent text-base font-medium text-zinc-950 outline-none placeholder:font-normal placeholder:text-zinc-500"
+            />
+          </span>
+        </label>
+        <label className="block min-w-0">
+          <span className="text-xs font-black uppercase tracking-[.18em] text-zinc-600">Ciudad</span>
+          <select value={city} onChange={event => setCity(event.target.value)}
+            className="mt-3 h-14 w-full rounded-full border border-zinc-200 bg-zinc-50 px-5 text-base font-semibold text-zinc-900 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/15">
+            {cities.map(value => <option key={value} value={value}>{value}</option>)}
+          </select>
+        </label>
+        <label className="block min-w-0">
+          <span className="text-xs font-black uppercase tracking-[.18em] text-zinc-600">Distancia</span>
+          <select value={distance} onChange={event => setDistance(event.target.value)}
+            className="mt-3 h-14 w-full rounded-full border border-zinc-200 bg-zinc-50 px-5 text-base font-semibold text-zinc-900 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/15">
+            {["Todas", "5 km", "10 km", "21 km", "42 km"].map(value => <option key={value} value={value}>{value}</option>)}
+          </select>
+        </label>
+      </div>
+    </section>
     <nav aria-label="Seleccionar mes y año" className="mt-10">
       <div className="flex items-center justify-between gap-3"><p className="text-xs font-black uppercase tracking-[.18em] text-zinc-600">Mes y año</p><span className="text-xs font-semibold text-zinc-500">Desliza para ver los próximos meses</span></div>
       <div className="mt-3 -mx-5 flex gap-2 overflow-x-auto border-y border-zinc-200 px-5 py-4 lg:mx-0 lg:px-0">
