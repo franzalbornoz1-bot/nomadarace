@@ -1,9 +1,8 @@
 /**
- * Calendario 2027 de carreras de Chile, transcrito del calendario público de Corre.cl.
- * Fuente consultada el 21 de noviembre de 2026: https://corre.cl/
- * Datos referenciales sujetos a modificaciones de organizadores y Corre.cl.
- * "Por confirmar" se usa exclusivamente cuando Corre.cl omite el campo o lo marca pendiente.
- * Estas carreras son parte de la agenda informativa, no coberturas confirmadas de Nómada Race.
+ * Calendario 2027 de carreras de Chile.
+ * Datos informativos sujetos a modificaciones de los organizadores.
+ * "Por confirmar" indica que el dato aún no está definido.
+ * La inclusión en el calendario no equivale a cobertura fotográfica confirmada.
  */
 export type CalendarRace2027 = {
   date: string;
@@ -95,4 +94,4 @@ export const calendarRaces2027: CalendarRace2027[] = [
 ];
 
 export const CALENDAR_2027_MONTHS = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"] as const;
-export const CALENDAR_2027_SOURCE = "https://corre.cl/";
+
