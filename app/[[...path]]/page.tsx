@@ -25,8 +25,8 @@ function eventDateTimes(date: string): { startDate?: string } {
 
 const EVENT_SEO: Record<string, { title: string; description: string; keywords: string[] }> = {
   "the-color-run-santiago": {
-    title: "Fotos The Color Run Santiago 2026 | Encuentra tus fotos profesionales",
-    description: "Encuentra tus fotos profesionales de The Color Run Santiago 2026. Información, fecha, ubicación en Ciudad Empresarial y cobertura fotográfica de Nómada Race.",
+    title: "The Color Run Santiago 2026 | Fecha y fotografías",
+    description: "The Color Run Santiago 2026 tuvo fecha el 8 de noviembre en Ciudad Empresarial, Huechuraba. Revisa los detalles de la carrera y el estado de las galerías de Nómada Race.",
     keywords: ["fotos The Color Run Santiago", "fotos Color Run Santiago 2026", "fotos profesionales Color Run", "encuentra tus fotos Color Run", "The Color Run Ciudad Empresarial", "5K Santiago", "Nómada Race"],
   },
   "fedachi-marathon": {
@@ -125,16 +125,17 @@ function routeMetadata(path: string[]): Metadata {
   const event = events.find(item => item.slug === path[1]);
   if (event) {
     const seo = EVENT_SEO[event.slug] ?? {
-      title: `${event.name} | Fotos y cobertura de carrera`,
-      description: `Encuentra tus fotos profesionales de ${event.name} en ${event.city}. Revisa la fecha, ubicación y cobertura fotográfica de Nómada Race.`,
-      keywords: [`fotos ${event.name}`, `fotos profesionales ${event.name}`, `encuentra tus fotos ${event.name}`, event.city, "fotografía deportiva", "Nómada Race"],
+      title: `${event.name} | Información y fotografía deportiva`,
+      description: `Consulta la fecha y ubicación de ${event.name} en ${event.city}. Descubre el calendario de carreras y las galerías confirmadas de Nómada Race.`,
+      keywords: [event.name, `carrera ${event.city}`, "fotografía deportiva", "Nómada Race"],
     };
     const photoDemoRoute = path.length === 3 && path[2] === "fotos";
+    const verifiedEventPage = ["the-color-run-santiago", "fedachi-marathon", "corrida-techo-chile", "maraton-de-melipilla"].includes(event.slug);
     const eventCanonical = new URL(`/eventos/${event.slug}`, SITE_URL).toString();
     return {
       ...defaults,
       alternates: { canonical: eventCanonical },
-      ...(photoDemoRoute ? { robots: { index: false, follow: true } } : {}),
+      ...(!verifiedEventPage || photoDemoRoute ? { robots: { index: false, follow: true } } : {}),
       title: seo.title,
       description: seo.description,
       keywords: seo.keywords,
@@ -168,6 +169,9 @@ export default async function CatchAllPage({ params }: CatchAllPageProps) {
   const { path = [] } = await params;
   // Do not expose the old simulated photo checkout as an indexable purchase page.
   // FEDACHI has a verified direct album; other demo photo routes return to their event landing.
+  if (path[0] === "eventos" && path[1] === "detalles" && path.length === 2) {
+    redirect("https://nomadarace.fotop.com/events/3ra-edicion-dogcial-run-2026/e/355186");
+  }
   if (path[0] === "eventos" && path.length === 3 && path[2] === "fotos") {
     const event = events.find(item => item.slug === path[1]);
     if (!event) notFound();
