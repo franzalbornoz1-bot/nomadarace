@@ -75,6 +75,14 @@ function calendarRaceCategory(race: CalendarRace) {
   return "5K";
 }
 
+const EVENT_DATE_MONTHS = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"] as const;
+function raceEventDateKey(date: string) {
+  const match = /^(\d{1,2}) de ([a-záéíóú]+), (\d{4})$/i.exec(date);
+  if (!match) return "";
+  const month = EVENT_DATE_MONTHS.findIndex(name => name === match[2].toLowerCase()) + 1;
+  return month ? `${match[3]}-${String(month).padStart(2, "0")}-${match[1].padStart(2, "0")}` : "";
+}
+
 function chileTodayKey() {
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: "America/Santiago",
@@ -221,6 +229,7 @@ const SANTIAGO_ASICS_RACE_NAME = "STGO10K by ASICS";
 const HIDDEN_HOME_RACE_NAME = "Media Maratón Cuesta Lastarria Loncoche";
 
 function photoUrlForRaceName(name: string) {
+  if (name === "FEDACHI Marathon") return FEDACHI_PHOTOS_URL;
   if (name === SANTANDER_RACE_NAME) return SANTANDER_RACE_URL;
   if (name === SANTIAGO_ASICS_RACE_NAME) return SANTIAGO_10K_PHOTO_URL;
   if (name === GLORIAS_EVENT_NAME) return GLORIAS_RACE_URL;
@@ -697,37 +706,119 @@ function EventStat({ icon: Icon, value, label }: { icon: LucideIcon; value: stri
 
 function CoverageEventPageV2({ event }: { event: RaceEvent }) {
   const logo = EVENT_LOGOS[event.name];
-  const meta = COVERAGE_EVENT_META[event.name] ?? { mapUrl: "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(event.place + " " + event.city), startIso: "2027-01-01T09:00:00-03:00" };
-  const distanceValue = event.name === "The Color Run Santiago" ? "5K" : event.name === "FEDACHI Marathon" || event.name === "Maratón de Melipilla" ? "5K · 10K · 21K · 42K" : "Distancias oficiales";
-  return <PublicShell><main className="overflow-hidden" style={{ textWrap: "pretty" }}><section className="relative isolate bg-zinc-950 text-white"><img src={event.cover} alt={"Imagen de " + event.name} className="absolute inset-0 h-full w-full object-cover opacity-35" /><div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_15%,rgba(254,92,19,.35),transparent_38%),linear-gradient(135deg,#101214_0%,#202326_58%,#111315_100%)]" /><div className="relative mx-auto grid max-w-7xl gap-12 px-5 pb-16 pt-14 lg:grid-cols-[1.1fr_.9fr] lg:items-end lg:px-8 lg:pb-24 lg:pt-24"><div><Link href="/eventos" className="text-sm font-bold text-zinc-300 hover:text-white">← Volver al calendario</Link>{logo && <img src={logo} alt={"Logo de " + event.name} className="mt-12 h-16 w-auto max-w-[18rem] object-contain object-left" referrerPolicy="no-referrer" />}<p className="mt-8 text-xs font-black uppercase tracking-[.24em] text-orange-400">NÓMADA RACE · COBERTURA FOTOGRÁFICA</p><h1 className="mt-4 max-w-3xl text-6xl font-black leading-[.86] tracking-[-.09em] sm:text-8xl">{event.name}<span className="text-orange-500">.</span></h1><p className="mt-7 max-w-xl text-xl leading-8 text-zinc-200 sm:text-2xl">Revive el FEDACHI Marathon 2026 y encuentra las fotografías de tu carrera.</p><div className="mt-8 flex flex-wrap gap-3 text-sm font-bold"><span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2"><CalendarDays className="h-4 w-4 text-orange-400" />{event.date}</span><span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2"><MapPin className="h-4 w-4 text-orange-400" />{event.place}, {event.city}</span></div><div className="mt-9 flex flex-wrap gap-3"><a href={meta.mapUrl} target="_blank" rel="noreferrer" className="inline-flex h-12 items-center gap-2 rounded-xl border border-white/20 px-5 text-sm font-black text-white hover:bg-white/10"><MapPin className="h-4 w-4" />Ver ubicación</a><a href={PHOTO_STORE_URL} target="_blank" rel="noreferrer" className="inline-flex h-12 items-center gap-2 rounded-xl bg-orange-500 px-5 text-sm font-black text-white hover:bg-orange-600">Encontrar tus fotos <ArrowRight className="h-4 w-4" /></a></div></div><div className="rounded-[2rem] border border-orange-500/30 bg-white/[.08] p-6 shadow-2xl backdrop-blur sm:p-8">
-  <p className="text-xs font-black uppercase tracking-[.2em] text-orange-300">FOTOS FEDACHI 2026</p>
-  <h2 className="mt-4 text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl">Tus fotografías del FEDACHI Marathon ya están disponibles.</h2>
-  <p className="mt-5 text-base leading-7 text-zinc-200">¿Buscas fotos FEDACHI? Encuentra las fotografías del FEDACHI Marathon 2026 en Santiago, en sus distancias 5K, 10K, 21K y 42K. Accede a la plataforma de Nómada Race, busca tus imágenes con una selfie y elige tus recuerdos favoritos para descargar.</p>
-  <a href={PHOTO_STORE_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackAction("photo_search_click", { placement: "fedachi_hero_seo", event: "FEDACHI Marathon" })} className="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-5 py-3 text-center text-sm font-black text-white transition hover:bg-orange-600 sm:w-auto">Buscar fotos FEDACHI <ArrowRight className="h-4 w-4" /></a>
-</div></div></section>{event.name === "FEDACHI Marathon" && <section className="bg-zinc-50 px-5 py-16 text-zinc-950 sm:py-20 lg:px-8" aria-labelledby="fedachi-find-photos">
-  <div className="mx-auto max-w-7xl">
-    <p className="text-center text-xs font-black uppercase tracking-[.2em] text-orange-600">TUS RECUERDOS DE LA CARRERA</p>
-    <h2 id="fedachi-find-photos" className="mt-3 text-center text-4xl font-black leading-tight tracking-tight sm:text-5xl">Cómo encontrar mis fotos</h2>
-    <div className="mx-auto mt-12 grid max-w-5xl gap-12 md:grid-cols-3 md:gap-8">
-      {[
-        { number: "1", icon: Camera, bg: "bg-orange-100", color: "text-orange-600", title: "Busca tus fotos", description: "Sube una selfie y encuentra todas las fotos que el equipo tomó para ti." },
-        { number: "2", icon: Images, bg: "bg-orange-100", color: "text-orange-600", title: "Explora y selecciona", description: "Elige tus fotografías favoritas o el álbum completo." },
-        { number: "3", icon: Download, bg: "bg-orange-100", color: "text-orange-600", title: "Paga y descarga", description: "Completa la selección y una vez pagado podrás descargar tus fotografías." },
-      ].map(step => {
-        const Icon = step.icon;
-        return <div key={step.number} className="flex flex-col items-center text-center">
-          <div className="relative">
-            <div className={cn("grid h-28 w-28 place-items-center rounded-[1.75rem] dark:bg-orange-950/40", step.bg)}><Icon className={cn("h-12 w-12", step.color)} strokeWidth={2.2} /></div>
-            <span className="absolute -right-2 -top-2 grid h-10 w-10 place-items-center rounded-full bg-zinc-950 text-base font-black text-white">{step.number}</span>
+  const meta = COVERAGE_EVENT_META[event.name] ?? {
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(event.place + " " + event.city),
+    startIso: "2027-01-01T09:00:00-03:00",
+  };
+  const today = useChileToday();
+  const dateKey = raceEventDateKey(event.date);
+  const isPast = Boolean(dateKey && dateKey < (today ?? chileTodayKey()));
+  const isFedachi = event.slug === "fedachi-marathon";
+  const photoUrl = isFedachi ? FEDACHI_PHOTOS_URL : PHOTO_STORE_URL;
+  const distanceValue = event.name === "The Color Run Santiago" ? "5K"
+    : event.name === "FEDACHI Marathon" || event.name === "Maratón de Melipilla" ? "5K · 10K · 21K · 42K"
+    : "Distancias oficiales";
+
+  const intro = isFedachi
+    ? "Revive el FEDACHI Marathon 2026 y encuentra las fotografías de tu carrera."
+    : isPast
+      ? `La fecha de ${event.name} ya pasó. Revive la experiencia y consulta la disponibilidad de fotografías.`
+      : `Conoce los detalles de ${event.name} y prepárate para tu próxima carrera.`;
+  const cardEyebrow = isFedachi ? "FOTOS FEDACHI 2026" : isPast ? "CARRERA CON FECHA PASADA" : "PRÓXIMA CARRERA";
+  const cardTitle = isFedachi
+    ? "Tus fotografías del FEDACHI Marathon ya están disponibles."
+    : isPast
+      ? `La fecha de ${event.name} ya pasó.`
+      : `Nos vemos en ${event.name}.`;
+  const cardDescription = isFedachi
+    ? "¿Buscas fotos FEDACHI? Encuentra las fotografías del FEDACHI Marathon 2026 en Santiago, en sus distancias 5K, 10K, 21K y 42K. Sube una selfie en Fotop para encontrar tus fotos y elegir tus recuerdos favoritos."
+    : isPast
+      ? `La fecha de ${event.name} fue el ${event.date}. Aún no contamos con un álbum específico confirmado de esta carrera. Puedes revisar las galerías disponibles en la tienda general de Nómada Race.`
+      : `La carrera está programada para el ${event.date} en ${event.place}. Consulta las bases oficiales y vuelve a revisar nuestras galerías cuando haya novedades de las fotografías.`;
+  const shopLabel = isFedachi ? "Buscar fotos FEDACHI" : "Ver galerías disponibles";
+
+  return <PublicShell><main className="overflow-hidden" style={{ textWrap: "pretty" }}>
+    <section className="relative isolate bg-zinc-950 text-white">
+      <img src={event.cover} alt={`Imagen de referencia de ${event.name}`} className="absolute inset-0 h-full w-full object-cover opacity-35" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_15%,rgba(254,92,19,.35),transparent_38%),linear-gradient(135deg,#101214_0%,#202326_58%,#111315_100%)]" />
+      <div className="relative mx-auto grid max-w-7xl gap-12 px-5 pb-16 pt-14 lg:grid-cols-[1.1fr_.9fr] lg:items-end lg:px-8 lg:pb-24 lg:pt-24">
+        <div>
+          <Link href="/eventos" className="text-sm font-bold text-zinc-300 hover:text-white">← Volver al calendario</Link>
+          {logo && <img src={logo} alt={`Logo de ${event.name}`} className="mt-12 h-16 w-auto max-w-[18rem] object-contain object-left" referrerPolicy="no-referrer" />}
+          <p className="mt-8 text-xs font-black uppercase tracking-[.24em] text-orange-400">NÓMADA RACE · FOTOGRAFÍA DE CARRERAS</p>
+          <h1 className="mt-4 max-w-3xl text-6xl font-black leading-[.86] tracking-[-.09em] sm:text-8xl">{event.name}<span className="text-orange-500">.</span></h1>
+          <p className="mt-7 max-w-xl text-xl leading-8 text-zinc-200 sm:text-2xl">{intro}</p>
+          <div className="mt-8 flex flex-wrap gap-3 text-sm font-bold">
+            <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2"><CalendarDays className="h-4 w-4 text-orange-400" />{event.date}</span>
+            <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2"><MapPin className="h-4 w-4 text-orange-400" />{event.place}, {event.city}</span>
           </div>
-          <h3 className="mt-7 text-2xl font-black tracking-tight">{step.title}</h3>
-          <p className="mt-4 max-w-sm text-base leading-7 text-zinc-600">{step.description}</p>
-        </div>;
-      })}
-    </div>
-    <a href={PHOTO_STORE_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackAction("photo_search_click", { placement: "fedachi_how_to", event: "FEDACHI Marathon" })} className="mx-auto mt-14 flex min-h-14 max-w-lg items-center justify-center gap-3 rounded-2xl bg-zinc-950 px-6 py-4 text-center text-base font-black text-white shadow-lg transition hover:bg-orange-600"><ShoppingBag className="h-5 w-5" /> Buscar mis fotos <ArrowRight className="h-5 w-5" /></a>
-  </div>
-</section>}<section className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-24"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-600">TODO LO QUE NECESITAS SABER</p><h2 className="mt-3 text-4xl font-black leading-none tracking-[-.07em] text-zinc-950 sm:text-6xl">Prepárate para volver a sentirlo.</h2><p className="mt-6 max-w-3xl text-lg leading-8 text-zinc-600">{event.description}</p><div className="mt-12 grid gap-4 md:grid-cols-3"><div className="rounded-[1.75rem] bg-orange-500 p-7 text-white"><p className="text-xs font-black uppercase tracking-[.18em] text-orange-100">CUÁNDO</p><p className="mt-3 text-2xl font-black">{event.date}</p></div><div className="rounded-[1.75rem] border border-zinc-200 bg-white p-7 shadow-sm"><p className="text-xs font-black uppercase tracking-[.18em] text-orange-600">DÓNDE</p><p className="mt-3 text-2xl font-black text-zinc-950">{event.place}</p><a href={meta.mapUrl} target="_blank" rel="noreferrer" className="mt-5 inline-flex items-center gap-2 text-sm font-black text-orange-600">Abrir ubicación <ArrowRight className="h-4 w-4" /></a></div><div className="rounded-[1.75rem] border border-zinc-200 bg-white p-7 shadow-sm"><p className="text-xs font-black uppercase tracking-[.18em] text-orange-600">DISTANCIAS</p><p className="mt-3 text-2xl font-black text-zinc-950">{distanceValue}</p></div></div></section><section className="border-y border-zinc-200 bg-[#f4f6ee]"><div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-5 py-16 sm:flex-row sm:items-center lg:px-8"><div><p className="text-xs font-black uppercase tracking-[.2em] text-orange-600">NÓMADA RACE EN LA RUTA</p><h2 className="mt-3 text-4xl font-black leading-none tracking-[-.07em] text-zinc-950 sm:text-5xl">Cada kilómetro merece un recuerdo.</h2><p className="mt-5 max-w-2xl text-base leading-7 text-zinc-600">Revive el FEDACHI Marathon 2026: explora nuestras fotografías deportivas y encuentra los momentos que hicieron especial tu carrera.</p></div><a href={PHOTO_STORE_URL} target="_blank" rel="noreferrer" className="shrink-0"><Button className="h-12 px-6">Buscar mis fotos <ArrowRight className="ml-2 h-4 w-4" /></Button></a></div></section></main></PublicShell>;
+          <div className="mt-9 flex flex-wrap gap-3">
+            <a href={meta.mapUrl} target="_blank" rel="noreferrer" className="inline-flex h-12 items-center gap-2 rounded-xl border border-white/20 px-5 text-sm font-black text-white hover:bg-white/10"><MapPin className="h-4 w-4" />Ver ubicación</a>
+            <a href={photoUrl} target="_blank" rel="noopener noreferrer" onClick={() => trackAction("photo_search_click", { placement: "event_hero", event: event.name })} className="inline-flex h-12 items-center gap-2 rounded-xl bg-orange-500 px-5 text-sm font-black text-[#171c20] hover:bg-orange-600">{isFedachi ? "Encontrar tus fotos" : "Ver otras galerías"} <ArrowRight className="h-4 w-4" /></a>
+          </div>
+        </div>
+        <div className="rounded-[2rem] border border-orange-500/30 bg-white/[.08] p-6 shadow-2xl backdrop-blur sm:p-8">
+          <p className="text-xs font-black uppercase tracking-[.2em] text-orange-300">{cardEyebrow}</p>
+          <h2 className="mt-4 text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl">{cardTitle}</h2>
+          <p className="mt-5 text-base leading-7 text-zinc-200">{cardDescription}</p>
+          <a href={photoUrl} target="_blank" rel="noopener noreferrer" onClick={() => trackAction("photo_search_click", { placement: "event_hero_card", event: event.name })} className="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-5 py-3 text-center text-sm font-black text-[#171c20] transition hover:bg-orange-600 sm:w-auto">{shopLabel} <ArrowRight className="h-4 w-4" /></a>
+        </div>
+      </div>
+    </section>
+
+    {isFedachi && <section className="bg-zinc-50 px-5 py-16 text-zinc-950 sm:py-20 lg:px-8" aria-labelledby="fedachi-find-photos">
+      <div className="mx-auto max-w-7xl">
+        <p className="text-center text-xs font-black uppercase tracking-[.2em] text-orange-600">TUS RECUERDOS DE LA CARRERA</p>
+        <h2 id="fedachi-find-photos" className="mt-3 text-center text-4xl font-black leading-tight tracking-tight sm:text-5xl">Cómo encontrar mis fotos</h2>
+        <div className="mx-auto mt-12 grid max-w-5xl gap-12 md:grid-cols-3 md:gap-8">
+          {[
+            { number: "1", icon: Camera, title: "Busca tus fotos", description: "Sube una selfie y encuentra todas las fotos que el equipo tomó para ti." },
+            { number: "2", icon: Images, title: "Explora y selecciona", description: "Elige tus fotografías favoritas o el álbum completo." },
+            { number: "3", icon: Download, title: "Paga y descarga", description: "Completa la selección y, una vez pagado, podrás descargar tus fotografías." },
+          ].map(step => {
+            const Icon = step.icon;
+            return <div key={step.number} className="flex flex-col items-center text-center">
+              <div className="relative">
+                <div className="grid h-28 w-28 place-items-center rounded-[1.75rem] bg-orange-100 dark:bg-orange-950/40"><Icon className="h-12 w-12 text-orange-600" strokeWidth={2.2} /></div>
+                <span className="absolute -right-2 -top-2 grid h-10 w-10 place-items-center rounded-full bg-zinc-950 text-base font-black text-white">{step.number}</span>
+              </div>
+              <h3 className="mt-7 text-2xl font-black tracking-tight">{step.title}</h3>
+              <p className="mt-4 max-w-sm text-base leading-7 text-zinc-600">{step.description}</p>
+            </div>;
+          })}
+        </div>
+        <a href={FEDACHI_PHOTOS_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackAction("photo_search_click", { placement: "fedachi_how_to", event: "FEDACHI Marathon" })} className="mx-auto mt-14 flex min-h-14 max-w-lg items-center justify-center gap-3 rounded-2xl bg-zinc-950 px-6 py-4 text-center text-base font-black text-white shadow-lg transition hover:bg-orange-600"><ShoppingBag className="h-5 w-5" /> Buscar mis fotos <ArrowRight className="h-5 w-5" /></a>
+      </div>
+    </section>}
+
+    <section className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-24">
+      <p className="text-xs font-black uppercase tracking-[.2em] text-orange-600">{isPast ? "SOBRE LA CARRERA" : "TODO LO QUE NECESITAS SABER"}</p>
+      <h2 className="mt-3 text-4xl font-black leading-none tracking-[-.07em] text-zinc-950 sm:text-6xl">{isPast ? "Revive lo que se vivió." : "Prepárate para vivirlo."}</h2>
+      <p className="mt-6 max-w-3xl text-lg leading-8 text-zinc-600">{event.description}</p>
+      <div className="mt-12 grid gap-4 md:grid-cols-3">
+        <div className="rounded-[1.75rem] bg-orange-500 p-7 text-[#171c20]"><p className="text-xs font-black uppercase tracking-[.18em]">FECHA</p><p className="mt-3 text-2xl font-black">{event.date}</p></div>
+        <div className="rounded-[1.75rem] border border-zinc-200 bg-white p-7 shadow-sm"><p className="text-xs font-black uppercase tracking-[.18em] text-orange-600">DÓNDE</p><p className="mt-3 text-2xl font-black text-zinc-950">{event.place}</p><a href={meta.mapUrl} target="_blank" rel="noreferrer" className="mt-5 inline-flex items-center gap-2 text-sm font-black text-orange-600">Abrir ubicación <ArrowRight className="h-4 w-4" /></a></div>
+        <div className="rounded-[1.75rem] border border-zinc-200 bg-white p-7 shadow-sm"><p className="text-xs font-black uppercase tracking-[.18em] text-orange-600">DISTANCIAS</p><p className="mt-3 text-2xl font-black text-zinc-950">{distanceValue}</p></div>
+      </div>
+    </section>
+
+    <section className="border-y border-zinc-200 bg-[#f4f6ee]">
+      <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-5 py-16 sm:flex-row sm:items-center lg:px-8">
+        <div>
+          <p className="text-xs font-black uppercase tracking-[.2em] text-orange-600">NÓMADA RACE EN LA RUTA</p>
+          <h2 className="mt-3 text-4xl font-black leading-none tracking-[-.07em] text-zinc-950 sm:text-5xl">Cada kilómetro merece un recuerdo.</h2>
+          <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-600">
+            {isFedachi
+              ? "Revive el FEDACHI Marathon 2026: explora las fotografías que tomamos durante la carrera y encuentra los momentos que hicieron especial tu participación."
+              : isPast
+                ? `La fecha de ${event.name} ya pasó. Por ahora no hay un álbum específico confirmado de esta edición; revisa nuestras galerías disponibles.`
+                : `La carrera ${event.name} se realizará el ${event.date}. Consulta nuestra tienda para conocer las galerías que vayamos publicando.`}
+          </p>
+        </div>
+        <a href={photoUrl} target="_blank" rel="noopener noreferrer" onClick={() => trackAction("photo_search_click", { placement: "event_footer", event: event.name })} className="shrink-0"><Button className="h-12 px-6">{isFedachi ? "Buscar mis fotos" : "Ver galerías"} <ArrowRight className="ml-2 h-4 w-4" /></Button></a>
+      </div>
+    </section>
+  </main></PublicShell>;
 }
 
 function EventStructuredData({ event }: { event: RaceEvent }) {
