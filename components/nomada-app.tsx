@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { clients, events, orders, photoCards, photographers, type EventStatus, type RaceEvent } from "@/lib/demo-data";
 import { calendarRaceDescription, calendarRaces, type CalendarRace } from "@/lib/calendar-2026";
-import { CALENDAR_2027_MONTHS, CALENDAR_2027_SOURCE, calendarRaces2027 } from "@/lib/calendar-2027";
+import { CALENDAR_2027_MONTHS, calendarRaces2027 } from "@/lib/calendar-2027";
 import { getBlogPublicationDate } from "@/lib/blog-publication";
 import { activeEventDetail } from "@/lib/event-details";
 
@@ -639,7 +639,7 @@ function CalendarPage() {
 
   return <PublicShell><main className="mx-auto max-w-7xl px-5 py-14 lg:px-8">
     <div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-600">CALENDARIO 2026–2027</p><h1 className="mt-3 text-5xl font-black tracking-[-.07em] text-zinc-950 sm:text-6xl">Calendario de carreras<br />para seguir corriendo.</h1><p className="mt-5 text-base leading-7 text-zinc-500">Encuentra cada carrera con su fecha, ciudad y distancias. Confirma siempre los detalles con la organización antes de inscribirte.</p></div>
-    <p className="mt-6 rounded-2xl border border-orange-200 bg-orange-50 px-5 py-4 text-sm leading-6 text-zinc-700"><strong>Calendario único 2026 y 2027.</strong> Ya puedes consultar las 78 carreras de 2027 en esta misma página, junto con las fechas de 2026. Agenda referencial de <a href={CALENDAR_2027_SOURCE} target="_blank" rel="noopener noreferrer" className="font-bold text-orange-700 underline underline-offset-2">Corre.cl</a>; las carreras están sujetas a cambios y su inclusión no implica cobertura confirmada de Nómada Race.</p>
+    <p className="mt-6 rounded-2xl border border-orange-200 bg-orange-50 px-5 py-4 text-sm leading-6 text-zinc-700"><strong>Calendario de carreras 2026 y 2027.</strong> Revisa las próximas fechas en un solo lugar y encuentra eventos por mes, ciudad y distancia. Información referencial, sujeta a cambios de cada organización. La presencia de un evento en el calendario no implica cobertura fotográfica confirmada de Nómada Race.</p>
     <section className="mt-8 rounded-[2rem] border border-zinc-200 bg-white p-5 shadow-[0_10px_32px_rgba(24,28,31,.045)] sm:p-8" aria-label="Buscar carreras">
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1fr)] lg:items-end lg:gap-5">
         <label className="block min-w-0">
