@@ -209,8 +209,8 @@ function StatusPill({ status }: { status: EventStatus | string }) {
 }
 
 function EventCard({ event, priority = false }: { event: RaceEvent; priority?: boolean }) {
-  const isPurchasable = event.status === "Fotos listas" || event.status === "Preventa";
   const purchaseUrl = photoUrlForRaceName(event.name);
+  const hasDedicatedAlbum = purchaseUrl !== PHOTO_STORE_URL;
   return <article className="glass-panel interactive-card group overflow-hidden rounded-3xl">
     <Link href={`/eventos/${event.slug}`} className="relative block aspect-[16/10] overflow-hidden bg-zinc-900">
       <img src={event.cover} alt={`Corredores en ${event.name}`} loading={priority ? "eager" : "lazy"} decoding="async" className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.06]" />
@@ -223,7 +223,7 @@ function EventCard({ event, priority = false }: { event: RaceEvent; priority?: b
       <div className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-zinc-500"><MapPin className="h-3.5 w-3.5 text-orange-500" />{event.city}</div>
       <h3 className="text-lg font-black tracking-tight text-zinc-950">{event.name}</h3>
       <p className="mt-1 text-sm text-zinc-500">{event.date}</p>
-      <Link href={isPurchasable ? purchaseUrl : `/eventos/${event.slug}`} className="mt-5 flex items-center justify-between border-t border-zinc-100 pt-4 text-sm font-extrabold text-zinc-950 group-hover:text-orange-600">{event.status === "Fotos listas" ? "Buscar y comprar fotos" : event.status === "Preventa" ? "Comprar en preventa" : "Ver disponibilidad"}<ArrowRight className="h-4 w-4" /></Link>
+      <a href={purchaseUrl} target="_blank" rel="noopener noreferrer" onClick={() => trackAction("photo_search_click", { placement: "event_card", event: event.name })} className="mt-5 flex items-center justify-between border-t border-zinc-100 pt-4 text-sm font-extrabold text-zinc-950 group-hover:text-orange-600">{hasDedicatedAlbum ? "Buscar y comprar fotos" : "Ver tienda Fotop"}<ArrowRight className="h-4 w-4" /></a>
     </div>
   </article>;
 }
