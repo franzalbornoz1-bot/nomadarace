@@ -1,5 +1,6 @@
 export type CalendarRace = {
-  month: "Agosto" | "Septiembre" | "Octubre" | "Noviembre" | "Diciembre";
+  month: "Enero" | "Febrero" | "Marzo" | "Abril" | "Mayo" | "Junio" | "Julio" | "Agosto" | "Septiembre" | "Octubre" | "Noviembre" | "Diciembre";
+  year?: 2026 | 2027;
   day: number;
   weekday: string;
   name: string;
