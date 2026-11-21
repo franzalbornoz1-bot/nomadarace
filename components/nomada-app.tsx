@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { clients, events, orders, photoCards, photographers, type EventStatus, type RaceEvent } from "@/lib/demo-data";
 import { calendarRaceDescription, calendarRaces, type CalendarRace } from "@/lib/calendar-2026";
+import { CALENDAR_2027_MONTHS, CALENDAR_2027_SOURCE, calendarRaces2027 } from "@/lib/calendar-2027";
 import { getBlogPublicationDate } from "@/lib/blog-publication";
 import { activeEventDetail } from "@/lib/event-details";
 
@@ -603,7 +604,7 @@ function CalendarPage() {
 
   return <PublicShell><main className="mx-auto max-w-7xl px-5 py-14 lg:px-8">
     <div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-600">CALENDARIO 2026</p><h1 className="mt-3 text-5xl font-black tracking-[-.07em] text-zinc-950 sm:text-6xl">Calendario de carreras<br />para seguir corriendo.</h1><p className="mt-5 text-base leading-7 text-zinc-500">Encuentra cada carrera con su fecha, ciudad y distancias. Confirma siempre los detalles con la organización antes de inscribirte.</p></div>
-    <div className="relative mt-8 overflow-hidden rounded-2xl border border-orange-300/70 bg-gradient-to-r from-orange-500 via-orange-400 to-amber-300 px-5 py-4 text-white shadow-[0_10px_35px_rgba(249,115,22,.28)]"><div className="absolute inset-y-0 -left-1/3 w-1/3 animate-[shimmer_2.8s_ease-in-out_infinite] bg-gradient-to-r from-transparent via-white/35 to-transparent" /><div className="relative"><p className="font-black tracking-tight">Estamos cargando los próximos eventos 2027.</p><p className="text-sm font-medium text-orange-950/75">Muy pronto anunciaremos nuevas fechas.</p></div></div>
+    <div className="relative mt-8 overflow-hidden rounded-2xl border border-orange-300/70 bg-gradient-to-r from-orange-500 via-orange-400 to-amber-300 px-5 py-4 text-white shadow-[0_10px_35px_rgba(249,115,22,.28)]"><div className="absolute inset-y-0 -left-1/3 w-1/3 animate-[shimmer_2.8s_ease-in-out_infinite] bg-gradient-to-r from-transparent via-white/35 to-transparent" /><div className="relative"><p className="font-black tracking-tight">¡Ya está disponible el calendario de carreras 2027!</p><p className="text-sm font-medium text-orange-950/75">Explora las 78 carreras registradas y planifica tu próxima temporada.</p><Link href="/eventos/2027" className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-full bg-zinc-950 px-4 py-2 text-sm font-black text-white hover:bg-zinc-800">Ver calendario 2027 <ArrowRight className="h-4 w-4" /></Link></div></div>
     <section className="mt-8 rounded-[1.75rem] border border-zinc-200 bg-white p-5 shadow-[0_12px_36px_rgba(24,28,31,.06)] sm:p-6"><div className="flex items-center gap-3"><SlidersHorizontal className="h-5 w-5 text-orange-500" /><div><p className="text-xs font-black uppercase tracking-[.18em] text-orange-600">CALENDARIO VIVO</p><h2 className="mt-1 text-xl font-black tracking-tight text-zinc-950">Encuentra una carrera para ti.</h2></div></div><div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4"><label className="text-xs font-black uppercase tracking-wide text-zinc-500">Tipo<select value={category} onChange={event => setCategory(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-sm font-bold normal-case tracking-normal text-zinc-800 outline-none focus:border-orange-400">{categories.map(item => <option key={item}>{item}</option>)}</select></label><label className="text-xs font-black uppercase tracking-wide text-zinc-500">Ciudad<select value={city} onChange={event => setCity(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-sm font-bold normal-case tracking-normal text-zinc-800 outline-none focus:border-orange-400">{cities.map(item => <option key={item}>{item}</option>)}</select></label><label className="text-xs font-black uppercase tracking-wide text-zinc-500">Distancia<select value={distance} onChange={event => setDistance(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-sm font-bold normal-case tracking-normal text-zinc-800 outline-none focus:border-orange-400"><option>Todas</option><option>5 km</option><option>10 km</option><option>21 km</option><option>42 km</option></select></label><label className="text-xs font-black uppercase tracking-wide text-zinc-500">Fecha<select value={dateFilter} onChange={event => setDateFilter(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-sm font-bold normal-case tracking-normal text-zinc-800 outline-none focus:border-orange-400"><option>Próximas</option><option>Todas</option></select></label></div><div className="mt-5 flex gap-2 overflow-x-auto pb-1">{categories.map(item => <button key={item} type="button" onClick={() => setCategory(item)} className={cn("whitespace-nowrap rounded-full px-4 py-2 text-sm font-black transition", category === item ? "bg-orange-500 text-white" : "bg-zinc-100 text-zinc-600 hover:bg-orange-50 hover:text-orange-700")}>{item}</button>)}</div></section>
     <div className="mt-10 flex gap-2 overflow-x-auto border-y border-zinc-200 py-4">{months.map(month => <button key={month} onClick={() => setActiveMonth(month)} className={cn("whitespace-nowrap rounded-full px-4 py-2 text-sm font-bold transition", activeMonth === month ? "bg-zinc-950 text-white shadow-sm" : "bg-white text-zinc-600 hover:bg-zinc-100")}>{month}</button>)}</div>
     <section className="mt-8"><div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end"><div><h2 className="text-3xl font-black tracking-[-.055em] text-zinc-950">{activeMonth} 2026</h2><p className="mt-2 text-sm font-medium text-zinc-500">{monthRaces.length} {plural} en el calendario.</p></div><span className="w-fit rounded-full bg-orange-50 px-3 py-1.5 text-xs font-bold text-orange-700">Agenda referencial</span></div>
@@ -620,8 +621,116 @@ function EventsPage() {
 }
 
 function Events2027Page() {
-  const upcoming = events.filter(event => event.id.startsWith("EV-2027"));
-  return <PublicShell><main className="mx-auto max-w-7xl px-5 py-14 lg:px-8"><div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-600">CALENDARIO 2027</p><h1 className="mt-3 text-5xl font-black tracking-[-.07em] text-zinc-950 sm:text-6xl">Las carreras que<br />vienen.</h1><p className="mt-5 text-base leading-7 text-zinc-500">Estamos reuniendo las próximas fechas para que puedas planificar tu temporada. Revisa los eventos confirmados y vuelve pronto para conocer nuevas incorporaciones.</p></div><div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">{upcoming.map(event => <EventCard key={event.id} event={event} />)}</div>{upcoming.length === 0 && <div className="mt-10 rounded-3xl border border-dashed border-zinc-300 bg-zinc-50 p-10 text-center"><p className="text-lg font-black text-zinc-950">Próximamente anunciaremos las carreras 2027.</p><p className="mt-2 text-sm text-zinc-500">Estamos preparando el calendario.</p></div>}</main></PublicShell>;
+  const [activeMonth, setActiveMonth] = useState<(typeof CALENDAR_2027_MONTHS)[number]>("Enero");
+  const [query, setQuery] = useState("");
+  const [city, setCity] = useState("Todas");
+  const [distance, setDistance] = useState("Todas");
+  const cities = useMemo(() => ["Todas", ...Array.from(new Set(calendarRaces2027.map(race => race.city))).filter(value => value !== "Por confirmar").sort((a, b) => a.localeCompare(b, "es-CL"))], []);
+  const monthIndex = CALENDAR_2027_MONTHS.indexOf(activeMonth) + 1;
+  const currentMonthRaces = calendarRaces2027.filter(race => Number(race.date.slice(5, 7)) === monthIndex);
+  const normalizedQuery = query.trim().toLocaleLowerCase("es-CL");
+  const visibleRaces = currentMonthRaces.filter(race => {
+    const searchMatches = !normalizedQuery || `${race.name} ${race.city} ${race.distances}`.toLocaleLowerCase("es-CL").includes(normalizedQuery);
+    const cityMatches = city === "Todas" || race.city === city;
+    // Search explicit distances only: a 2-50 km range does not confirm all intermediate formats.
+    const distanceMatches = distance === "Todas" || new RegExp(`(^|[\\s,])${distance.replace(" km", "")}(?=\\s|,|y|$)`).test(race.distances);
+    return searchMatches && cityMatches && distanceMatches;
+  });
+  const weekday = (date: string) => new Intl.DateTimeFormat("es-CL", { weekday: "long", timeZone: "UTC" }).format(new Date(`${date}T12:00:00Z`));
+  const monthCount = (month: string) => calendarRaces2027.filter(race => Number(race.date.slice(5, 7)) === CALENDAR_2027_MONTHS.indexOf(month) + 1).length;
+
+  return <PublicShell><main className="mx-auto max-w-7xl px-5 py-14 lg:px-8 lg:py-20">
+    <div className="flex flex-col gap-6 border-b border-zinc-200 pb-10 lg:flex-row lg:items-end lg:justify-between">
+      <div className="max-w-3xl">
+        <p className="text-xs font-black uppercase tracking-[.2em] text-orange-600">AGENDA RUNNING CHILE · 2027</p>
+        <h1 className="mt-4 text-5xl font-black leading-[.95] tracking-[-.075em] text-zinc-950 sm:text-7xl">Calendario de<br /><span className="text-orange-500">carreras 2027.</span></h1>
+        <p className="mt-6 max-w-2xl text-base leading-8 text-zinc-600 sm:text-lg">Planifica tu temporada: descubre carreras de running, trail, medias maratones y maratones por fecha, ciudad y distancia.</p>
+      </div>
+      <div className="flex w-fit items-center gap-4 rounded-[1.5rem] border border-zinc-200 bg-zinc-50 px-6 py-5">
+        <span className="text-5xl font-black tracking-[-.075em] text-zinc-950">{calendarRaces2027.length}</span>
+        <span className="max-w-28 text-sm font-bold leading-5 text-zinc-600">carreras listadas para 2027</span>
+      </div>
+    </div>
+
+    <div className="mt-7 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-orange-200 bg-orange-50 p-4 sm:px-6">
+      <p className="max-w-3xl text-sm leading-6 text-zinc-700"><strong>Calendario referencial.</strong> Fechas y distancias recopiladas de Corre.cl el 21 de noviembre de 2026, sujetas a cambios. Su inclusión no significa que Nómada Race realizará cobertura fotográfica.</p>
+      <a href={CALENDAR_2027_SOURCE} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-full bg-zinc-950 px-4 py-2 text-sm font-bold text-white hover:bg-zinc-800">Ver fuente Corre.cl <ArrowRight className="h-4 w-4" /></a>
+    </div>
+
+    <section className="mt-12" aria-label="Meses de 2027">
+      <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-3 lg:mx-0 lg:px-0">
+        {CALENDAR_2027_MONTHS.map(month => {
+          const selected = month === activeMonth;
+          return <button key={month} type="button" onClick={() => { setActiveMonth(month); setQuery(""); setCity("Todas"); setDistance("Todas"); }}
+            aria-pressed={selected}
+            className={cn("inline-flex min-h-12 shrink-0 items-center gap-2 rounded-full border px-5 py-3 text-sm font-black transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500", selected ? "border-zinc-950 bg-zinc-950 text-white" : "border-zinc-200 bg-white text-zinc-600 hover:border-orange-400 hover:text-orange-600")}>
+            {month} <span className={cn("rounded-full px-2 py-0.5 text-xs", selected ? "bg-white/20 text-white" : "bg-zinc-100 text-zinc-500")}>{monthCount(month)}</span>
+          </button>;
+        })}
+      </div>
+    </section>
+
+    <section className="mt-5 rounded-[1.75rem] border border-zinc-200 bg-white p-5 shadow-[0_10px_35px_rgba(24,28,31,.04)] sm:p-6" aria-label="Filtros de carreras">
+      <div className="grid gap-4 md:grid-cols-[1.5fr_1fr_1fr] md:items-end">
+        <label className="block text-xs font-black uppercase tracking-[.12em] text-zinc-600">Buscar carrera
+          <span className="mt-2 flex h-12 items-center gap-3 rounded-xl border border-zinc-200 bg-zinc-50 px-4">
+            <Search className="h-5 w-5 shrink-0 text-zinc-500" />
+            <input type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Nombre, ciudad o distancia" className="h-full min-w-0 w-full bg-transparent text-sm font-medium normal-case tracking-normal text-zinc-950 outline-none placeholder:text-zinc-500" />
+          </span>
+        </label>
+        <label className="block text-xs font-black uppercase tracking-[.12em] text-zinc-600">Ciudad
+          <select value={city} onChange={event => setCity(event.target.value)} className="mt-2 h-12 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-4 text-sm font-semibold normal-case tracking-normal text-zinc-950 focus:border-orange-500">
+            {cities.map(value => <option key={value} value={value}>{value}</option>)}
+          </select>
+        </label>
+        <label className="block text-xs font-black uppercase tracking-[.12em] text-zinc-600">Distancia
+          <select value={distance} onChange={event => setDistance(event.target.value)} className="mt-2 h-12 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-4 text-sm font-semibold normal-case tracking-normal text-zinc-950 focus:border-orange-500">
+            {["Todas", "5 km", "10 km", "21 km", "42 km"].map(value => <option key={value} value={value}>{value}</option>)}
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section className="mt-11" aria-live="polite" aria-label="Carreras del mes seleccionado">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h2 className="text-3xl font-black tracking-[-.055em] text-zinc-950 sm:text-4xl">{activeMonth} 2027</h2>
+          <p className="mt-2 text-sm font-medium text-zinc-600">{visibleRaces.length} {visibleRaces.length === 1 ? "carrera encontrada" : "carreras encontradas"}{currentMonthRaces.length !== visibleRaces.length ? ` de ${currentMonthRaces.length}` : ""}.</p>
+        </div>
+        <span className="w-fit rounded-full bg-orange-50 px-4 py-2 text-xs font-bold text-orange-700">Fuente: Corre.cl</span>
+      </div>
+      {visibleRaces.length > 0 ? <div className="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {visibleRaces.map(race => {
+          const day = Number(race.date.slice(8, 10));
+          return <article key={`${race.date}-${race.name}-${race.city}`} className="flex flex-col rounded-[1.75rem] border border-zinc-200 bg-white p-5 shadow-[0_10px_30px_rgba(24,28,31,.05)] sm:p-6">
+            <div className="flex items-start gap-4">
+              <div className="grid h-16 w-16 shrink-0 place-content-center rounded-2xl bg-zinc-950 text-center text-white">
+                <span className="text-2xl font-black leading-none">{String(day).padStart(2, "0")}</span>
+                <span className="mt-1 text-[10px] font-bold uppercase tracking-widest text-zinc-300">{activeMonth.slice(0, 3)}</span>
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-bold capitalize text-orange-600">{weekday(race.date)}</p>
+                <h3 className="mt-2 text-xl font-black leading-tight tracking-[-.04em] text-zinc-950">{race.name}</h3>
+                {race.note && <span className={cn("mt-3 inline-flex rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-wide", race.note === "Nuevo" ? "bg-orange-100 text-orange-800" : "bg-zinc-100 text-zinc-700")}>{race.note}</span>}
+              </div>
+            </div>
+            <div className="mt-auto space-y-3 border-t border-zinc-100 pt-5 text-sm sm:mt-6">
+              <div className="flex items-start gap-3 text-zinc-600"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-orange-600" /><span className="font-semibold">{race.city}</span></div>
+              <div className="flex items-start gap-3 text-zinc-600"><span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-orange-100 text-[9px] font-black text-orange-700">KM</span><span className="font-semibold">{race.distances}</span></div>
+            </div>
+          </article>;
+        })}
+      </div> : <div className="mt-7 rounded-[1.75rem] border border-dashed border-zinc-300 bg-zinc-50 p-10 text-center">
+        <CalendarDays className="mx-auto h-10 w-10 text-orange-500" />
+        <h3 className="mt-4 text-xl font-black text-zinc-950">{currentMonthRaces.length === 0 ? "Todavía no hay carreras publicadas." : "No encontramos carreras con esos filtros."}</h3>
+        <p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-zinc-600">{currentMonthRaces.length === 0 ? `Corre.cl todavía no publica carreras para ${activeMonth.toLocaleLowerCase("es-CL")} de 2027. El calendario se completará cuando haya nuevas fechas.` : "Prueba otra ciudad, distancia o término de búsqueda."}</p>
+      </div>}
+    </section>
+    <div className="mt-12 flex flex-col items-start justify-between gap-4 rounded-[1.75rem] bg-zinc-950 px-6 py-8 text-white sm:flex-row sm:items-center sm:px-10">
+      <div><p className="text-xs font-bold uppercase tracking-[.16em] text-orange-300">SIGUE SUMANDO KILÓMETROS</p><h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Tu próxima carrera puede estar aquí.</h2></div>
+      <a href={CALENDAR_2027_SOURCE} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 shrink-0 items-center gap-2 rounded-xl bg-orange-500 px-6 py-3 text-sm font-black text-[#171c20] hover:bg-orange-400">Ver más carreras en Corre.cl <ArrowRight className="h-4 w-4" /></a>
+    </div>
+  </main></PublicShell>;
 }
 
 function CoverageEventPage({ event }: { event: RaceEvent }) {
