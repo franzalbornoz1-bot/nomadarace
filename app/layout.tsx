@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AnalyticsPageview } from "@/components/analytics-pageview";
+import { TechoPhotoPopup } from "@/components/techo-photo-popup";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -52,6 +53,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       })();`}</Script>
       <Script id="nomada-structured-data" type="application/ld+json" strategy="beforeInteractive">{JSON.stringify({ "@context": "https://schema.org", "@graph": [{ "@type": "Organization", "@id": "https://www.nomadarace.cl/#organization", name: "Nómada Race", alternateName: "Nomada Race", url: "https://www.nomadarace.cl", logo: { "@type": "ImageObject", url: "https://www.nomadarace.cl/icon.png", width: 144, height: 144 }, email: "contacto@nomadafilms.cl", areaServed: { "@type": "Country", name: "Chile" }, sameAs: ["https://www.instagram.com/nomadarace.cl/", "https://www.facebook.com/nomadarace.cl"], description: "Nómada Race es una plataforma chilena para encontrar y comprar fotos profesionales de carreras." }, { "@type": "ProfessionalService", "@id": "https://www.nomadarace.cl/#service", name: "Nómada Race", url: "https://www.nomadarace.cl", image: "https://www.nomadarace.cl/icon.png", description: "Fotografía deportiva y galerías de fotos profesionales para carreras en Chile.", areaServed: { "@type": "Country", name: "Chile" }, serviceType: ["Fotografía deportiva", "Fotos profesionales de carreras", "Galerías digitales para corredores"], provider: { "@id": "https://www.nomadarace.cl/#organization" } }, { "@type": "WebSite", "@id": "https://www.nomadarace.cl/#website", name: "Nómada Race", alternateName: "Nomada Race", url: "https://www.nomadarace.cl", inLanguage: "es-CL", publisher: { "@id": "https://www.nomadarace.cl/#organization" } }] })}</Script>
     </head>
-    <body>{children}<AnalyticsPageview /><Analytics /><SpeedInsights /></body>
+    <body>{children}<TechoPhotoPopup /><AnalyticsPageview /><Analytics /><SpeedInsights /></body>
   </html>;
 }
