@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 const ALBUM_URL = "https://nomadarace.fotop.com/events/corrida-techo-2026/e/365811";
-const DISMISS_KEY = "nomada-techo-2026-popup-dismissed";
 
 export function TechoPhotoPopup() {
   const pathname = usePathname();
@@ -15,10 +14,7 @@ export function TechoPhotoPopup() {
       setOpen(false);
       return;
     }
-    try {
-      if (window.sessionStorage.getItem(DISMISS_KEY) === "1") return;
-    } catch {}
-    const timer = window.setTimeout(() => setOpen(true), 1100);
+    const timer = window.setTimeout(() => setOpen(true), 350);
     return () => window.clearTimeout(timer);
   }, [pathname]);
 
@@ -33,7 +29,6 @@ export function TechoPhotoPopup() {
 
   function dismiss() {
     setOpen(false);
-    try { window.sessionStorage.setItem(DISMISS_KEY, "1"); } catch {}
   }
 
   if (!open || pathname !== "/") return null;
