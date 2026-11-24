@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server";
 const INTERNAL_PREFIXES = ["/admin", "/fotografos", "/demo"];
 // Random 128-bit secret's SHA-256 digest. The password itself is NEVER committed.
 // Change this digest to rotate access to the private design preview.
-const HOME2_PASSWORD_HASH = "81eb6f7f11ae447b8242b2f94bd3271fcc03f8d473fb4f1e9d064b17bca7ecd3";
+const HOME2_PASSWORD_HASH = "c38fd21bded5b0047662a67e4cd424468069df330187935bd28befd18a847322";
 
 function constantTimeEqual(a: string, b: string) {
   const length = Math.max(a.length, b.length);
