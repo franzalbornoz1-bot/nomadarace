@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+import { portalCallback, portalClient, portalLogin, portalPanel } from "./lib/portal-auth";
+
 const INTERNAL_PREFIXES = ["/admin", "/fotografos", "/demo"];
 // Random 128-bit secret's SHA-256 digest. The password itself is NEVER committed.
 // Change this digest to rotate access to the private design preview.
@@ -50,7 +52,9 @@ export async function middleware(request: NextRequest) {
       "Vary": "Authorization",
       "Referrer-Policy": "no-referrer",
     };
-    if (!(await accessGranted(request))) {
+    const path = request.nextUrl.pathname;
+    const isPortal = [portalLogin, portalCallback, portalPanel, "/home-2/fotografo", "/home-2/fotografo/iniciar"].includes(path);
+    if (!isPortal && !(await accessGranted(request))) {
       return new NextResponse("Acceso privado de Nómada Race.", {
         status: 401,
         headers: {
@@ -60,7 +64,19 @@ export async function middleware(request: NextRequest) {
         },
       });
     }
-    const response = NextResponse.next();
+    let response = NextResponse.next();
+    if (path === portalPanel) {
+      const client = portalClient({
+        getAll: () => request.cookies.getAll(),
+        setAll: (updates) => {
+          for (const { name, value } of updates) request.cookies.set(name, value);
+          response = NextResponse.next({ request });
+          for (const { name, value, options } of updates) response.cookies.set(name, value, options);
+        },
+      });
+      // Forward refreshed cookies to the page, which enforces the membership check.
+      if (client) await client.auth.getUser();
+    }
     Object.entries(previewHeaders).forEach(([key, value]) => response.headers.set(key, value));
     return response;
   }

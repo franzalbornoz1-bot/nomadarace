@@ -1,7 +1,0 @@
-"use client";
-import {useEffect,useState} from "react";
-export default function Callback(){
- const [status,setStatus]=useState("Validando identidad...");
- useEffect(()=>{const p=new URLSearchParams(window.location.hash.slice(1));const token=p.get("access_token");window.history.replaceState(null,"",window.location.pathname);if(!token){setStatus("No se recibió una sesión. Vuelve a iniciar sesión.");return;}const url=process.env.NEXT_PUBLIC_SUPABASE_URL;const key=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY||process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;if(!url||!key){setStatus("Configuración incompleta.");return;}fetch(url+"/auth/v1/user",{headers:{apikey:key,Authorization:"Bearer "+token},cache:"no-store"}).then(async r=>{if(!r.ok)throw Error();const u=await r.json();setStatus(u.id?"Identidad Google verificada. Acceso al panel pendiente de aprobación.":"Identidad no verificada.");}).catch(()=>setStatus("No se pudo validar la sesión."));},[]);
- return <main className="min-h-screen bg-neutral-950 text-white p-8"><h1 className="text-2xl font-bold">Nómada Race</h1><p className="mt-6">{status}</p><a className="mt-6 block text-orange-400" href="/home-2/fotografo/login">Volver al login</a></main>;
-}
